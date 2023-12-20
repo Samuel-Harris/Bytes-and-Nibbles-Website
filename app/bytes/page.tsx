@@ -1,8 +1,8 @@
-export default function Home() {
+export default function BytesPage() {
   return (
     <main>
       <div>
-        <p>Home page</p>
+        <p>Bytes page</p>
       </div>
     </main>
   )
