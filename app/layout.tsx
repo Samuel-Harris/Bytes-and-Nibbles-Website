@@ -3,11 +3,12 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
-import CookieIcon from "./cookieIcon";
+import CookieIcon from "./assets/cookieIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { unstable_noStore } from "next/cache";
+import LogoIcon from "./assets/logoIcon";
+import { THEME_COLOUR } from "./constants/websiteConstants";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,19 +18,25 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const headerOptionStyle = "grid grid-rows-auto row-span-full";
-  const headerOptionIconStyle = "row-span-full h-6 w-6 text-green-500";
+  const headerOptionIconStyle = "row-span-full h-6 w-6 " + THEME_COLOUR;
   const getHeaderOptionTextStyle = (href: string) => {
-    unstable_noStore();
     return clsx("row-span-full px-2",
     {
-      "text-green-500": usePathname() === href,
+      [THEME_COLOUR]: usePathname() === href,
     });
   }
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="grid grid-rows-auto justify-items-center py-8">
+        <div className="grid grid-rows-3 grid-flow-col justify-items-center py-1">
+          <div className="row-span-3">
+            <LogoIcon/>
+          </div>
+          <h1 className="row-span-2 col-span-2 justify-self-start flex items-center text-7xl font-bold font-sans">Bytes and nibbles</h1>
+          <p className={"row-span-1 col-span-2 justify-self-start flex items-center font-bold font-san " + THEME_COLOUR}>By Samuel Matsuo Harris</p>
+        </div>
+        <div className="grid grid-rows-auto grid-cols-3 justify-items-center py-1">
           <Link href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle}/>
             <p className={getHeaderOptionTextStyle("/")}>Home</p>
