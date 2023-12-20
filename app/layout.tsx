@@ -17,7 +17,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const headerOptionStyle = "grid grid-rows-auto row-span-full";
+  const headerOptionStyle = "grid row-span-1 col-span-1";
   const headerOptionIconStyle = "row-span-full h-6 w-6 " + THEME_COLOUR;
   const getHeaderOptionTextStyle = (href: string) => {
     return clsx("row-span-full px-2",
@@ -29,14 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="grid grid-rows-3 grid-flow-col justify-items-center py-1">
-          <div className="row-span-3">
+        <div className="grid grid-rows-4 grid-cols-3 justify-items-center py-1">
+          <div className="row-span-3 col-span-1">
             <LogoIcon/>
           </div>
           <h1 className="row-span-2 col-span-2 justify-self-start flex items-center text-7xl font-bold font-sans">Bytes and nibbles</h1>
           <p className={"row-span-1 col-span-2 justify-self-start flex items-center font-bold font-san " + THEME_COLOUR}>By Samuel Matsuo Harris</p>
-        </div>
-        <div className="grid grid-rows-auto grid-cols-3 justify-items-center py-1">
+
           <Link href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle}/>
             <p className={getHeaderOptionTextStyle("/")}>Home</p>
@@ -51,6 +50,7 @@ export default function RootLayout({
             </div>
             <p className={getHeaderOptionTextStyle("/nibbles")}>Nibbles</p>
           </Link>
+
         </div>
         {children}
       </body>
