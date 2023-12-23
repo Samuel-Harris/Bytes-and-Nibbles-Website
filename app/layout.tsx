@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   const headerOptionStyle = "grid row-span-1 col-span-1";
   const headerOptionIconStyle = "row-span-full h-6 w-6 " + THEME_COLOUR;
-  const getHeaderOptionTextStyle = (href: string) => {
+  const useHeaderButtonTextStyle = (href: string): string => {
     return clsx("row-span-full px-2",
     {
       [THEME_COLOUR]: usePathname() === href,
@@ -38,17 +38,17 @@ export default function RootLayout({
 
           <Link href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle}/>
-            <p className={getHeaderOptionTextStyle("/")}>Home</p>
+            <p className={useHeaderButtonTextStyle("/")}>Home</p>
           </Link>
           <Link href="/bytes" className={headerOptionStyle}>
             <CodeBracketIcon className={headerOptionIconStyle}/>
-            <p className={getHeaderOptionTextStyle("/bytes")}>Bytes</p>
+            <p className={useHeaderButtonTextStyle("/bytes")}>Bytes</p>
           </Link>
           <Link href="/nibbles" className={headerOptionStyle}>
             <div className={headerOptionIconStyle}>
               <CookieIcon/>
             </div>
-            <p className={getHeaderOptionTextStyle("/nibbles")}>Nibbles</p>
+            <p className={useHeaderButtonTextStyle("/nibbles")}>Nibbles</p>
           </Link>
 
         </div>
