@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "The blog about two of my favourite hobbies: coding and cooking.",
 }
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
     <main>
       <div>

@@ -4,7 +4,7 @@ import { DocumentData, QuerySnapshot } from "firebase/firestore";
 import { listBytes } from "../utils/firestoreService";
 import { useEffect } from "react";
 
-export default function BytesPage() {
+export default function BytesPage(): JSX.Element {
     useEffect(() => {
         listBytes().then((response: QuerySnapshot<DocumentData, DocumentData>) => {
             console.log(response);

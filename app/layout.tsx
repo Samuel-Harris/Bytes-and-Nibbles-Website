@@ -12,11 +12,7 @@ import { THEME_COLOUR } from "./utils/websiteConstants";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({children}: {children: React.ReactNode}) {
   const headerOptionStyle = "grid row-span-1 col-span-1";
   const headerOptionIconStyle = "row-span-full h-6 w-6 " + THEME_COLOUR;
   const useHeaderButtonTextStyle = (href: string): string => {

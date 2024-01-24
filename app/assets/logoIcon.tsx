@@ -1,6 +1,6 @@
 import { THEME_COLOUR } from "../utils/websiteConstants";
 
-export default function logoIcon(){
+export default function logoIcon(): JSX.Element {
     return <>
         <svg
    fill="none"
