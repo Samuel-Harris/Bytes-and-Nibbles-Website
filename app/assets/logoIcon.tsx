@@ -1,4 +1,4 @@
-import { THEME_COLOUR } from "../constants/websiteConstants";
+import { THEME_COLOUR } from "../utils/websiteConstants";
 
 export default function logoIcon(){
     return <>

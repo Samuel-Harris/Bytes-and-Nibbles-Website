@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import { WEBSITE_NAME } from "../constants/websiteConstants"
+import { WEBSITE_NAME } from "../utils/websiteConstants"
 
 
 export const metadata: Metadata = {

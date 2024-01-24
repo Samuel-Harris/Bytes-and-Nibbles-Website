@@ -1,18 +1,24 @@
-import { Metadata } from "next"
-import { WEBSITE_NAME } from "../constants/websiteConstants"
+"use client";
 
-
-export const metadata: Metadata = {
-  title: `${WEBSITE_NAME} - bytes`,
-  description: "The tech blogs of the Bytes and Nibbles blog.",
-}
+import { DocumentData, QuerySnapshot } from "firebase/firestore";
+import { listBytes } from "../utils/firestoreService";
+import { useEffect } from "react";
 
 export default function BytesPage() {
-  return (
-    <main>
-      <div>
-        <p>Bytes page</p>
-      </div>
-    </main>
-  )
+    useEffect(() => {
+        listBytes().then((response: QuerySnapshot<DocumentData, DocumentData>) => {
+            console.log(response);
+            response.forEach((doc) => {
+                console.log(doc.data());
+            });
+        })
+    }, [])
+
+    return (
+        <main>
+            <div>
+                <p>Bytes page</p>
+            </div>
+        </main>
+    )
 }
