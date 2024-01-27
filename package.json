@@ -11,9 +11,11 @@
   "dependencies": {
     "@heroicons/react": "^2.1.1",
     "clsx": "^2.0.0",
+    "firebase": "^10.7.1",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",
