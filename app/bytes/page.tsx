@@ -2,9 +2,10 @@
 
 import { DocumentData, QuerySnapshot, Timestamp } from "firebase/firestore";
 import { listBytes } from "../utils/firestoreService";
-import { useEffect, useReducer } from "react";
+import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
 import { ByteOverview } from "./byteOverview";
+import { useImmerReducer } from "use-immer";
 
 type State = {
     bytes: ByteOverview[];
@@ -19,17 +20,19 @@ type Action = {
     bytesList: ByteOverview[];
 }
 
-function reducer(state: State, action: Action): State {
+function reducer(draft: State, action: Action): void {
     switch (action.type) {
         case ActionType.UPDATE_BYTE_LIST:
-            return { bytes: action.bytesList };
+            draft.bytes = action.bytesList;
+            return;
         default:
-            return state;
+            return;
     }
 }
 
 export default function BytesPage(): JSX.Element {
-    const [state, dispatch]: [State, React.Dispatch<Action>] = useReducer(reducer, { bytes: [] });
+    const initState: State = { bytes: [] };
+    const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(reducer, initState);
 
     useEffect(() => {
         let fetchedBytes = false;
