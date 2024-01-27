@@ -1,2 +1,9 @@
-export const WEBSITE_NAME = "Bytes and Nibbles";
-export const THEME_COLOUR = "text-green-500";
+export const config = {
+    websiteName: "Bytes and Nibbles",
+}
+
+export const style = {
+    accentColour: "text-green-500",
+    hoverColour: "bg-zinc-900",
+    textColour: "text-neutral-500",
+}
