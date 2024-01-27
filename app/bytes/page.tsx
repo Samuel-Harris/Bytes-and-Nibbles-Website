@@ -4,7 +4,7 @@ import { DocumentData, QuerySnapshot, Timestamp } from "firebase/firestore";
 import { listBytes } from "../utils/firestoreService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
-import { ByteOverview } from "./byteOverview";
+import ByteOverview from "../utils/byteOverview";
 import { useImmerReducer } from "use-immer";
 
 type State = {
@@ -35,29 +35,19 @@ export default function BytesPage(): JSX.Element {
     const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(reducer, initState);
 
     useEffect(() => {
-        let fetchedBytes = false;
-        listBytes().then((response: QuerySnapshot<DocumentData, DocumentData>) => {
-            const newBytes: ByteOverview[] = [];
-            response.forEach((doc) => {
-                const byte: DocumentData = doc.data();
-                const timestamp: Timestamp = byte.publishDate;
-                const byteOverview: ByteOverview = {
-                    title: byte.title,
-                    subtitle: byte.subtitle,
-                    thumbnail: byte.thumbnail,
-                    publishDate: timestamp.toDate(),
-                }
+        let bytesBeenFetched = false;
 
-                newBytes.push(byteOverview);
+        if (!bytesBeenFetched) {
+            listBytes().then((bytes: ByteOverview[]) => {
+                dispatch({
+                    type: ActionType.UPDATE_BYTE_LIST,
+                    bytesList: bytes,
+                })
             });
-
-            if (!fetchedBytes) {
-                dispatch({ type: ActionType.UPDATE_BYTE_LIST, bytesList: newBytes })
-            }
-        })
+        }
 
         return () => {
-            fetchedBytes = true
+            bytesBeenFetched = true
         };
     }, [])
 
