@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import LogoIcon from "./assets/logoIcon";
-import { config, style } from "./utils/websiteConstants";
+import { style } from "./utils/websiteConstants";
 
 const inter = Inter({ subsets: ['latin'] })
 
