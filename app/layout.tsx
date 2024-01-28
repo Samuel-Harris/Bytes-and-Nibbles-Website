@@ -13,7 +13,7 @@ import { style } from "./utils/websiteConstants";
 const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
-  const headerOptionStyle = `row-span-full w-full px-3 py-2 hover:${style.hoverColour}`;
+  const headerOptionStyle = `row-span-full w-full px-3 py-2 ${style.hoverColour}`;
   const headerOptionIconStyle = `inline h-6 w-6 ${style.accentColour}`;
   const useHeaderButtonTextStyle = (href: string): string => {
     return clsx("inline pl-2",
