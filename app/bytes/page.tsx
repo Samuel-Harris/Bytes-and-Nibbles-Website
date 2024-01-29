@@ -1,7 +1,6 @@
 "use client";
 
-import { DocumentData, QuerySnapshot, Timestamp } from "firebase/firestore";
-import { listBytes } from "../utils/firestoreService";
+import { listBytes } from "../utils/firebaseService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
 import ByteOverview from "../utils/byteOverview";
@@ -49,7 +48,7 @@ export default function BytesPage(): JSX.Element {
         return () => {
             bytesBeenFetched = true
         };
-    }, [])
+    }, [dispatch])
 
     return (
         <main className="grid grid-rows-10 justify-items-center pb-6">

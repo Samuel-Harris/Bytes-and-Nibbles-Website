@@ -14,7 +14,7 @@ const Tilecard: FC<TilecardProps> = (props: TilecardProps) => {
 
     return (
         <div className={`grid grid-rows-3 grid-cols-4 justify-items-left items-center px-3 py-2 ${style.hoverColour}`}>
-            <div className="row-span-3 col-span-1 w-full h-full bg-pink-900" />
+            <img src={props.thumbnail} alt={props.title} className="row-span-3 col-span-1 w-full h-full" />
             <p className={`text-3xl ${textStyle} ${style.accentColour}`}>{props.title}</p>
             <p className={`text-xl ${textStyle} ${style.textColour}`}>{props.subtitle}</p>
             <p className={`text-s ${textStyle} ${style.textColour}`}>{convertDateToString(props.publishDate)}</p>
