@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import { style } from './app/utils/websiteConstants'
 
 const config: Config = {
   content: [
@@ -15,6 +16,7 @@ const config: Config = {
       },
     },
   },
+  safelist: Object.values(style),
   plugins: [],
 }
 export default config
