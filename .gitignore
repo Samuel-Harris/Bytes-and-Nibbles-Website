@@ -3,7 +3,7 @@
 
 # build files
 .next/
-build/
+out/
 
 # misc
 .DS_Store
@@ -13,4 +13,7 @@ build/
 next-env.d.ts
 
 # firebase
-.firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log

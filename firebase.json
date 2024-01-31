@@ -4,12 +4,13 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": "build",
+    "public": "out",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "cleanUrls": true
   },
   "storage": {
     "rules": "storage.rules"
@@ -22,7 +23,7 @@
       "port": 8080
     },
     "hosting": {
-      "port": 5000
+      "port": 5050
     },
     "storage": {
       "port": 9199
@@ -31,6 +32,6 @@
       "enabled": true,
       "port": 5070
     },
-    "singleProjectMode": true
+    "singleProjectMode": false
   }
 }
