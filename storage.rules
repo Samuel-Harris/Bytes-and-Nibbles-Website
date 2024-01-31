@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth.uid == 'tTqp4XUey6Ph0RtH56ljTghw3vL2' // this is my UID
+    }
+
+    match /images/bytes/thumbnails/{thumbnail} {
+      allow read: if true;
+    }
+  }
+}
