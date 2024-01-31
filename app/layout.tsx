@@ -8,34 +8,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import LogoIcon from "./assets/logoIcon";
-import { THEME_COLOUR } from "./constants/websiteConstants";
+import { style } from "./utils/websiteConstants";
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const headerOptionStyle = "grid row-span-1 col-span-1";
-  const headerOptionIconStyle = "row-span-full h-6 w-6 " + THEME_COLOUR;
+export default function RootLayout({children}: {children: React.ReactNode}) {
+  const headerOptionStyle = `row-span-full w-full px-3 py-2 ${style.hoverColour}`;
+  const headerOptionIconStyle = `inline h-6 w-6 ${style.accentColour}`;
   const useHeaderButtonTextStyle = (href: string): string => {
-    return clsx("row-span-full px-2",
+    return clsx("inline pl-2",
     {
-      [THEME_COLOUR]: usePathname() === href,
+      [style.accentColour]: usePathname() === href,
     });
   }
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="grid grid-rows-4 grid-cols-3 justify-items-center py-1">
-          <div className="row-span-3 col-span-1">
-            <LogoIcon/>
+        <div className="grid grid-rows-3 grid-cols-3 pt-2">
+          <div className="justify-self-center row-span-3 col-span-1">
+            <LogoIcon className={`h-40 w-40 ${style.accentColour}`}/>
           </div>
           <h1 className="row-span-2 col-span-2 justify-self-start flex items-center text-7xl font-bold font-sans">Bytes and nibbles</h1>
-          <p className={"row-span-1 col-span-2 justify-self-start flex items-center font-bold font-san " + THEME_COLOUR}>By Samuel Matsuo Harris</p>
-
+          <p className={`row-span-1 col-span-2 justify-self-start flex items-center font-bold font-san ${style.accentColour}`}>By Samuel Matsuo Harris</p>
+        </div>
+        <div className="grid grid-cols-3 text-center">
           <Link href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle}/>
             <p className={useHeaderButtonTextStyle("/")}>Home</p>
@@ -45,13 +42,10 @@ export default function RootLayout({
             <p className={useHeaderButtonTextStyle("/bytes")}>Bytes</p>
           </Link>
           <Link href="/nibbles" className={headerOptionStyle}>
-            <div className={headerOptionIconStyle}>
-              <CookieIcon/>
-            </div>
+            <CookieIcon className={headerOptionIconStyle}/>
             <p className={useHeaderButtonTextStyle("/nibbles")}>Nibbles</p>
           </Link>
-
-        </div>
+          </div>
         {children}
       </body>
     </html>
