@@ -3,6 +3,7 @@
 
 # build files
 .next/
+build/
 
 # misc
 .DS_Store
