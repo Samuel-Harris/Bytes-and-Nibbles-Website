@@ -1,8 +1,8 @@
 import { Metadata } from "next"
-import { WEBSITE_NAME } from "./utils/websiteConstants"
+import { config } from "./utils/websiteConstants"
 
 export const metadata: Metadata = {
-  title: WEBSITE_NAME,
+  title: config.websiteName,
   description: "The blog about two of my favourite hobbies: coding and cooking.",
 }
 
