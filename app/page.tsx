@@ -1,10 +1,12 @@
-import { Metadata } from "next"
-import { config } from "./utils/websiteConstants"
+import { Metadata } from "next";
+import { config } from "./utils/websiteConstants";
+import BytesPage from "./bytes/page";
 
 export const metadata: Metadata = {
   title: config.websiteName,
-  description: "The blog about two of my favourite hobbies: coding and cooking.",
-}
+  description:
+    "The blog about two of my favourite hobbies: coding and cooking.",
+};
 
 export default function Home(): JSX.Element {
   return (
@@ -13,5 +15,5 @@ export default function Home(): JSX.Element {
         <p>Home page</p>
       </div>
     </main>
-  )
+  );
 }
