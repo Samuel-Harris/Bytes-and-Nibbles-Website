@@ -10,8 +10,9 @@ env:
   NODE_VERSION: 18
 
 jobs:
-  linting:
-    name: Linting
+  lint:
+    if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Install NodeJS
