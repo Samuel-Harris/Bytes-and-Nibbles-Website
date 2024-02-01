@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { config } from "./utils/websiteConstants";
-import BytesPage from "./bytes/page";
 
 export const metadata: Metadata = {
   title: config.websiteName,
