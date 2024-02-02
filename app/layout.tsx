@@ -17,10 +17,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const headerOptionStyle = `row-span-full w-full px-3 py-2 ${style.hoverColour}`;
-  const headerOptionIconStyle = `inline h-6 w-6 ${style.accentColour}`;
+  const headerOptionStyle = `sm:py-2 md:py-3 ${style.hoverColour}`;
+  const headerOptionIconStyle = `inline h-auto w-5 sm:w-8 ${style.accentColour}`;
   const useHeaderButtonTextStyle = (href: string): string => {
-    return clsx("inline pl-2", {
+    return clsx("inline align-middle pl-2 text-base sm:text-xl", {
       [style.accentColour]: usePathname() === href,
     });
   };
@@ -28,18 +28,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="grid grid-rows-3 grid-cols-3 pt-2">
-          <div className="justify-self-center row-span-3 col-span-1">
-            <LogoIcon className={`h-40 w-40 ${style.accentColour}`} />
+        <div className="grid grid-cols-3 py-2 sm:py-4 md:py-7">
+          <LogoIcon
+            className={`justify-self-center col-span-1 h-auto w-20 sm:w-40 ${style.accentColour}`}
+          />
+          <div className="col-span-2">
+            <h1 className="text-2xl sm:text-5xl md:text-7xl font-bold">
+              Bytes and nibbles
+            </h1>
+            <p className={`text-s sm:text-lg font-bold ${style.accentColour}`}>
+              By Samuel Matsuo Harris
+            </p>
           </div>
-          <h1 className="row-span-2 col-span-2 justify-self-start flex items-center text-7xl font-bold font-sans">
-            Bytes and nibbles
-          </h1>
-          <p
-            className={`row-span-1 col-span-2 justify-self-start flex items-center font-bold font-san ${style.accentColour}`}
-          >
-            By Samuel Matsuo Harris
-          </p>
         </div>
         <div className="grid grid-cols-3 text-center">
           <Link href="/" className={headerOptionStyle}>
