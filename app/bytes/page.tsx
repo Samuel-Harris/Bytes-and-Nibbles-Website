@@ -56,7 +56,7 @@ export default function BytesPage(): JSX.Element {
   return (
     <main className="grid grid-rows-10 justify-items-center pb-6">
       {state.bytes.map((byteOverview: ByteOverview) => (
-        <div key={byteOverview.title} className="row-span-1 w-full px-24 py-4">
+        <div key={byteOverview.title} className="w-11/12 sm:w-4/5 py-2 sm:py-3 md:py-8">
           <Tilecard
             title={byteOverview.title}
             subtitle={byteOverview.subtitle}
