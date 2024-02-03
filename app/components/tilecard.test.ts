@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
 describe("Tilecard component", function () {
-  test("Renders data", function () {
+  test("renders data", function () {
     const props: TilecardProps = {
       title: "My title",
       subtitle: "My subtitle",
