@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
