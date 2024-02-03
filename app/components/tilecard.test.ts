@@ -3,7 +3,7 @@ import Tilecard from "./tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-describe("tilecard component", function () {
+describe("Tilecard component", function () {
   test("Renders data", function () {
     const props: TilecardProps = {
       title: "My title",

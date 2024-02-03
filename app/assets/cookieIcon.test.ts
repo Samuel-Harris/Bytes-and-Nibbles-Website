@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import cookieIcon, { CookieIconProps } from "./cookieIcon";
 import "@testing-library/jest-dom";
 
-describe("tilecard component", function () {
-  test("Renders data", function () {
+describe("Cookie component", function () {
+  test("Is styled correctly", function () {
     const cookieIconTitle =
       "A cookie with a bite take out of it surrounded by angle brackets.";
     const props: CookieIconProps = {
