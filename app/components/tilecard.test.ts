@@ -13,8 +13,10 @@ describe("tilecard component", function () {
     };
 
     render(Tilecard(props));
+
     expect(screen.getByText(props.title)).toBeInTheDocument();
     expect(screen.getByText(props.subtitle)).toBeInTheDocument();
     expect(screen.getByText("Sat, 03 Feb 2024")).toBeInTheDocument();
+    expect(screen.getByRole("img")).toHaveAttribute("src", props.thumbnail);
   });
 });
