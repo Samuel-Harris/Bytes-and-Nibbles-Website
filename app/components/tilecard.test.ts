@@ -3,13 +3,13 @@ import Tilecard from "./tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-describe("Tilecard component", function () {
-  test("renders data", function () {
+describe("Tilecard component", () => {
+  it("should render all given data", () => {
     const props: TilecardProps = {
       title: "My title",
       subtitle: "My subtitle",
       thumbnail: "My thumbnail",
-      publishDate: new Date("2024/02/03"),
+      publishDate: new Date(2024, 1, 3),
     };
 
     render(Tilecard(props));
