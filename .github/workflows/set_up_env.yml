@@ -1,0 +1,23 @@
+name: Environment set-up workflow
+
+on: workflow_call
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+    set-up-env:
+        name: Set up environment
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install NodeJS
+              uses: actions/setup-node@v4
+              with:
+                node-version: ${{ env.NODE_VERSION }}
+      
+            - name: Checkout code
+              uses: actions/checkout@v4
+      
+            - name: Install dependencies
+              run: npm ci
+            
