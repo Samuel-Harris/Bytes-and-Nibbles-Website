@@ -1,7 +1,7 @@
 import React from "react";
 import { FC } from "react";
 import { style } from "../utils/websiteConstants";
-import { getDate as convertDateToString } from "../utils/timeUtils";
+import { getDateString } from "../utils/timeUtils";
 
 export interface TilecardProps {
   title: string;
@@ -30,7 +30,7 @@ const Tilecard: FC<TilecardProps> = (props: TilecardProps) => {
           {props.subtitle}
         </p>
         <p className={`text-sm md:text-base ${textStyle} ${style.textColour}`}>
-          {convertDateToString(props.publishDate)}
+          {getDateString(props.publishDate)}
         </p>
       </div>
     </div>
