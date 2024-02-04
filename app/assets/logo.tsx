@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
 export interface LogoProps {
   className?: string;
 }
 
-export default function logo(props: LogoProps): JSX.Element {
+const Logo: FC<LogoProps> = (props: LogoProps) => {
   return (
     <svg
       fill="none"
@@ -36,3 +36,4 @@ export default function logo(props: LogoProps): JSX.Element {
     </svg>
   );
 }
+export default Logo;

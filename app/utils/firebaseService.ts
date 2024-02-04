@@ -28,7 +28,7 @@ export type ByteOverview = {
   publishDate: Date;
 };
 
-export class FirebaseService {
+export default class FirebaseService {
   private app: FirebaseApp;
   private db: Firestore;
   private storage: FirebaseStorage;

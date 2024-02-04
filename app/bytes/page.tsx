@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ByteOverview, FirebaseService } from "../utils/firebaseService";
+import FirebaseService, { ByteOverview } from "../utils/firebaseService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
 import { useImmerReducer } from "use-immer";
@@ -28,6 +28,8 @@ function reducer(draft: State, action: Action): void {
       return;
   }
 }
+
+
 
 export default function BytesPage(): JSX.Element {
   const initState: State = { bytes: [] };

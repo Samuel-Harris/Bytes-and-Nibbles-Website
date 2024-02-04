@@ -1,3 +1,4 @@
+import React from "react";
 import Tilecard, { TilecardProps } from "./tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
@@ -11,7 +12,7 @@ describe("Tilecard", () => {
       publishDate: new Date(2024, 1, 3),
     };
 
-    render(Tilecard(props));
+    render(<Tilecard {...props} />);
 
     expect(screen.getByText(props.title)).toBeInTheDocument();
     expect(screen.getByText(props.subtitle)).toBeInTheDocument();

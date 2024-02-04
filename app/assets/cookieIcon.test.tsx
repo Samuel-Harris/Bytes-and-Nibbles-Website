@@ -1,5 +1,6 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
-import cookieIcon, { CookieIconProps } from "./cookieIcon";
+import CookieIcon, { CookieIconProps } from "./cookieIcon";
 import "@testing-library/jest-dom";
 
 describe("Cookie", () => {
@@ -10,7 +11,7 @@ describe("Cookie", () => {
       className: "text-green-500",
     };
 
-    render(cookieIcon(props));
+    render(<CookieIcon {...props}/>);
 
     expect(screen.getByTitle(cookieIconTitle)).toBeInTheDocument();
     expect(screen.getByTitle(cookieIconTitle)).toHaveStyle(

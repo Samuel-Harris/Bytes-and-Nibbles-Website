@@ -4,7 +4,7 @@ export interface CookieIconProps {
   className?: string;
 }
 
-export default function cookieIcon(props: CookieIconProps): JSX.Element {
+const CookieIcon: React.FC<CookieIconProps> = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -24,3 +24,4 @@ export default function cookieIcon(props: CookieIconProps): JSX.Element {
     </svg>
   );
 }
+export default CookieIcon;

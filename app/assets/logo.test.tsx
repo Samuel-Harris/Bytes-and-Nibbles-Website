@@ -1,6 +1,7 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import logo, { LogoProps } from "./logo";
+import Logo, { LogoProps } from "./logo";
 
 describe("Logo", () => {
   it("should be styled correctly", () => {
@@ -10,7 +11,7 @@ describe("Logo", () => {
       className: "text-green-500",
     };
 
-    render(logo(props));
+    render(<Logo {...props}/>);
 
     expect(screen.getByTitle(logoTitle)).toBeInTheDocument();
     expect(screen.getByTitle(logoTitle)).toHaveStyle(
