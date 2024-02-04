@@ -1,7 +1,8 @@
-import { initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   DocumentData,
   Firestore,
+  QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
   getDocs,
@@ -27,41 +28,49 @@ export type ByteOverview = {
   publishDate: Date;
 };
 
-const app = initializeApp(firebaseConfig);
+export class FirebaseService {
+  private app: FirebaseApp;
+  private db: Firestore;
+  private storage: FirebaseStorage;
 
-const db: Firestore = initializeFirestore(app, {
-  localCache: persistentLocalCache({}),
-});
+  public constructor() {
+    this.app = initializeApp(firebaseConfig);
+    this.db = initializeFirestore(this.app, {
+      localCache: persistentLocalCache({}),
+    });
+    this.storage = getStorage(this.app);
+  }
 
-const storage: FirebaseStorage = getStorage(app);
+  public async listBytes(): Promise<ByteOverview[]> {
+    const q = query(
+      collection(this.db, bytesCollection.name),
+      where(bytesCollection.isPublishedField, "==", true)
+    );
 
-export async function listBytes(): Promise<ByteOverview[]> {
-  const q = query(
-    collection(db, bytesCollection.name),
-    where(bytesCollection.isPublishedField, "==", true)
-  );
+    const bytes: DocumentData[] = await getDocs(q).then(
+      (response: QuerySnapshot<DocumentData, DocumentData>) =>
+        response.docs.map(
+          (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => doc.data()
+        )
+    );
 
-  const bytes: DocumentData[] = await getDocs(q).then(
-    (response: QuerySnapshot<DocumentData, DocumentData>) =>
-      response.docs.map((doc) => doc.data())
-  );
+    return Promise.all(
+      bytes.map(async (byte: DocumentData): Promise<ByteOverview> => {
+        return {
+          title: byte[bytesCollection.titleField],
+          subtitle: byte[bytesCollection.subtitleField],
+          thumbnail: await this.getImage(byte[bytesCollection.thumbnailField]),
+          publishDate: byte[bytesCollection.publishDateField].toDate(),
+        } as ByteOverview;
+      })
+    );
+  }
 
-  return Promise.all(
-    bytes.map(async (byte: DocumentData): Promise<ByteOverview> => {
-      return {
-        title: byte[bytesCollection.titleField],
-        subtitle: byte[bytesCollection.subtitleField],
-        thumbnail: await getImage(byte[bytesCollection.thumbnailField]),
-        publishDate: byte[bytesCollection.publishDateField].toDate(),
-      } as ByteOverview;
-    })
-  );
-}
+  private getImage(path: string): Promise<string> {
+    const gsRef: StorageReference = ref(this.storage, path);
 
-export function getImage(path: string): Promise<string> {
-  const gsRef: StorageReference = ref(storage, path);
-
-  return getBlob(gsRef).then((blob) => {
-    return URL.createObjectURL(blob);
-  });
+    return getBlob(gsRef).then((blob) => {
+      return URL.createObjectURL(blob);
+    });
+  }
 }
