@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { listBytes } from "../utils/firebaseService";
+import { listBytes, ByteOverview } from "../utils/firebaseService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
-import ByteOverview from "../utils/byteOverview";
 import { useImmerReducer } from "use-immer";
 
 type State = {

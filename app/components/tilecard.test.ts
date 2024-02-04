@@ -1,9 +1,8 @@
-import { TilecardProps } from "./tilecard";
-import Tilecard from "./tilecard";
+import Tilecard, { TilecardProps } from "./tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 
-describe("Tilecard component", () => {
+describe("Tilecard", () => {
   it("should render all given data", () => {
     const props: TilecardProps = {
       title: "My title",

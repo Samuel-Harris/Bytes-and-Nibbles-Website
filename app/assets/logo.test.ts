@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import logo, { LogoProps } from "./logo";
 
-describe("Logo component", () => {
+describe("Logo", () => {
   it("should be styled correctly", () => {
     const logoTitle =
       "A cookie with a bite take out of it surrounded by angle brackets.";

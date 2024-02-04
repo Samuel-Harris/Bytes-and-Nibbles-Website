@@ -17,16 +17,23 @@ import {
   getStorage,
   ref,
 } from "firebase/storage";
-import ByteOverview from "./byteOverview";
 import { bytesCollection } from "./collectionConstants";
 import { firebaseConfig } from "./firebaseConstants";
+
+export type ByteOverview = {
+  title: string;
+  subtitle: string;
+  thumbnail: string;
+  publishDate: Date;
+};
 
 const app = initializeApp(firebaseConfig);
 
 const db: Firestore = initializeFirestore(app, {
   localCache: persistentLocalCache({}),
 });
-export default db;
+
+const storage: FirebaseStorage = getStorage(app);
 
 export async function listBytes(): Promise<ByteOverview[]> {
   const q = query(
@@ -52,7 +59,6 @@ export async function listBytes(): Promise<ByteOverview[]> {
 }
 
 export function getImage(path: string): Promise<string> {
-  const storage: FirebaseStorage = getStorage(app);
   const gsRef: StorageReference = ref(storage, path);
 
   return getBlob(gsRef).then((blob) => {
