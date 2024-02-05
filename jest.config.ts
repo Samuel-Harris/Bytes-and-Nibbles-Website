@@ -4,7 +4,7 @@ const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: ["app/**/*.{ts,tsx}"],
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
+    "^.+\\.tsx?$": ["ts-jest", { tsConfig: "jest.tsconfig.json" }],
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",

@@ -15,8 +15,12 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
-    "jsx": "react",
+    "types": [
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
