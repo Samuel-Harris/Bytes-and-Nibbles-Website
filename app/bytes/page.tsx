@@ -37,10 +37,10 @@ export default function BytesPage(): JSX.Element {
     reducer,
     initState
   );
-  const firebaseService = new FirebaseService();
 
   useEffect(() => {
     let bytesBeenFetched = false;
+    const firebaseService = new FirebaseService();
 
     if (!bytesBeenFetched) {
       firebaseService.listBytes().then((bytes: ByteOverview[]) => {
@@ -54,7 +54,7 @@ export default function BytesPage(): JSX.Element {
     return () => {
       bytesBeenFetched = true;
     };
-  }, [dispatch, firebaseService]);
+  }, [dispatch]);
 
   return (
     <main className="grid grid-rows-10 justify-items-center pb-6">

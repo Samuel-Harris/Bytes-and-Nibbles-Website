@@ -1,4 +1,4 @@
-import { FirebaseApp, getApp, initializeApp } from "firebase/app";
+import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   DocumentData,
   Firestore,
@@ -7,8 +7,6 @@ import {
   collection,
   getDocs,
   getFirestore,
-  initializeFirestore,
-  persistentLocalCache,
   query,
   where,
 } from "firebase/firestore";
