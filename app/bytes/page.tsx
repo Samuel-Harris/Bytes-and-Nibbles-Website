@@ -54,13 +54,14 @@ export default function BytesPage(): JSX.Element {
     return () => {
       bytesBeenFetched = true;
     };
-  }, [dispatch]);
+  }, [dispatch, firebaseService]);
 
   return (
     <main className="grid grid-rows-10 justify-items-center pb-6">
       {state.bytes.map((byteOverview: ByteOverview) => (
         <div
           key={byteOverview.title}
+          title={byteOverview.title}
           className="w-11/12 sm:w-4/5 py-2 sm:py-3 md:py-8"
         >
           <Tilecard

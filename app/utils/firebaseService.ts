@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from "firebase/app";
+import { FirebaseApp, getApp, initializeApp } from "firebase/app";
 import {
   DocumentData,
   Firestore,
@@ -6,6 +6,7 @@ import {
   QuerySnapshot,
   collection,
   getDocs,
+  getFirestore,
   initializeFirestore,
   persistentLocalCache,
   query,
@@ -35,9 +36,7 @@ export default class FirebaseService {
 
   public constructor() {
     this.app = initializeApp(firebaseConfig);
-    this.db = initializeFirestore(this.app, {
-      localCache: persistentLocalCache({}),
-    });
+    this.db = getFirestore(this.app);
     this.storage = getStorage(this.app);
   }
 
