@@ -1,8 +1,10 @@
-interface LogoIconProps {
+import React, { FC } from "react";
+
+export interface LogoProps {
   className?: string;
 }
 
-export default function logoIcon(props: LogoIconProps): JSX.Element {
+const Logo: FC<LogoProps> = (props: LogoProps) => {
   return (
     <svg
       fill="none"
@@ -30,6 +32,8 @@ export default function logoIcon(props: LogoIconProps): JSX.Element {
         d="m 24.278514,0.88665998 7.797293,9.58185902 -7.797293,9.581859 m -15.5945879,0 L 0.88663434,10.468519 8.6839261,0.88665998"
         id="path1-9"
       />
+      <title>A cookie with a bite take out of it surrounded by angle brackets.</title>
     </svg>
   );
 }
+export default Logo;

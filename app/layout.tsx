@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
@@ -7,7 +8,7 @@ import CookieIcon from "./assets/cookieIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import LogoIcon from "./assets/logoIcon";
+import Logo from "./assets/logo";
 import { style } from "./utils/websiteConstants";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div className="grid grid-cols-3 py-2 sm:py-4 md:py-7">
-          <LogoIcon
+          <Logo
             className={`justify-self-center col-span-1 h-auto w-20 sm:w-40 ${style.accentColour}`}
           />
           <div className="col-span-2">
