@@ -1,5 +1,5 @@
 name: Deploy workflow
-run-name: Deploy commit "${{ github.event.head_commit }}" to prod
+run-name: Deploy commit "${{ github.event.head_commit.message }}" to prod
 
 on:
   push:
