@@ -1,9 +1,9 @@
 "use client";
 
-import { listBytes } from "../utils/firebaseService";
+import React from "react";
+import FirebaseService, { ByteOverview } from "../utils/firebaseService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
-import ByteOverview from "../utils/byteOverview";
 import { useImmerReducer } from "use-immer";
 
 type State = {
@@ -29,6 +29,8 @@ function reducer(draft: State, action: Action): void {
   }
 }
 
+
+
 export default function BytesPage(): JSX.Element {
   const initState: State = { bytes: [] };
   const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(
@@ -38,9 +40,10 @@ export default function BytesPage(): JSX.Element {
 
   useEffect(() => {
     let bytesBeenFetched = false;
+    const firebaseService = new FirebaseService();
 
     if (!bytesBeenFetched) {
-      listBytes().then((bytes: ByteOverview[]) => {
+      firebaseService.listBytes().then((bytes: ByteOverview[]) => {
         dispatch({
           type: ActionType.UPDATE_BYTE_LIST,
           bytesList: bytes,
@@ -56,7 +59,11 @@ export default function BytesPage(): JSX.Element {
   return (
     <main className="grid grid-rows-10 justify-items-center pb-6">
       {state.bytes.map((byteOverview: ByteOverview) => (
-        <div key={byteOverview.title} className="w-11/12 sm:w-4/5 py-2 sm:py-3 md:py-8">
+        <div
+          key={byteOverview.title}
+          title={byteOverview.title}
+          className="w-11/12 sm:w-4/5 py-2 sm:py-3 md:py-8"
+        >
           <Tilecard
             title={byteOverview.title}
             subtitle={byteOverview.subtitle}

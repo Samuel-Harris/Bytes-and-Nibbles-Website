@@ -1,4 +1,4 @@
-export function getDate(date: Date) {
+export function getDateString(date: Date) {
   const days: { [key: number]: string } = {
     0: "Sun",
     1: "Mon",
