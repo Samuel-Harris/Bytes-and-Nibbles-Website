@@ -57,7 +57,7 @@ export default function BytesPage(): JSX.Element {
   }, [dispatch]);
 
   return (
-    <main className="grid grid-rows-10 justify-items-center pb-6">
+    <main className="grid grid-rows-auto justify-items-center pb-6">
       {state.bytes.map((byteOverview: ByteOverview) => (
         <div
           key={byteOverview.title}
