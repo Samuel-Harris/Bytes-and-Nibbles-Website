@@ -20,9 +20,10 @@ export default function RootLayout({
 }) {
   const headerOptionStyle = `sm:py-2 md:py-3 ${style.hoverColour}`;
   const headerOptionIconStyle = `inline h-auto w-5 sm:w-8 ${style.accentColour}`;
-  const useHeaderButtonTextStyle = (href: string): string => {
+  const useHeaderButtonTextStyle = (pathSegment: string): string => {
+    const currentPath: string = usePathname();
     return clsx("inline align-middle pl-2 text-base sm:text-xl", {
-      [style.accentColour]: usePathname() === href,
+      [style.accentColour]: currentPath === pathSegment || currentPath.includes(`${pathSegment}/`),
     });
   };
 
