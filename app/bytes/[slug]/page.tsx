@@ -3,8 +3,9 @@ import FirebaseService from "@/app/utils/firebaseService";
 
 
 export async function generateStaticParams() {
+  const firebaseService: FirebaseService = new FirebaseService();
   // const posts = await fetch('https://.../posts').then((res) => res.json())
-  const slugs = ["my-byte"];
+  const slugs = await firebaseService.getSlugs();
 
   return slugs.map((slug) => ({
     slug: slug,

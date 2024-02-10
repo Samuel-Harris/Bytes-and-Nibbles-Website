@@ -38,11 +38,13 @@ export default class FirebaseService {
   }
 
   public async listBytes(): Promise<ByteOverview[]> {
+    // define query to list bytes
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.db, bytesCollection.name),
       where(bytesCollection.isPublishedField, "==", true)
     );
 
+    // fetch bytes from server
     const queryResults: DocumentData[] = await getDocs(q).then(
       (response: QuerySnapshot<DocumentData, DocumentData>) =>
         response.docs.map(
@@ -50,6 +52,7 @@ export default class FirebaseService {
         )
     );
 
+    // collect all bytes into byte overviews
     return Promise.all(
       queryResults.map(async (byte: DocumentData): Promise<ByteOverview> => {
         return {
@@ -71,24 +74,13 @@ export default class FirebaseService {
       limit(1)
     );
 
-    // try to get byte from cache
-    var queryResults: DocumentData[] = await getDocsFromCache(q).then(
+    // fetch byte from server
+    const queryResults = await getDocs(q).then(
       (response: QuerySnapshot<DocumentData, DocumentData>) =>
         response.docs.map(
           (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => doc.data()
         )
     );
-
-    // try to get byte from server if it wasn't found in cache
-    if (queryResults.length === 0) {
-      queryResults = await getDocs(q).then(
-        (response: QuerySnapshot<DocumentData, DocumentData>) =>
-          response.docs.map(
-            (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) =>
-              doc.data()
-          )
-      );
-    }
 
     if (queryResults.length > 0) {
       // byte found
@@ -109,6 +101,29 @@ export default class FirebaseService {
       // byte not found
       return null;
     }
+  }
+
+  public async getSlugs(): Promise<string[]> {
+    // define query to list bytes
+    const q: Query<DocumentData, DocumentData> = query(
+      collection(this.db, bytesCollection.name),
+      where(bytesCollection.isPublishedField, "==", true)
+    );
+
+    // fetch bytes from server
+    const queryResults: DocumentData[] = await getDocs(q).then(
+      (response: QuerySnapshot<DocumentData, DocumentData>) =>
+        response.docs.map(
+          (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => doc.data()
+        )
+    );
+
+    // collect all bytes into byte overviews
+    return Promise.all(
+      queryResults.map(async (byte: DocumentData): Promise<string> => {
+        return byte[bytesCollection.slugField];
+      })
+    );
   }
 
   private getImage(path: string): Promise<string> {
