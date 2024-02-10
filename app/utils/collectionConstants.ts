@@ -2,9 +2,10 @@ export const bytesCollection = {
   name: "v1_bytes",
   titleField: "title",
   subtitleField: "subtitle",
+  slugField: "slug",
   thumbnailField: "thumbnail",
-  publishDateField: "publishDate",
   isPublishedField: "isPublished",
+  publishDateField: "publishDate",
 };
 
 export const nibblesCollection = {
