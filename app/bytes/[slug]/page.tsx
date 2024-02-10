@@ -3,7 +3,7 @@ import FirebaseService from "@/app/utils/firebaseService";
 
 
 export async function generateStaticParams() {
-  const firebaseService: FirebaseService = new FirebaseService();
+  const firebaseService: FirebaseService = FirebaseService.getInstance();
   // const posts = await fetch('https://.../posts').then((res) => res.json())
   const slugs = await firebaseService.getSlugs();
 
@@ -13,8 +13,8 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params }: { params: { slug: string } }) {
-  const firebaseService: FirebaseService = new FirebaseService();
-  const byte: Byte | null = await firebaseService.getByte(params.slug);
+  const firebaseService: FirebaseService = FirebaseService.getInstance();
+  const byte: Byte | undefined = await firebaseService.getByte(params.slug);
   if (!byte) return <main>Byte not found</main>;
 
   return (

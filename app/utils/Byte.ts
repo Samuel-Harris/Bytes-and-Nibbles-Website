@@ -28,8 +28,8 @@ export type Byte = {
   title: string;
   subtitle: string;
   slug: string;
+  thumbnail: string;
   coverPhoto: string;
-  isPublished: boolean;
   publishDate: Date;
   lastModifiedDate: Date;
   sections: Section[];

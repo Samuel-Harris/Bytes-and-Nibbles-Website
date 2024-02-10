@@ -39,7 +39,7 @@ export default function BytesPage(): JSX.Element {
 
   useEffect(() => {
     let bytesBeenFetched = false;
-    const firebaseService = new FirebaseService();
+    const firebaseService = FirebaseService.getInstance();
 
     if (!bytesBeenFetched) {
       firebaseService.listBytes().then((bytes: ByteOverview[]) => {
