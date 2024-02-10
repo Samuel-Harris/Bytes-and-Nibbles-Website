@@ -1,10 +1,10 @@
+import React from "react";
 import { Byte } from "@/app/utils/Byte";
 import FirebaseService from "@/app/utils/firebaseService";
 
 
 export async function generateStaticParams() {
   const firebaseService: FirebaseService = FirebaseService.getInstance();
-  // const posts = await fetch('https://.../posts').then((res) => res.json())
   const slugs = await firebaseService.getSlugs();
 
   return slugs.map((slug) => ({

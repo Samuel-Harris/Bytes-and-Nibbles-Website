@@ -3,6 +3,7 @@ export type ByteOverview = {
   subtitle: string;
   thumbnail: string;
   publishDate: Date;
+  slug: string;
 };
 
 export interface Paragraph {

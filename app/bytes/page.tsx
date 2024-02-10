@@ -68,6 +68,7 @@ export default function BytesPage(): JSX.Element {
             subtitle={byteOverview.subtitle}
             thumbnail={byteOverview.thumbnail}
             publishDate={byteOverview.publishDate}
+            linkPath={`/bytes/${byteOverview.slug}`}
           />
         </div>
       ))}

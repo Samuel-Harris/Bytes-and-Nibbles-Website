@@ -1,10 +1,11 @@
 import React from "react";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import BytesPage from "./page";
-import FirebaseService, { ByteOverview } from "../utils/firebaseService";
+import FirebaseService from "../utils/firebaseService";
 import { mocked } from "jest-mock";
 import { getDateString } from "../utils/timeUtils";
 import "@testing-library/jest-dom";
+import { ByteOverview } from "../utils/Byte";
 
 jest.mock("../utils/firebaseService");
 
@@ -17,12 +18,14 @@ describe("Bytes page", () => {
         subtitle: "Subtitle 1",
         thumbnail: "Thumbnail 1",
         publishDate: new Date(2024, 2, 5),
+        slug: "slug-1",
       },
       {
         title: "Title 2",
         subtitle: "Subtitle 2",
         thumbnail: "Thumbnail 2",
         publishDate: new Date(2024, 3, 6),
+        slug: "slug-2",
       },
     ];
     mockListBytes.mockReturnValue(
@@ -72,6 +75,11 @@ describe("Bytes page", () => {
         "src",
         mockByteOverviews[i].thumbnail
       );
+
+      expect(within(tilecards[i]).getByRole("link")).toHaveAttribute(
+        "href",
+        `/bytes/${mockByteOverviews[i].slug}`,
+      )
     }
   });
 });

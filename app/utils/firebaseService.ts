@@ -128,6 +128,7 @@ export default class FirebaseService {
         subtitle: byte.subtitle,
         thumbnail: byte.thumbnail,
         publishDate: byte.publishDate,
+        slug: byte.slug,
       } as ByteOverview;
     });
   }
