@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
 import CookieIcon from "./assets/cookieIcon";
@@ -10,8 +9,6 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Logo from "./assets/logo";
 import { theme } from "./utils/websiteConstants";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,

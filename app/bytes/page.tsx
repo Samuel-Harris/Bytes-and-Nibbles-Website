@@ -57,15 +57,17 @@ export default function BytesPage(): JSX.Element {
 
   return (
     <main className="grid grid-rows-auto justify-items-center ">
-      {state.byteOverviews.map((byteOverview: ByteOverview) => (
-        <Tilecard
-          title={byteOverview.title}
-          subtitle={byteOverview.subtitle}
-          thumbnail={byteOverview.thumbnail}
-          publishDate={byteOverview.publishDate}
-          linkPath={`/bytes/${byteOverview.slug}`}
-        />
-      ))}
+      {React.Children.toArray(
+        state.byteOverviews.map((byteOverview: ByteOverview) => (
+          <Tilecard
+            title={byteOverview.title}
+            subtitle={byteOverview.subtitle}
+            thumbnail={byteOverview.thumbnail}
+            publishDate={byteOverview.publishDate}
+            linkPath={`/bytes/${byteOverview.slug}`}
+          />
+        ))
+      )}
     </main>
   );
 }

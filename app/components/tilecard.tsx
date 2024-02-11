@@ -18,7 +18,6 @@ const Tilecard: FC<TilecardProps> = (props: TilecardProps) => {
   return (
     <Link
       href={props.linkPath}
-      key={props.title}
       title={props.title}
       className={`grid grid-cols-4 justify-items-left w-11/12 sm:w-4/5 py-6 sm:py-7 md:py-12 px-5 my-0 sm:my-4 md:my-7 ${theme.hoverColour}`}
     >
