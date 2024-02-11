@@ -63,12 +63,12 @@ export default class FirebaseService {
 
     this.bytes = await Promise.all(
       queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
+        // convert all date strings to Date objects
+        byteResponse.publishDate = byteResponse.publishDate.toDate();
+        byteResponse.lastModifiedDate = byteResponse.lastModifiedDate.toDate();
+
         // convert received byte into byte object
         const byte: Byte = byteResponse as Byte;
-
-        // convert all date strings to Date objects
-        byte.publishDate = new Date(byte.publishDate);
-        byte.lastModifiedDate = new Date(byte.lastModifiedDate);
 
         // get all images for byte
         byte.thumbnail = await this.getImage(byte.thumbnail);
@@ -88,9 +88,9 @@ export default class FirebaseService {
 
   /**
    * This decorator method ensures that the bytes have been fetched before a method is called
-   * @param target 
-   * @param propertyKey 
-   * @param descriptor 
+   * @param target
+   * @param propertyKey
+   * @param descriptor
    * @returns a function returning a Promise wrapping the original method and fetching the bytes if they haven't been fetched
    */
   private static ByteGetter<T>(
@@ -108,7 +108,8 @@ export default class FirebaseService {
     descriptor.value = function (...args: any[]): Promise<T> {
       return new Promise(async (resolve) => {
         const firebaseService: FirebaseService = FirebaseService.getInstance();
-        if (firebaseService.bytes.length === 0) {  // no bytes have been found
+        if (firebaseService.bytes.length === 0) {
+          // no bytes have been found. Fetch them
           await firebaseService.fetchBytes();
         }
 

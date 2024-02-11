@@ -8,7 +8,7 @@ import { useImmerReducer } from "use-immer";
 import { ByteOverview } from "../utils/Byte";
 
 type State = {
-  bytes: ByteOverview[];
+  byteOverviews: ByteOverview[];
 };
 
 enum ActionType {
@@ -17,13 +17,13 @@ enum ActionType {
 
 type Action = {
   type: ActionType.UPDATE_BYTE_LIST;
-  bytesList: ByteOverview[];
+  newByteOverviews: ByteOverview[];
 };
 
 function reducer(draft: State, action: Action): void {
   switch (action.type) {
     case ActionType.UPDATE_BYTE_LIST:
-      draft.bytes = action.bytesList;
+      draft.byteOverviews = action.newByteOverviews;
       return;
     default:
       return;
@@ -31,7 +31,7 @@ function reducer(draft: State, action: Action): void {
 }
 
 export default function BytesPage(): JSX.Element {
-  const initState: State = { bytes: [] };
+  const initState: State = { byteOverviews: [] };
   const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(
     reducer,
     initState
@@ -45,7 +45,7 @@ export default function BytesPage(): JSX.Element {
       firebaseService.listBytes().then((bytes: ByteOverview[]) => {
         dispatch({
           type: ActionType.UPDATE_BYTE_LIST,
-          bytesList: bytes,
+          newByteOverviews: bytes,
         });
       });
     }
@@ -56,21 +56,15 @@ export default function BytesPage(): JSX.Element {
   }, [dispatch]);
 
   return (
-    <main className="grid grid-rows-auto justify-items-center pb-6">
-      {state.bytes.map((byteOverview: ByteOverview) => (
-        <div
-          key={byteOverview.title}
+    <main className="grid grid-rows-auto justify-items-center ">
+      {state.byteOverviews.map((byteOverview: ByteOverview) => (
+        <Tilecard
           title={byteOverview.title}
-          className="w-11/12 sm:w-4/5 py-2 sm:py-3 md:py-8"
-        >
-          <Tilecard
-            title={byteOverview.title}
-            subtitle={byteOverview.subtitle}
-            thumbnail={byteOverview.thumbnail}
-            publishDate={byteOverview.publishDate}
-            linkPath={`/bytes/${byteOverview.slug}`}
-          />
-        </div>
+          subtitle={byteOverview.subtitle}
+          thumbnail={byteOverview.thumbnail}
+          publishDate={byteOverview.publishDate}
+          linkPath={`/bytes/${byteOverview.slug}`}
+        />
       ))}
     </main>
   );

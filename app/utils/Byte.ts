@@ -7,15 +7,18 @@ export type ByteOverview = {
 };
 
 export interface Paragraph {
-  paragraph: string;
+  type: "paragraph";
+  value: string;
 }
 
 export interface Code {
+  type: "code";
   language: string;
   code: string;
 }
 
 export interface CaptionedImage {
+  type: "captionedImage";
   image: string;
   caption: string;
 }
