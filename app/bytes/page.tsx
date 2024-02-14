@@ -6,7 +6,7 @@ import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
 import { useImmerReducer } from "use-immer";
 import { ByteOverview } from "../utils/Byte";
-import { Action, ActionType, State, reducer } from "./state";
+import { Action, ActionType, State, reducer } from "./State";
 
 export default function BytesPage(): React.JSX.Element {
   const initState: State = { byteOverviews: [] };

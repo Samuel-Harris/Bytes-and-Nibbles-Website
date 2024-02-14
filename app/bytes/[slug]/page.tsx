@@ -3,6 +3,7 @@ import { Byte } from "@/app/utils/Byte";
 import FirebaseService from "@/app/utils/firebaseService";
 import { theme } from "@/app/utils/websiteConstants";
 import { getDateString } from "@/app/utils/timeUtils";
+import Section from "./Section";
 
 export async function generateStaticParams() {
   const firebaseService: FirebaseService = FirebaseService.getInstance();
@@ -45,29 +46,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         alt={byte.title}
         className={`justify-self-center w-fit ${theme.coverPhoto}`}
       />
-      {React.Children.toArray(
-        byte.sections.map((section) => (
-          <div className={`${theme.sectionMargin}`}>
-            <p
-              className={`${theme.tertiaryColourText} ${theme.subheadingStyle} ${theme.subheadingMargin}`}
-            >
-              {section.title}
-            </p>
-            {React.Children.toArray(
-              section.body.map((bodyComponent) => {
-                switch (bodyComponent.type) {
-                  case "paragraph":
-                    return (
-                      <p className={`${theme.paragraphStyle}`}>
-                        {bodyComponent.value}
-                      </p>
-                    );
-                }
-              })
-            )}
-          </div>
-        ))
-      )}
+      {React.Children.toArray(byte.sections.map(Section))}
     </main>
   );
 }
