@@ -8,7 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Logo from "./assets/logo";
-import { theme } from "./utils/websiteConstants";
+import { theme } from "./utils/theme";
 
 export default function RootLayout({
   children,

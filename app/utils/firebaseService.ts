@@ -20,7 +20,7 @@ import {
 } from "firebase/storage";
 import { bytesCollection } from "./collectionConstants";
 import { firebaseConfig } from "./firebaseConstants";
-import { Byte, ByteOverview, SectionType } from "./Byte";
+import { BodyComponent, Byte, ByteOverview, SectionType } from "./Byte";
 
 export default class FirebaseService {
   private static instance: FirebaseService;
@@ -75,9 +75,9 @@ export default class FirebaseService {
         byte.thumbnail = await this.getImage(byte.thumbnail);
         byte.coverPhoto = await this.getImage(byte.coverPhoto);
         byte.sections.forEach((section: SectionType) => {
-          section.body.forEach(async (bodyComponent: any) => {
-            if (bodyComponent.image) {
-              bodyComponent.image = await this.getImage(bodyComponent.image);
+          section.body.forEach(async (bodyComponent: BodyComponent) => {
+            if (bodyComponent.type === "captionedImage") {
+              bodyComponent.value.image = await this.getImage(bodyComponent.value.image);
             }
           });
         });

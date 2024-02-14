@@ -1,11 +1,10 @@
 import React from "react";
-import { theme } from "@/app/utils/websiteConstants";
+import { theme } from "@/app/utils/theme";
 import { SectionType } from "@/app/utils/Byte";
 import Paragraph from "./Paragraph";
+import CaptionedImage from "./CaptionedImage";
 
-export type SectionProps = SectionType;
-
-const Section: React.FC<SectionProps> = (props: SectionProps) => (
+const Section: React.FC<SectionType> = (props: SectionType) => (
   <div className={`${theme.sectionMargin}`}>
     <p
       className={`${theme.tertiaryColourText} ${theme.subheadingStyle} ${theme.subheadingMargin}`}
@@ -17,6 +16,8 @@ const Section: React.FC<SectionProps> = (props: SectionProps) => (
         switch (bodyComponent.type) {
           case "paragraph":
             return Paragraph(bodyComponent);
+          case "captionedImage":
+            return CaptionedImage(bodyComponent);
         }
       })
     )}

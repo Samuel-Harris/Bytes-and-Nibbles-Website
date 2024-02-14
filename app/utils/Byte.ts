@@ -9,24 +9,30 @@ export type ByteOverview = {
 export type ParagraphType = {
   type: "paragraph";
   value: string;
-}
+};
 
 export type CodeType = {
   type: "code";
-  language: string;
-  code: string;
-}
+  value: {
+    language: string;
+    code: string;
+  };
+};
 
 export type CaptionedImageType = {
   type: "captionedImage";
-  image: string;
-  caption: string;
-}
+  value: {
+    image: string;
+    caption: string;
+  };
+};
+
+export type BodyComponent = ParagraphType | CodeType | CaptionedImageType;
 
 export type SectionType = {
   title: string;
-  body: (ParagraphType | CodeType | CaptionedImageType)[];
-}
+  body: BodyComponent[];
+};
 
 export type Byte = {
   title: string;

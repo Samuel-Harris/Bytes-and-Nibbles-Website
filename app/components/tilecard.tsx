@@ -1,6 +1,6 @@
 import React from "react";
 import { FC } from "react";
-import { theme } from "../utils/websiteConstants";
+import { theme } from "../utils/theme";
 import { getDateString } from "../utils/timeUtils";
 import Link from "next/link";
 

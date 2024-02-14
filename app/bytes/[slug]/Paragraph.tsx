@@ -1,10 +1,8 @@
 import React from "react";
-import { theme } from "@/app/utils/websiteConstants";
+import { theme } from "@/app/utils/theme";
 import { ParagraphType } from "@/app/utils/Byte";
 
-type ParagraphProps = ParagraphType;
-
-const Paragraph: React.FC<ParagraphProps> = (props: ParagraphProps) => (
+const Paragraph: React.FC<ParagraphType> = (props: ParagraphType) => (
   <p className={`${theme.paragraphStyle}`}>{props.value}</p>
 );
 export default Paragraph;
