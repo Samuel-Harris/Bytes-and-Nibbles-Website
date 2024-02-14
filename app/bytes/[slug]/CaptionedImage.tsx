@@ -4,7 +4,7 @@ import { theme } from "@/app/utils/theme";
 const CaptionedImage: React.FC<CaptionedImageType> = (
   props: CaptionedImageType
 ) => (
-  <div className="mt-7">
+  <div className="my-7">
     <img
       src={props.value.image}
       alt={props.value.caption}

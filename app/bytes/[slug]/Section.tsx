@@ -5,9 +5,9 @@ import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 
 const Section: React.FC<SectionType> = (props: SectionType) => (
-  <div className={`${theme.sectionMargin}`}>
+  <div className="my-4">
     <p
-      className={`${theme.tertiaryColourText} ${theme.subheadingStyle} ${theme.subheadingMargin}`}
+      className={`text-2xl font-underline mb-2 ${theme.tertiaryColourText}`}
     >
       {props.title}
     </p>

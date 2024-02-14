@@ -27,14 +27,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
     <main
       className={`grid justify-self-center pt-5 ${theme.pageWidth} ${theme.pageBottomMargin}`}
     >
-      <p
-        className={`${theme.titleStyle} font-bold ${theme.secondaryColourText}`}
-      >
+      <p className={`text-5xl font-bold ${theme.secondaryColourText}`}>
         {byte.title}
       </p>
-      <p className={`${theme.tertiaryColourText} ${theme.subtitleStyle}`}>
-        {byte.subtitle}
-      </p>
+      <p className={`text-2xl ${theme.tertiaryColourText}`}>{byte.subtitle}</p>
       <p className={`${theme.dateStyle}`}>Published: {publishDateString}</p>
       {publishDateString !== lastModifiedDateString && (
         <p className={`${theme.dateStyle}`}>
@@ -44,7 +40,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <img
         src={byte.coverPhoto}
         alt={byte.title}
-        className={`justify-self-center w-fit ${theme.coverPhoto}`}
+        className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
       {React.Children.toArray(byte.sections.map(Section))}
     </main>
