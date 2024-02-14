@@ -6,29 +6,7 @@ import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
 import { useImmerReducer } from "use-immer";
 import { ByteOverview } from "../utils/Byte";
-
-type State = {
-  byteOverviews: ByteOverview[];
-};
-
-enum ActionType {
-  UPDATE_BYTE_LIST,
-}
-
-type Action = {
-  type: ActionType.UPDATE_BYTE_LIST;
-  newByteOverviews: ByteOverview[];
-};
-
-function reducer(draft: State, action: Action): void {
-  switch (action.type) {
-    case ActionType.UPDATE_BYTE_LIST:
-      draft.byteOverviews = action.newByteOverviews;
-      return;
-    default:
-      return;
-  }
-}
+import { Action, ActionType, State, reducer } from "./state";
 
 export default function BytesPage(): JSX.Element {
   const initState: State = { byteOverviews: [] };
