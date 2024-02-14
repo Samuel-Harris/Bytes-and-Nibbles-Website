@@ -20,7 +20,7 @@ import {
 } from "firebase/storage";
 import { bytesCollection } from "./collectionConstants";
 import { firebaseConfig } from "./firebaseConstants";
-import { Byte, ByteOverview, Section } from "./Byte";
+import { Byte, ByteOverview, SectionType } from "./Byte";
 
 export default class FirebaseService {
   private static instance: FirebaseService;
@@ -74,7 +74,7 @@ export default class FirebaseService {
         // get all images for byte
         byte.thumbnail = await this.getImage(byte.thumbnail);
         byte.coverPhoto = await this.getImage(byte.coverPhoto);
-        byte.sections.forEach((section: Section) => {
+        byte.sections.forEach((section: SectionType) => {
           section.body.forEach(async (bodyComponent: any) => {
             if (bodyComponent.image) {
               bodyComponent.image = await this.getImage(bodyComponent.image);

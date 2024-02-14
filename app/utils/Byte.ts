@@ -6,26 +6,26 @@ export type ByteOverview = {
   slug: string;
 };
 
-export interface Paragraph {
+export type ParagraphType = {
   type: "paragraph";
   value: string;
 }
 
-export interface Code {
+export type CodeType = {
   type: "code";
   language: string;
   code: string;
 }
 
-export interface CaptionedImage {
+export type CaptionedImageType = {
   type: "captionedImage";
   image: string;
   caption: string;
 }
 
-export interface Section {
+export type SectionType = {
   title: string;
-  body: (Paragraph | Code | CaptionedImage)[];
+  body: (ParagraphType | CodeType | CaptionedImageType)[];
 }
 
 export type Byte = {
@@ -36,5 +36,5 @@ export type Byte = {
   coverPhoto: string;
   publishDate: Date;
   lastModifiedDate: Date;
-  sections: Section[];
+  sections: SectionType[];
 };

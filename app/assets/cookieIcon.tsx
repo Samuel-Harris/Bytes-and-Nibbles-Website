@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface CookieIconProps {
+export type CookieIconProps = {
   className?: string;
 }
 

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-export interface LogoProps {
+export type LogoProps = {
   className?: string;
 }
 

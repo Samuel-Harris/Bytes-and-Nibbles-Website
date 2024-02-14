@@ -4,7 +4,7 @@ import { theme } from "../utils/websiteConstants";
 import { getDateString } from "../utils/timeUtils";
 import Link from "next/link";
 
-export interface TilecardProps {
+export type TilecardProps = {
   title: string;
   subtitle: string;
   thumbnail: string;
