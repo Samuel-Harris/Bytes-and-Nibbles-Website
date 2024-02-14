@@ -20,7 +20,8 @@ export default function RootLayout({
   const useHeaderButtonTextStyle = (pathSegment: string): string => {
     const currentPath: string = usePathname();
     return clsx("inline align-middle pl-2 text-base sm:text-xl", {
-      [theme.secondaryColourText]: currentPath === pathSegment || currentPath.includes(`${pathSegment}/`),
+      [theme.secondaryColourText]:
+        currentPath === pathSegment || currentPath.includes(`${pathSegment}/`),
     });
   };
 
@@ -35,7 +36,9 @@ export default function RootLayout({
             <h1 className="text-2xl sm:text-5xl md:text-7xl font-bold">
               Bytes and nibbles
             </h1>
-            <p className={`text-s sm:text-lg font-bold ${theme.secondaryColourText}`}>
+            <p
+              className={`text-s sm:text-lg font-bold ${theme.secondaryColourText}`}
+            >
               By Samuel Matsuo Harris
             </p>
           </div>

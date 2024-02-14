@@ -61,6 +61,7 @@ export default class FirebaseService {
         )
     );
 
+    // process byte data
     this.bytes = await Promise.all(
       queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
         // convert all date strings to Date objects

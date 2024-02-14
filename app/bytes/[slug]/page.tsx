@@ -16,6 +16,7 @@ export async function generateStaticParams() {
 export default async function Page({ params }: { params: { slug: string } }) {
   const firebaseService: FirebaseService = FirebaseService.getInstance();
   const byte: Byte | undefined = await firebaseService.getByte(params.slug);
+
   if (!byte) return <main>Byte not found</main>;
 
   const publishDateString: string = getDateString(byte.publishDate);
