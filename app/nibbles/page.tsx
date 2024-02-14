@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "The recipes of the Bytes and Nibbles blog.",
 };
 
-export default function NibblesPage(): JSX.Element {
+export default function NibblesPage(): React.JSX.Element {
   return (
     <main>
       <div>

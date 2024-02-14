@@ -8,7 +8,7 @@ import { useImmerReducer } from "use-immer";
 import { ByteOverview } from "../utils/Byte";
 import { Action, ActionType, State, reducer } from "./state";
 
-export default function BytesPage(): JSX.Element {
+export default function BytesPage(): React.JSX.Element {
   const initState: State = { byteOverviews: [] };
   const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(
     reducer,
