@@ -1,18 +1,24 @@
 import React from "react";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import BytesPage from "./page";
 import FirebaseService from "../utils/firebaseService";
-import { mocked } from "jest-mock";
+import { mocked, MockedFunction } from "jest-mock";
 import { getDateString } from "../utils/timeUtils";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "../utils/Byte";
 
 jest.mock("../utils/firebaseService");
 
+let mockFirebaseGetInstance: MockedFunction<() => FirebaseService>;
+let mockListBytes: MockedFunction<() => Promise<ByteOverview[]>>;
+let mockByteOverviews: ByteOverview[];
+
 describe("Bytes page", () => {
-  it("should display bytes", async () => {
-    const mockListBytes = mocked(FirebaseService.prototype.listBytes);
-    const mockByteOverviews: ByteOverview[] = [
+  beforeAll(() => {
+    // set up firebaseService mock
+    mockFirebaseGetInstance = mocked(FirebaseService.getInstance);
+    mockListBytes = mocked(FirebaseService.prototype.listBytes);
+    mockByteOverviews = [
       {
         title: "Title 1",
         subtitle: "Subtitle 1",
@@ -28,58 +34,57 @@ describe("Bytes page", () => {
         slug: "slug-2",
       },
     ];
+
+    mockFirebaseGetInstance.mockReturnValue(FirebaseService.prototype);
     mockListBytes.mockReturnValue(
       new Promise<ByteOverview[]>((resolve) => {
         resolve(mockByteOverviews);
       })
     );
+  });
 
+  it.only("should call firebaseService.listBytes()", async () => {
     render(<BytesPage />);
 
     await waitFor(() => {
       expect(mockListBytes).toHaveBeenCalledTimes(1);
     });
+  });
 
-    // wait for byte overviews to be fetched and rendered
-    let tilecards: HTMLElement[] = [];
+  it("should should render all of the information for each tilecard", async () => {
+    render(<BytesPage />);
+
     await waitFor(() => {
       mockByteOverviews.forEach((byteOverview) => {
         screen.findByTitle(byteOverview.title).then((tilecard: HTMLElement) => {
-          expect(tilecard).toBeInTheDocument();
-          tilecards.push(tilecard);
+          // test that the title was rendered
+          expect(
+            within(tilecard).getByText(byteOverview.title)
+          ).toBeInTheDocument();
+
+          // test that the subtitle was rendered
+          expect(
+            within(tilecard).getByText(byteOverview.subtitle)
+          ).toBeInTheDocument();
+
+          // test that the publish date was rendered
+          expect(
+            within(tilecard).getByText(getDateString(byteOverview.publishDate))
+          ).toBeInTheDocument();
+
+          // test that the thumbnail was rendered
+          expect(within(tilecard).getByRole("img")).toHaveAttribute(
+            "src",
+            byteOverview.thumbnail
+          );
+
+          // test that the link to the byte was rendered
+          expect(within(tilecard).getByRole("link")).toHaveAttribute(
+            "href",
+            `/bytes/${byteOverview.slug}`
+          );
         });
       });
     });
-
-    // test that each of the byte overviews are rendered
-    for (let i = 0; i < tilecards.length; i++) {
-      // test that the title was rendered
-      expect(
-        within(tilecards[i]).getByText(mockByteOverviews[i].title)
-      ).toBeInTheDocument();
-
-      // test that the subtitle was rendered
-      expect(
-        within(tilecards[i]).getByText(mockByteOverviews[i].subtitle)
-      ).toBeInTheDocument();
-
-      // test that the publish date was rendered
-      expect(
-        within(tilecards[i]).getByText(
-          getDateString(mockByteOverviews[i].publishDate)
-        )
-      ).toBeInTheDocument();
-
-      // test that the thumbnail was rendered
-      expect(within(tilecards[i]).getByRole("img")).toHaveAttribute(
-        "src",
-        mockByteOverviews[i].thumbnail
-      );
-
-      expect(within(tilecards[i]).getByRole("link")).toHaveAttribute(
-        "href",
-        `/bytes/${mockByteOverviews[i].slug}`,
-      )
-    }
   });
 });

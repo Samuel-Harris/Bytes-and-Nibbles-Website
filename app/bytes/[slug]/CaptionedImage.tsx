@@ -1,3 +1,4 @@
+import React from "react";
 import { CaptionedImageType } from "@/app/utils/Byte";
 import { theme } from "@/app/utils/theme";
 
