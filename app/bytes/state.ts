@@ -18,7 +18,5 @@ export function reducer(draft: State, action: Action): void {
     case ActionType.UPDATE_BYTE_LIST:
       draft.byteOverviews = action.newByteOverviews;
       return;
-    default:
-      return;
   }
 }
