@@ -15,9 +15,9 @@ const Section: React.FC<SectionType> = (props: SectionType) => (
       props.body.map((bodyComponent) => {
         switch (bodyComponent.type) {
           case "paragraph":
-            return Paragraph(bodyComponent);
+            return <Paragraph value={bodyComponent.value}/>;
           case "captionedImage":
-            return CaptionedImage(bodyComponent);
+            return <CaptionedImage image={bodyComponent.value.image} caption={bodyComponent.value.caption}/>;
         }
       })
     )}

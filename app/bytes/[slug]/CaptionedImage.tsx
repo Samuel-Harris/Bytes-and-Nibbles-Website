@@ -2,16 +2,21 @@ import React from "react";
 import { CaptionedImageType } from "@/app/utils/Byte";
 import { theme } from "@/app/utils/theme";
 
-const CaptionedImage: React.FC<CaptionedImageType> = (
-  props: CaptionedImageType
+export type CaptionedImageProps = {
+  image: string;
+  caption: string
+}
+
+const CaptionedImage: React.FC<CaptionedImageProps> = (
+  props: CaptionedImageProps
 ) => (
   <div className="my-7">
     <img
-      src={props.value.image}
-      alt={props.value.caption}
+      src={props.image}
+      alt={props.caption}
       className={`justify-self-center w-fit`}
     />
-    <p className={`${theme.tertiaryColourText}`}>{props.value.caption}</p>
+    <p className={`${theme.tertiaryColourText}`}>{props.caption}</p>
   </div>
 );
 export default CaptionedImage;

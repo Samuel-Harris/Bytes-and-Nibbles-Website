@@ -7,7 +7,7 @@ describe("Byte paragraph", () => {
     it("should render the given paragraph", () => {
         const paragraph: ParagraphType = {type: "paragraph", value: "This is a paragraph"};
 
-        render(<Paragraph type={paragraph.type} value={paragraph.value}/>);
+        render(<Paragraph value={paragraph.value}/>);
 
         expect(document.body.innerHTML).toContain(paragraph.value);
     })

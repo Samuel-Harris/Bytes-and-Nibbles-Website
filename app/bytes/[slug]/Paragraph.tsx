@@ -1,7 +1,10 @@
 import React from "react";
-import { ParagraphType } from "@/app/utils/Byte";
 
-const Paragraph: React.FC<ParagraphType> = (props: ParagraphType) => (
+export type ParagraphProps = {
+  value: string
+}
+
+const Paragraph: React.FC<ParagraphProps> = (props: ParagraphProps) => (
   <p className="text-lg">{props.value}</p>
 );
 export default Paragraph;
