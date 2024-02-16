@@ -1,5 +1,5 @@
 import React from "react";
-import { act, render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import BytesPage from "./page";
 import FirebaseService from "../utils/firebaseService";
 import { mocked, MockedFunction } from "jest-mock";
@@ -43,7 +43,7 @@ describe("Bytes page", () => {
     );
   });
 
-  it.only("should call firebaseService.listBytes()", async () => {
+  it("should call firebaseService.listBytes()", async () => {
     render(<BytesPage />);
 
     await waitFor(() => {
