@@ -1,8 +1,8 @@
 import React from "react";
-import { Byte } from "@/app/utils/Byte";
-import FirebaseService from "@/app/utils/firebaseService";
-import theme from "@/app/utils/theme";
-import { getDateString } from "@/app/utils/timeUtils";
+import { Byte } from "@/utils/Byte";
+import FirebaseService from "@/utils/firebaseService";
+import theme from "@/utils/theme";
+import { getDateString } from "@/utils/timeUtils";
 import Section from "./Section";
 
 export async function generateStaticParams() {

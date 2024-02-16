@@ -1,6 +1,6 @@
 import React from "react";
-import theme from "@/app/utils/theme";
-import { SectionType } from "@/app/utils/Byte";
+import theme from "@/utils/theme";
+import { SectionType } from "@/utils/Byte";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 
