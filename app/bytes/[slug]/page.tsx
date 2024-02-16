@@ -1,7 +1,7 @@
 import React from "react";
 import { Byte } from "@/app/utils/Byte";
 import FirebaseService from "@/app/utils/firebaseService";
-import { theme } from "@/app/utils/theme";
+import theme from "@/app/utils/theme";
 import { getDateString } from "@/app/utils/timeUtils";
 import Section from "./Section";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { theme } from "@/app/utils/theme";
+import theme from "@/app/utils/theme";
 import { SectionType } from "@/app/utils/Byte";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";

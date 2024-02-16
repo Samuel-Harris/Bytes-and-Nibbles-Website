@@ -1,6 +1,5 @@
 import React from "react";
-import { CaptionedImageType } from "@/app/utils/Byte";
-import { theme } from "@/app/utils/theme";
+import theme from "@/app/utils/theme";
 
 export type CaptionedImageProps = {
   image: string;

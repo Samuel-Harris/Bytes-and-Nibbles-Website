@@ -1,5 +1,5 @@
 // tailwind style classes
-export const theme: { [key: string]: string } = {
+const theme: { [key: string]: string } = {
   // colours
   primaryColourBg: "bg-black",
   secondaryColourText: "text-green-500",
@@ -13,3 +13,5 @@ export const theme: { [key: string]: string } = {
   pageWidth: "w-10/12 md:w-5/12",
   pageBottomMargin: "mb-6 md:mb-10",
 };
+
+export default theme;
