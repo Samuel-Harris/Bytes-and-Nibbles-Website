@@ -17,6 +17,10 @@ let captionedImageMock: MockedFunction<React.FC<CaptionedImageProps>>;
 let captionedImageMockSrc: string;
 let captionedImageMockCaption: string;
 
+let sectionTitle: string;
+let paragraph: ParagraphType;
+let captionedImage: CaptionedImageType
+
 describe("Byte section", () => {
   beforeAll(() => {
     paragraphMockText = "This is a mock paragraph";
@@ -27,6 +31,16 @@ describe("Byte section", () => {
     captionedImageMockCaption = "This is a mock image caption";
     captionedImageMock = mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);
+
+    sectionTitle = "Byte";
+    paragraph = {
+      type: "paragraph",
+      value: "This is a paragraph",
+    };
+    captionedImage = {
+      type: "captionedImage",
+      value: { image: "This is an image", caption: "This is a caption" },
+    };
   });
 
   afterEach(() => {
@@ -34,32 +48,12 @@ describe("Byte section", () => {
   });
 
   it("should render the section title", () => {
-    const sectionTitle = "Byte";
-    const paragraph: ParagraphType = {
-      type: "paragraph",
-      value: "This is a paragraph",
-    };
-    const captionedImage: CaptionedImageType = {
-      type: "captionedImage",
-      value: { image: "This is an image", caption: "This is a caption" },
-    };
-
     render(<Section title={sectionTitle} body={[paragraph, captionedImage]} />);
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
   });
 
   it("should render the section body", async () => {
-    const sectionTitle = "Byte title";
-    const paragraph: ParagraphType = {
-      type: "paragraph",
-      value: "This is a paragraph",
-    };
-    const captionedImage: CaptionedImageType = {
-      type: "captionedImage",
-      value: { image: "This is an image", caption: "This is a caption" },
-    };
-
     render(<Section title={sectionTitle} body={[paragraph, captionedImage]} />);
 
     // check whether paragraph was rendered
