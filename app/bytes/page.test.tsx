@@ -43,6 +43,10 @@ describe("Bytes page", () => {
     );
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("should call firebaseService.listBytes()", async () => {
     render(<BytesPage />);
 
