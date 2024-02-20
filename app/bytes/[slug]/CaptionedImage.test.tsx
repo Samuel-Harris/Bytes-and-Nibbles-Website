@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import CaptionedImage from "./CaptionedImage";
 
-describe("Byte paragraph", () => {
+describe("Captioned image", () => {
   it("should render the given image and caption", () => {
     const imageSrc = "https://example.com/image.jpg";
     const caption = "Image caption";
