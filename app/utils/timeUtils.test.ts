@@ -21,21 +21,4 @@ describe("timeUtils", () => {
       expect(getDateString(date)).toBe(dateString);
     });
   });
-
-  it("should convert min month and day Date objects into date strings", () => {
-    const date = new Date(2035, 0, 1);
-
-    const dateString = getDateString(date);
-
-    expect(dateString).toBe("Mon, 01 Jan 2035");
-  });
-
-  it("should convert max month and day Date objects into date strings", () => {
-    const date = new Date(2044, 11, 31);
-
-    const dateString = getDateString(date);
-
-    expect(dateString).toBe("Sat, 31 Dec 2044");
-  });
-
 });

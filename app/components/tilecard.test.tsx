@@ -11,13 +11,17 @@ describe("Tilecard", () => {
       subtitle: "My subtitle",
       thumbnail: "My thumbnail",
       publishDate: new Date(2024, 1, 3),
+      linkPath: "/path/to/blog",
     };
 
     render(<Tilecard {...props} />);
 
     expect(screen.getByText(props.title)).toBeInTheDocument();
     expect(screen.getByText(props.subtitle)).toBeInTheDocument();
-    expect(screen.getByText(getDateString(props.publishDate))).toBeInTheDocument();
+    expect(
+      screen.getByText(getDateString(props.publishDate))
+    ).toBeInTheDocument();
     expect(screen.getByRole("img")).toHaveAttribute("src", props.thumbnail);
+    expect(screen.getByRole("link")).toHaveAttribute("href", props.linkPath);
   });
 });

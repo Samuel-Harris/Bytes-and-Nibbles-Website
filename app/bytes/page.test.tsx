@@ -1,77 +1,77 @@
-import React from "react";
-import { render, screen, waitFor, within } from "@testing-library/react";
+import React, { FC } from "react";
+import { render, screen, waitFor } from "@testing-library/react";
 import BytesPage from "./page";
-import FirebaseService, { ByteOverview } from "../utils/firebaseService";
-import { mocked } from "jest-mock";
-import { getDateString } from "../utils/timeUtils";
+import FirebaseService from "@/utils/firebaseService";
+import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
+import { ByteOverview } from "@/utils/Byte";
+import Tilecard, { TilecardProps } from "@/components/tilecard";
 
-jest.mock("../utils/firebaseService");
+jest.mock("@/utils/firebaseService");
+jest.mock("@/components/tilecard");
+
+let firebaseGetInstanceMock: MockedFunction<() => FirebaseService>;
+let listBytesMock: MockedFunction<() => Promise<ByteOverview[]>>;
+let byteOverviewsMock: ByteOverview[];
+let tilecardMock: MockedFunction<FC<TilecardProps>>;
+let mockTextPrefix: string;
 
 describe("Bytes page", () => {
-  it("should display bytes", async () => {
-    const mockListBytes = mocked(FirebaseService.prototype.listBytes);
-    const mockByteOverviews: ByteOverview[] = [
+  beforeAll(() => {
+    // set up firebaseService mock
+    firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
+    listBytesMock = mocked(FirebaseService.prototype.listBytes);
+    byteOverviewsMock = [
       {
         title: "Title 1",
         subtitle: "Subtitle 1",
         thumbnail: "Thumbnail 1",
         publishDate: new Date(2024, 2, 5),
+        slug: "slug-1",
       },
       {
         title: "Title 2",
         subtitle: "Subtitle 2",
         thumbnail: "Thumbnail 2",
         publishDate: new Date(2024, 3, 6),
+        slug: "slug-2",
       },
     ];
-    mockListBytes.mockReturnValue(
+
+    firebaseGetInstanceMock.mockReturnValue(FirebaseService.prototype);
+    listBytesMock.mockReturnValue(
       new Promise<ByteOverview[]>((resolve) => {
-        resolve(mockByteOverviews);
+        resolve(byteOverviewsMock);
       })
     );
 
+    mockTextPrefix = "mock_";
+    tilecardMock = mocked(Tilecard);
+    tilecardMock.mockImplementation((props: TilecardProps) => {
+      return <p>{mockTextPrefix}{props.title}</p>;
+    });
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should call firebaseService.listBytes()", async () => {
     render(<BytesPage />);
 
     await waitFor(() => {
-      expect(mockListBytes).toHaveBeenCalledTimes(1);
+      expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
+  });
 
-    // wait for byte overviews to be fetched and rendered
-    let tilecards: HTMLElement[] = [];
-    await waitFor(() => {
-      mockByteOverviews.forEach((byteOverview) => {
-        screen.findByTitle(byteOverview.title).then((tilecard: HTMLElement) => {
-          expect(tilecard).toBeInTheDocument();
-          tilecards.push(tilecard);
-        });
-      });
+  it("should should render all of the tilecards", async () => {
+    render(<BytesPage />);
+
+    await waitFor(() => {  // test breaks if waitFor is not used here
+      expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
     });
-
-    // test that each of the byte overviews are rendered
-    for (let i = 0; i < tilecards.length; i++) {
-      // test that the title was rendered
-      expect(
-        within(tilecards[i]).getByText(mockByteOverviews[i].title)
-      ).toBeInTheDocument();
-
-      // test that the subtitle was rendered
-      expect(
-        within(tilecards[i]).getByText(mockByteOverviews[i].subtitle)
-      ).toBeInTheDocument();
-
-      // test that the publish date was rendered
-      expect(
-        within(tilecards[i]).getByText(
-          getDateString(mockByteOverviews[i].publishDate)
-        )
-      ).toBeInTheDocument();
-
-      // test that the thumbnail was rendered
-      expect(within(tilecards[i]).getByRole("img")).toHaveAttribute(
-        "src",
-        mockByteOverviews[i].thumbnail
-      );
-    }
+    byteOverviewsMock.forEach((byteOverview) => {
+      expect(screen.getByText(mockTextPrefix + byteOverview.title)).toBeInTheDocument();
+    });
   });
 });
