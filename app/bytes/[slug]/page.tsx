@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, useEffect } from "react";
 import { Byte } from "@/utils/Byte";
 import FirebaseService from "@/utils/firebaseService";
 import theme from "@/utils/theme";
@@ -7,14 +7,14 @@ import Section from "./Section";
 
 export async function generateStaticParams() {
   const firebaseService: FirebaseService = FirebaseService.getInstance();
-  const slugs = await firebaseService.getSlugs();
+  const slugs: string[] = await firebaseService.getSlugs();
 
   return slugs.map((slug) => ({
     slug: slug,
   }));
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function BytePage({ params }: { params: { slug: string } }) {
   const firebaseService: FirebaseService = FirebaseService.getInstance();
   const byte: Byte | undefined = await firebaseService.getByte(params.slug);
 
