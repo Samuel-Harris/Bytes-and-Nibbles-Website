@@ -14,7 +14,6 @@ let paragraphMock: MockedFunction<React.FC<ParagraphProps>>;
 let paragraphMockText: string;
 
 let captionedImageMock: MockedFunction<React.FC<CaptionedImageProps>>;
-let captionedImageMockSrc: string;
 let captionedImageMockCaption: string;
 
 let sectionTitle: string;
@@ -27,7 +26,6 @@ describe("Byte section", () => {
     paragraphMock = mocked(Paragraph);
     paragraphMock.mockReturnValue(<p>{paragraphMockText}</p>);
 
-    captionedImageMockSrc = "This is a mock image src";
     captionedImageMockCaption = "This is a mock image caption";
     captionedImageMock = mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);

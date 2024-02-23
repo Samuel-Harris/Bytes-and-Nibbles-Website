@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React from "react";
 import { Byte } from "@/utils/Byte";
 import FirebaseService from "@/utils/firebaseService";
 import theme from "@/utils/theme";
