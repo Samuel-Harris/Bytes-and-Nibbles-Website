@@ -25,14 +25,14 @@ import { Byte, ByteOverview } from "./Byte";
 export default class FirebaseService {
   private static instance: FirebaseService;
   private app: FirebaseApp;
-  private db: Firestore;
+  private firestore: Firestore;
   private storage: FirebaseStorage;
   private bytes: Byte[];
 
   private constructor() {
     // initialise firebase connection
     this.app = initializeApp(firebaseConfig);
-    this.db = getFirestore(this.app);
+    this.firestore = getFirestore(this.app);
     this.storage = getStorage(this.app);
 
     this.bytes = [];
@@ -49,7 +49,7 @@ export default class FirebaseService {
   private async fetchBytes(): Promise<void> {
     // define query to list bytes
     const q: Query<DocumentData, DocumentData> = query(
-      collection(this.db, bytesCollection.name),
+      collection(this.firestore, bytesCollection.name),
       where(bytesCollection.isPublishedField, "==", true)
     );
 
@@ -77,7 +77,9 @@ export default class FirebaseService {
         for (const section of byte.sections) {
           for (const bodyComponent of section.body) {
             if (bodyComponent.type === "captionedImage") {
-              bodyComponent.value.image = await this.getImage(bodyComponent.value.image);
+              bodyComponent.value.image = await this.getImage(
+                bodyComponent.value.image
+              );
             }
           }
         }

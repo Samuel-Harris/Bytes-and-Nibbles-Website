@@ -36,9 +36,11 @@ describe("Header", () => {
     const logoMock: MockedFunction<FC<LogoProps>> = mocked(Logo);
     logoMock.mockReturnValue(logo);
 
-    render(<Header>
-      <></>
-    </Header>);
+    render(
+      <Header>
+        <></>
+      </Header>
+    );
 
     // check that logo is rendered
     expect(screen.getByText(logoText)).toBeInTheDocument();
