@@ -21,6 +21,8 @@ describe("Firebase service", () => {
 
         const firebaseService = FirebaseService.getInstance();
 
+        expect(firebaseService).toBeInstanceOf(FirebaseService);
+
         expect(initializeAppMock).toHaveBeenCalledTimes(1);
         expect(initializeAppMock).toHaveBeenCalledWith(firebaseConfig);
 
@@ -29,7 +31,25 @@ describe("Firebase service", () => {
 
         expect(getStorageMock).toHaveBeenCalledTimes(1);
         expect(getStorageMock).toHaveBeenCalledWith(appMock);
+    })
 
-        expect(firebaseService)
+    it("should not initialise multiple firebase services", () => {
+        const initializeAppMock = mocked(initializeApp);
+
+        const getFirestoreMock = mocked(getFirestore);
+        const getStorageMock = mocked(getStorage);
+
+        const firebaseService1 = FirebaseService.getInstance();
+        const firebaseService2 = FirebaseService.getInstance();
+
+        expect(firebaseService1).toBeInstanceOf(FirebaseService);
+        expect(firebaseService2).toBeInstanceOf(FirebaseService);
+        expect(firebaseService1).toBe(firebaseService2);
+
+        expect(initializeAppMock).toHaveBeenCalledTimes(1);
+
+        expect(getFirestoreMock).toHaveBeenCalledTimes(1);
+
+        expect(getStorageMock).toHaveBeenCalledTimes(1);
     })
 });
