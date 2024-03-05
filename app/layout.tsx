@@ -1,20 +1,20 @@
 "use client";
 
-import React from "react";
 import "./globals.css";
+import React from "react";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
 import CookieIcon from "./assets/cookieIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import Logo from "./assets/logo";
+import Logo from "./assets/Logo";
 import theme from "./utils/theme";
 
-export default function RootLayout({
+export default function Header({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): JSX.Element {
   const headerOptionStyle = `sm:py-2 md:py-3 ${theme.hoverColour}`;
   const headerOptionIconStyle = `inline h-auto w-5 sm:w-8 ${theme.secondaryColourText}`;
   const useHeaderButtonTextStyle = (pathSegment: string): string => {
