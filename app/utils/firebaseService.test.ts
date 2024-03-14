@@ -29,6 +29,9 @@ jest.mock("firebase/storage");
 
 describe("Firebase service", () => {
   afterEach(() => {
+    // @ts-ignore
+    FirebaseService["instance"] = undefined;
+
     jest.clearAllMocks();
   });
 
@@ -171,6 +174,9 @@ describe("Firebase service", () => {
   });
 
   it("should not initialise multiple firebase services", async () => {
+    const fetchBytesMock = jest.spyOn(FirebaseService.prototype as any, 'fetchBytes');
+    fetchBytesMock.mockImplementation(() => Promise.resolve());
+
     const firebaseService1 = await FirebaseService.getInstance();
     const firebaseService2 = await FirebaseService.getInstance();
 
@@ -183,9 +189,14 @@ describe("Firebase service", () => {
     expect(getFirestore).toHaveBeenCalledTimes(1);
 
     expect(getStorage).toHaveBeenCalledTimes(1);
+
+    expect(fetchBytesMock).toHaveBeenCalledTimes(1);
   });
 
   it("should list bytes", async () => {
+    const fetchBytesMock = jest.spyOn(FirebaseService.prototype as any, 'fetchBytes');
+    fetchBytesMock.mockImplementation(() => Promise.resolve());
+
     const firebaseService = await FirebaseService.getInstance();
     firebaseService["bytes"] = [
       {
@@ -216,6 +227,8 @@ describe("Firebase service", () => {
     ];
 
     const bytes: ByteOverview[] = await firebaseService.listBytes();
+
+    expect(fetchBytesMock).toHaveBeenCalledTimes(1);
 
     expect(getDocs).toHaveBeenCalledTimes(0);
 
