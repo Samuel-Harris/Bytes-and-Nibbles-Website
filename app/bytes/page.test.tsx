@@ -10,8 +10,8 @@ import Tilecard, { TilecardProps } from "@/components/tilecard";
 jest.mock("@/utils/firebaseService");
 jest.mock("@/components/tilecard");
 
-let firebaseGetInstanceMock: MockedFunction<() => FirebaseService>;
-let listBytesMock: MockedFunction<() => Promise<ByteOverview[]>>;
+let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
+let listBytesMock: MockedFunction<() => ByteOverview[]>;
 let byteOverviewsMock: ByteOverview[];
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
 let mockTextPrefix: string;
@@ -38,12 +38,8 @@ describe("Bytes page", () => {
       },
     ];
 
-    firebaseGetInstanceMock.mockReturnValue(FirebaseService.prototype);
-    listBytesMock.mockReturnValue(
-      new Promise<ByteOverview[]>((resolve) => {
-        resolve(byteOverviewsMock);
-      })
-    );
+    firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
+    listBytesMock.mockReturnValue(byteOverviewsMock);
 
     mockTextPrefix = "mock_";
     tilecardMock = mocked(Tilecard);

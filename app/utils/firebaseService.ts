@@ -38,15 +38,13 @@ export default class FirebaseService {
   }
 
   public static async getInstance(): Promise<FirebaseService> {
-    return new Promise(async (resolve) => {
-      if (!FirebaseService.instance) {
-        FirebaseService.instance = new FirebaseService();
-  
-        await FirebaseService.instance.fetchBytes();
-      }
+    if (!FirebaseService.instance) {
+      FirebaseService.instance = new FirebaseService();
 
-      resolve(FirebaseService.instance);
-    });
+      await FirebaseService.instance.fetchBytes();
+    }
+
+    return Promise.resolve(FirebaseService.instance);
   }
 
   private async fetchBytes(): Promise<void> {

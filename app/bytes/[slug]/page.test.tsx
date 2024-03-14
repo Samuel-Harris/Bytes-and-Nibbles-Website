@@ -13,9 +13,9 @@ jest.mock("@/utils/timeUtils");
 jest.mock("@/components/tilecard");
 jest.mock("./Section");
 
-let firebaseGetInstanceMock: MockedFunction<() => FirebaseService>;
+let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let byte: Byte;
-let getByteMock: MockedFunction<(slug: string) => Promise<Byte | undefined>>;
+let getByteMock: MockedFunction<(slug: string) => Byte | undefined>;
 let getDateStringMock: MockedFunction<(date: Date) => string>;
 let sectionMock: MockedFunction<React.FC<SectionType>>;
 
@@ -23,7 +23,9 @@ describe("Individual byte page", () => {
   beforeAll(() => {
     // set up firebaseService mock
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
-    firebaseGetInstanceMock.mockReturnValue(FirebaseService.prototype);
+    firebaseGetInstanceMock.mockReturnValue(
+      Promise.resolve(FirebaseService.prototype)
+    );
 
     byte = {
       title: "Blog title",
@@ -70,10 +72,10 @@ describe("Individual byte page", () => {
 
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
-    const getSlugsMock: MockedFunction<() => Promise<string[]>> = mocked(
+    const getSlugsMock: MockedFunction<() => string[]> = mocked(
       FirebaseService.prototype.getSlugs
     );
-    getSlugsMock.mockReturnValue(Promise.resolve(mockSlugs));
+    getSlugsMock.mockReturnValue(mockSlugs);
 
     const params: { slug: string }[] = await generateStaticParams();
 
@@ -100,7 +102,7 @@ describe("Individual byte page", () => {
       }
     });
 
-    getByteMock.mockReturnValue(Promise.resolve(byte));
+    getByteMock.mockReturnValue(byte);
 
     const jsx = await BytePage({
       params: {
@@ -144,7 +146,7 @@ describe("Individual byte page", () => {
       }
     });
 
-    getByteMock.mockReturnValue(Promise.resolve(byte));
+    getByteMock.mockReturnValue(byte);
 
     const jsx = await BytePage({
       params: {
@@ -175,7 +177,7 @@ describe("Individual byte page", () => {
   });
 
   it("should render an error message if no byte is found", async () => {
-    getByteMock.mockReturnValue(Promise.resolve(undefined));
+    getByteMock.mockReturnValue(undefined);
 
     const jsx = await BytePage({
       params: {
