@@ -71,7 +71,6 @@ export default class FirebaseService {
 
         // convert received byte into byte object
         const byte: Byte = byteResponse as Byte;
-        console.log("byte: " + byte);
 
         // get all images for byte
         byte.thumbnail = await this.getImage(byte.thumbnail);
@@ -112,8 +111,8 @@ export default class FirebaseService {
   }
 
   private getImage(path: string): Promise<string> {
-    const gsRef: StorageReference = ref(this.storage, path);
+    const storageRef: StorageReference = ref(this.storage, path);
 
-    return getDownloadURL(gsRef);
+    return getDownloadURL(storageRef);
   }
 }
