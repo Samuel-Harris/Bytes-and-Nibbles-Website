@@ -34,16 +34,19 @@ export default class FirebaseService {
     this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
     this.storage = getStorage(this.app);
-
     this.bytes = [];
   }
 
-  public static getInstance(): FirebaseService {
-    if (!FirebaseService.instance) {
-      FirebaseService.instance = new FirebaseService();
-    }
+  public static async getInstance(): Promise<FirebaseService> {
+    return new Promise(async (resolve) => {
+      if (!FirebaseService.instance) {
+        FirebaseService.instance = new FirebaseService();
+  
+        await FirebaseService.instance.fetchBytes();
+      }
 
-    return FirebaseService.instance;
+      resolve(FirebaseService.instance);
+    });
   }
 
   private async fetchBytes(): Promise<void> {
@@ -70,6 +73,7 @@ export default class FirebaseService {
 
         // convert received byte into byte object
         const byte: Byte = byteResponse as Byte;
+        console.log("byte: " + byte);
 
         // get all images for byte
         byte.thumbnail = await this.getImage(byte.thumbnail);
@@ -89,43 +93,7 @@ export default class FirebaseService {
     );
   }
 
-  /**
-   * This decorator method ensures that the bytes have been fetched before a method is called
-   * @param target
-   * @param propertyKey
-   * @param descriptor
-   * @returns a function returning a Promise wrapping the original method and fetching the bytes if they haven't been fetched
-   */
-  private static ByteGetter<T>(
-    target: FirebaseService,
-    propertyKey: string,
-    descriptor: TypedPropertyDescriptor<(...args: any[]) => Promise<T>>
-  ): void | TypedPropertyDescriptor<(...args: any[]) => Promise<T>> {
-    if (!descriptor.value) {
-      return;
-    }
-
-    const originalMethod: (...args: any[]) => Promise<T> = descriptor.value; // save original method
-
-    // replace the original method with a byte-fetching one that also calls the original method
-    descriptor.value = function (...args: any[]): Promise<T> {
-      return new Promise(async (resolve) => {
-        const firebaseService: FirebaseService = FirebaseService.getInstance();
-        if (firebaseService.bytes.length === 0) {
-          // no bytes have been found. Fetch them
-          await firebaseService.fetchBytes();
-        }
-
-        // call original method with all given arguments
-        resolve((<any>originalMethod).apply(this, [...args]));
-      });
-    };
-
-    return descriptor;
-  }
-
-  @(FirebaseService.ByteGetter<ByteOverview[]>)
-  public async listBytes(): Promise<ByteOverview[]> {
+  public listBytes(): ByteOverview[] {
     return this.bytes.map((byte: DocumentData): ByteOverview => {
       return {
         title: byte.title,
@@ -137,13 +105,11 @@ export default class FirebaseService {
     });
   }
 
-  @(FirebaseService.ByteGetter<Byte | undefined>)
-  public async getByte(slug: string): Promise<Byte | undefined> {
+  public getByte(slug: string): Byte | undefined {
     return this.bytes.find((byte: Byte) => byte.slug === slug);
   }
 
-  @(FirebaseService.ByteGetter<string[]>)
-  public async getSlugs(): Promise<string[]> {
+  public getSlugs(): string[] {
     return this.bytes.map((byte: Byte) => byte.slug);
   }
 
