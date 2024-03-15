@@ -19,7 +19,7 @@ import {
 } from "firebase/storage";
 import FirebaseService from "./firebaseService";
 import { firebaseConfig } from "./firebaseConstants";
-import { ByteOverview, SectionType } from "./Byte";
+import { Byte, ByteOverview, SectionType } from "./Byte";
 import { bytesCollection } from "./collectionConstants";
 import isEqual from "lodash/isequal";
 
@@ -27,7 +27,39 @@ jest.mock("firebase/app");
 jest.mock("firebase/firestore");
 jest.mock("firebase/storage");
 
+let bytes: Byte[];
+
 describe("Firebase service", () => {
+  beforeEach(() => {
+    bytes = [
+      {
+        title: "My title 1",
+        subtitle: "My subtitle 1",
+        slug: "my-slug-1",
+        thumbnail: "My thumbnail 1",
+        coverPhoto: "My cover photo 1",
+        publishDate: new Date("03/12/03"),
+        lastModifiedDate: new Date("04/12/03"),
+        sections: [],
+      },
+      {
+        title: "My title 2",
+        subtitle: "My subtitle 2",
+        slug: "my-slug-2",
+        thumbnail: "My thumbnail 2",
+        coverPhoto: "My cover photo 2",
+        publishDate: new Date("11/05/24"),
+        lastModifiedDate: new Date("12/06/24"),
+        sections: [
+          {
+            title: "Section title",
+            body: [{ type: "paragraph", value: "My paragraph" }],
+          },
+        ],
+      },
+    ];
+  });
+
   afterEach(() => {
     // @ts-ignore
     FirebaseService["instance"] = undefined;
@@ -40,52 +72,35 @@ describe("Firebase service", () => {
     const initializeAppMock = mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
-    const rawBytes = [
-      {
-        title: "My title 1",
-        subtitle: "My subtitle 1",
-        slug: "my-slug-1",
-        thumbnail: "My thumbnail 1",
-        coverPhoto: "My cover photo 1",
-        publishDate: new Timestamp(1706320119, 344000000),
-        lastModifiedDate: new Timestamp(1706131426, 738000000),
-        sections: [],
-      },
-      {
-        title: "My title 2",
-        subtitle: "My subtitle 2",
-        slug: "my-slug-2",
-        thumbnail: "My thumbnail 2",
-        coverPhoto: "My cover photo 2",
-        publishDate: new Timestamp(1706320120, 344000000),
-        lastModifiedDate: new Timestamp(1706131435, 738000000),
-        sections: [
-          {
-            title: "Section title",
-            body: [{ type: "paragraph", value: "My paragraph" }],
-          },
-        ],
-      },
-    ];
+    const rawBytes = bytes.map((byte) => ({
+      ...byte,
+      publishDate: new Timestamp(bytes[0].publishDate.getUTCSeconds(), 0),
+      lastModifiedDate: new Timestamp(
+        bytes[0].lastModifiedDate.getUTCSeconds(),
+        0
+      ),
+    }));
 
-    const storageRefMock1 = mock<StorageReference>();
-    const storageRefMock2 = mock<StorageReference>();
-    const storageRefMock3 = mock<StorageReference>();
-    const storageRefMock4 = mock<StorageReference>();
+    const storageMocks: {
+      thumbnail: StorageReference;
+      coverPhoto: StorageReference;
+    }[] = [];
+    for (let i = 0; i < bytes.length; i++) {
+      storageMocks.push({
+        thumbnail: mock<StorageReference>(),
+        coverPhoto: mock<StorageReference>(),
+      });
+    }
     const refMock = mocked(ref);
     refMock.mockImplementation((_storage, path) => {
-      switch (path) {
-        case "My thumbnail 1":
-          return storageRefMock1;
-        case "My thumbnail 2":
-          return storageRefMock2;
-        case "My cover photo 1":
-          return storageRefMock3;
-        case "My cover photo 2":
-          return storageRefMock4;
-        default:
-          return mock<StorageReference>();
+      for (let i = 0; i < bytes.length; i++) {
+        if (path === bytes[i].thumbnail) {
+          return storageMocks[i].thumbnail;
+        } else if (path === bytes[i].coverPhoto) {
+          return storageMocks[i].coverPhoto;
+        }
       }
+      return mock<StorageReference>();
     });
 
     const expectedBytes = rawBytes.map((byte) => {
@@ -104,18 +119,13 @@ describe("Firebase service", () => {
     const getDownloadURLMock = mocked(getDownloadURL);
     getDownloadURLMock.mockImplementation(
       (storageRef) =>
-        new Promise((resolve) => {
-          switch (storageRef) {
-            case storageRefMock1:
-              resolve(expectedBytes[0].thumbnail);
-            case storageRefMock2:
-              resolve(expectedBytes[1].thumbnail);
-            case storageRefMock3:
-              resolve(expectedBytes[0].coverPhoto);
-            case storageRefMock4:
-              resolve(expectedBytes[1].coverPhoto);
-            default:
-              return "";
+        new Promise((resolve): void => {
+          for (const storageMock of storageMocks) {
+            if (storageRef === storageMock.thumbnail) {
+              resolve(`Download url ${storageMock.thumbnail}`);
+            } else if (storageRef === storageMock.coverPhoto) {
+              resolve(`Download url ${storageMock.coverPhoto}`);
+            }
           }
         })
     );
@@ -158,23 +168,32 @@ describe("Firebase service", () => {
       )
     );
 
-    expect(refMock).toHaveBeenCalledTimes(4);
-    expect(refMock).toHaveBeenCalledWith(firebaseService["storage"], "My thumbnail 1");
-    expect(refMock).toHaveBeenCalledWith(firebaseService["storage"], "My thumbnail 2");
-    expect(refMock).toHaveBeenCalledWith(firebaseService["storage"], "My cover photo 1");
-    expect(refMock).toHaveBeenCalledWith(firebaseService["storage"], "My cover photo 2");
+    expect(refMock).toHaveBeenCalledTimes(2 * bytes.length);
+    for (const byte of bytes) {
+      expect(refMock).toHaveBeenCalledWith(
+        firebaseService["storage"],
+        byte.thumbnail
+      );
+      expect(refMock).toHaveBeenCalledWith(
+        firebaseService["storage"],
+        byte.coverPhoto
+      );
+    }
 
-    expect(getDownloadURLMock).toHaveBeenCalledTimes(4);
-    expect(getDownloadURLMock).toHaveBeenCalledWith(storageRefMock1);
-    expect(getDownloadURLMock).toHaveBeenCalledWith(storageRefMock2);
-    expect(getDownloadURLMock).toHaveBeenCalledWith(storageRefMock3);
-    expect(getDownloadURLMock).toHaveBeenCalledWith(storageRefMock4);
+    expect(getDownloadURLMock).toHaveBeenCalledTimes(2 * bytes.length);
+    for (const storageMock of storageMocks) {
+      expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.thumbnail);
+      expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.coverPhoto);
+    }
 
     expect(isEqual(expectedBytes, firebaseService["bytes"]));
   });
 
   it("should not initialise multiple firebase services", async () => {
-    const fetchBytesMock = jest.spyOn(FirebaseService.prototype as any, 'fetchBytes');
+    const fetchBytesMock = jest.spyOn(
+      FirebaseService.prototype as any,
+      "fetchBytes"
+    );
     fetchBytesMock.mockImplementation(() => Promise.resolve());
 
     const firebaseService1 = await FirebaseService.getInstance();
@@ -194,59 +213,31 @@ describe("Firebase service", () => {
   });
 
   it("should list bytes", async () => {
-    const fetchBytesMock = jest.spyOn(FirebaseService.prototype as any, 'fetchBytes');
+    const fetchBytesMock = jest.spyOn(
+      FirebaseService.prototype as any,
+      "fetchBytes"
+    );
     fetchBytesMock.mockImplementation(() => Promise.resolve());
 
     const firebaseService = await FirebaseService.getInstance();
-    firebaseService["bytes"] = [
-      {
-        title: "My title 1",
-        subtitle: "My subtitle 1",
-        slug: "my-slug-1",
-        thumbnail: "My thumbnail 1",
-        coverPhoto: "My cover photo 1",
-        publishDate: new Date("03/12/03"),
-        lastModifiedDate: new Date("04/12/03"),
-        sections: [],
-      },
-      {
-        title: "My title 2",
-        subtitle: "My subtitle 2",
-        slug: "my-slug-2",
-        thumbnail: "My thumbnail 2",
-        coverPhoto: "My cover photo 21",
-        publishDate: new Date("11/05/24"),
-        lastModifiedDate: new Date("12/06/24"),
-        sections: [
-          {
-            title: "Section title",
-            body: [{ type: "paragraph", value: "My paragraph" }],
-          },
-        ],
-      },
-    ];
+    firebaseService["bytes"] = bytes;
 
-    const bytes: ByteOverview[] = await firebaseService.listBytes();
+    const bytesOverviews: ByteOverview[] = await firebaseService.listBytes();
 
     expect(fetchBytesMock).toHaveBeenCalledTimes(1);
 
     expect(getDocs).toHaveBeenCalledTimes(0);
 
-    expect(bytes).toEqual([
-      {
-        title: "My title 1",
-        subtitle: "My subtitle 1",
-        slug: "my-slug-1",
-        thumbnail: "My thumbnail 1",
-        publishDate: new Date("03/12/03"),
-      },
-      {
-        title: "My title 2",
-        subtitle: "My subtitle 2",
-        slug: "my-slug-2",
-        thumbnail: "My thumbnail 2",
-        publishDate: new Date("11/05/24"),
-      },
-    ]);
+    expect(bytesOverviews).toEqual(
+      bytes.map(
+        (byte): ByteOverview => ({
+          title: byte.title,
+          subtitle: byte.subtitle,
+          thumbnail: byte.thumbnail,
+          publishDate: byte.publishDate,
+          slug: byte.slug,
+        })
+      )
+    );
   });
 });
