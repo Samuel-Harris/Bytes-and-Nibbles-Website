@@ -255,4 +255,22 @@ describe("Firebase service", () => {
 
     expect(byte).toEqual(bytes[1]);
   });
+
+  it("should get slugs", async () => {
+    const fetchBytesMock = jest.spyOn(
+      FirebaseService.prototype as any,
+      "fetchBytes"
+    );
+    fetchBytesMock.mockImplementation(() => Promise.resolve());
+
+    const firebaseService = await FirebaseService.getInstance();
+    firebaseService["bytes"] = bytes;
+
+    const slugs: string[] = firebaseService.getSlugs();
+
+    expect(slugs.length).toEqual(bytes.length);
+    for (const slug of slugs) {
+      expect(bytes.find((byte) => byte.slug === slug)).toBeDefined();
+    }
+  });
 });
