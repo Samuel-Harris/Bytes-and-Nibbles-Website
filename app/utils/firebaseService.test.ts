@@ -240,4 +240,19 @@ describe("Firebase service", () => {
       )
     );
   });
+
+  it("should get bytes", async () => {
+    const fetchBytesMock = jest.spyOn(
+      FirebaseService.prototype as any,
+      "fetchBytes"
+    );
+    fetchBytesMock.mockImplementation(() => Promise.resolve());
+
+    const firebaseService = await FirebaseService.getInstance();
+    firebaseService["bytes"] = bytes;
+
+    const byte: Byte | undefined = firebaseService.getByte(bytes[1].slug);
+
+    expect(byte).toEqual(bytes[1]);
+  });
 });
