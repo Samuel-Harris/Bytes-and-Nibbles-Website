@@ -40,7 +40,12 @@ describe("Firebase service", () => {
         coverPhoto: "My cover photo 1",
         publishDate: new Date("03/12/03"),
         lastModifiedDate: new Date("04/12/03"),
-        sections: [],
+        sections: [
+          {
+            title: "Section title 1",
+            body: [{ type: "paragraph", value: "My paragraph 1" }],
+          },
+        ],
       },
       {
         title: "My title 2",
@@ -52,8 +57,8 @@ describe("Firebase service", () => {
         lastModifiedDate: new Date("12/06/24"),
         sections: [
           {
-            title: "Section title",
-            body: [{ type: "paragraph", value: "My paragraph" }],
+            title: "Section title 2",
+            body: [{ type: "paragraph", value: "My paragraph 2" }],
           },
         ],
       },
