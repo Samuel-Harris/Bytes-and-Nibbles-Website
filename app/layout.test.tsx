@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import "@testing-library/jest-dom";
 import Header from "./layout";
-import Logo, { LogoProps } from "./assets/Logo";
+import Logo, { LogoProps } from "./assets/Logo_";
 import { mocked, MockedFunction } from "jest-mock";
 import { screen } from "@testing-library/dom";
 import { usePathname } from "next/navigation";

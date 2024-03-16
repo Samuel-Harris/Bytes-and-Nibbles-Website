@@ -7,7 +7,7 @@ import CookieIcon from "./assets/cookieIcon";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import Logo from "./assets/Logo";
+import Logo from "./assets/Logo_";
 import theme from "./utils/theme";
 
 export default function Header({
