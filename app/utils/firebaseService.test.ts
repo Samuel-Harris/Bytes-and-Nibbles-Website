@@ -21,7 +21,7 @@ import FirebaseService from "./firebaseService";
 import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, SectionType } from "./Byte";
 import { bytesCollection } from "./collectionConstants";
-import isEqual from "lodash/isequal";
+import _ from "lodash";
 
 jest.mock("firebase/app");
 jest.mock("firebase/firestore");
@@ -191,7 +191,7 @@ describe("Firebase service", () => {
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.coverPhoto);
     }
 
-    expect(isEqual(expectedBytes, firebaseService["bytes"]));
+    expect(_.isEqual(expectedBytes, firebaseService["bytes"]));
   });
 
   it("should not initialise multiple firebase services", async () => {
