@@ -16,21 +16,13 @@ export default function BytesPage(): React.JSX.Element {
   );
 
   useEffect(() => {
-    let bytesBeenFetched = false;
-    const firebaseService = FirebaseService.getInstance();
-
-    if (!bytesBeenFetched) {
-      firebaseService.listBytes().then((bytes: ByteOverview[]) => {
+    FirebaseService.getInstance().then(
+      (firebaseService: FirebaseService): void =>
         dispatch({
           type: ActionType.UPDATE_BYTE_LIST,
-          newByteOverviews: bytes,
-        });
-      });
-    }
-
-    return () => {
-      bytesBeenFetched = true;
-    };
+          newByteOverviews: firebaseService.listBytes(),
+        })
+    );
   }, [dispatch]);
 
   return (

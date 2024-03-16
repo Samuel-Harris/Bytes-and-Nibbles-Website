@@ -5,18 +5,23 @@ import theme from "@/utils/theme";
 import { getDateString } from "@/utils/timeUtils";
 import Section from "./Section";
 
-export async function generateStaticParams() {
-  const firebaseService: FirebaseService = FirebaseService.getInstance();
-  const slugs: string[] = await firebaseService.getSlugs();
+type BytePageProps = {
+  params: { slug: string };
+};
 
-  return slugs.map((slug) => ({
-    slug: slug,
-  }));
+export async function generateStaticParams() {
+  return await FirebaseService.getInstance().then(
+    async (firebaseService: FirebaseService) =>
+      firebaseService.getSlugs().map((slug) => ({
+        slug: slug,
+      }))
+  );
 }
 
-export default async function BytePage({ params }: { params: { slug: string } }) {
-  const firebaseService: FirebaseService = FirebaseService.getInstance();
-  const byte: Byte | undefined = await firebaseService.getByte(params.slug);
+export default async function BytePage({ params: { slug } }: BytePageProps) {
+  const byte: Byte | undefined = await FirebaseService.getInstance().then(
+    (firebaseService) => firebaseService.getByte(slug)
+  );
 
   if (!byte) return <main>Byte not found</main>;
 

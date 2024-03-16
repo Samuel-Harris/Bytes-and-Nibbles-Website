@@ -5,6 +5,7 @@ const config: Config = {
   collectCoverageFrom: ["app/**/*.{ts,tsx}"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "jest.tsconfig.json" }],
+    "^.+\\.css$": "jest-transform-css"
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",
