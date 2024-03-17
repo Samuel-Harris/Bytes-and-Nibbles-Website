@@ -30,6 +30,7 @@ describe("Individual byte page", () => {
     byte = {
       title: "Blog title",
       subtitle: "Blog subtitle",
+      series: {title: "My series", accentColour: "#ac3Ef"},
       slug: "my-blog-page",
       thumbnail: "Thumbnail src",
       coverPhoto: "Cover photo src",
@@ -134,6 +135,9 @@ describe("Individual byte page", () => {
     expect(sectionMock).toHaveBeenCalledTimes(2);
     expect(screen.getByText(byte.sections[0].title)).toBeInTheDocument();
     expect(screen.getByText(byte.sections[1].title)).toBeInTheDocument();
+
+    expect(screen.getByText(byte.series.title)).toBeInTheDocument();
+    expect(screen.getByText(byte.series.title)).toHaveStyle({"background-color": byte.series.accentColour})
   });
 
   it("should render the page with the same publish and last modified date correctly", async () => {

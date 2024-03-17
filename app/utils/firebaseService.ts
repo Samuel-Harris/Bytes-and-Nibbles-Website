@@ -6,6 +6,7 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -20,7 +21,7 @@ import {
 } from "firebase/storage";
 import { bytesCollection } from "./collectionConstants";
 import { firebaseConfig } from "./firebaseConstants";
-import { Byte, ByteOverview } from "./Byte";
+import { Byte, ByteOverview, Series } from "./Byte";
 
 export default class FirebaseService {
   private static instance: FirebaseService;
@@ -65,16 +66,17 @@ export default class FirebaseService {
     // process byte data
     this.bytes = await Promise.all(
       queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
-        // convert all date strings to Date objects
-        byteResponse.publishDate = byteResponse.publishDate.toDate();
-        byteResponse.lastModifiedDate = byteResponse.lastModifiedDate.toDate();
-
         // convert received byte into byte object
-        const byte: Byte = byteResponse as Byte;
+        const byte: Byte = {
+          ...byteResponse,
+          series: (await getDoc(byteResponse.series)).data() as Series,
+          publishDate: byteResponse.publishDate.toDate(),
+          lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
+          thumbnail: await this.getImage(byteResponse.thumbnail),
+          coverPhoto: await this.getImage(byteResponse.coverPhoto),
+        } as Byte;
 
         // get all images for byte
-        byte.thumbnail = await this.getImage(byte.thumbnail);
-        byte.coverPhoto = await this.getImage(byte.coverPhoto);
         for (const section of byte.sections) {
           for (const bodyComponent of section.body) {
             if (bodyComponent.type === "captionedImage") {
@@ -91,15 +93,16 @@ export default class FirebaseService {
   }
 
   public listBytes(): ByteOverview[] {
-    return this.bytes.map((byte: DocumentData): ByteOverview => {
-      return {
+    return this.bytes.map(
+      (byte: Byte): ByteOverview => ({
         title: byte.title,
         subtitle: byte.subtitle,
+        series: byte.series,
         thumbnail: byte.thumbnail,
         publishDate: byte.publishDate,
         slug: byte.slug,
-      } as ByteOverview;
-    });
+      })
+    );
   }
 
   public getByte(slug: string): Byte | undefined {

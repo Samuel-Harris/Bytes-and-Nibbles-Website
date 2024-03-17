@@ -32,6 +32,7 @@ export default function BytesPage(): React.JSX.Element {
           <Tilecard
             title={byteOverview.title}
             subtitle={byteOverview.subtitle}
+            series={byteOverview.series}
             thumbnail={byteOverview.thumbnail}
             publishDate={byteOverview.publishDate}
             linkPath={`/bytes/${byteOverview.slug}`}

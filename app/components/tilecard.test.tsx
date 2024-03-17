@@ -9,6 +9,10 @@ describe("Tilecard", () => {
     const props: TilecardProps = {
       title: "My title",
       subtitle: "My subtitle",
+      series: {
+        title: "Series title",
+        accentColour: "Series colour",
+      },
       thumbnail: "My thumbnail",
       publishDate: new Date(2024, 1, 3),
       linkPath: "/path/to/blog",
@@ -23,5 +27,8 @@ describe("Tilecard", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("img")).toHaveAttribute("src", props.thumbnail);
     expect(screen.getByRole("link")).toHaveAttribute("href", props.linkPath);
+
+    expect(screen.getByText(props.series.title)).toBeInTheDocument();
+    expect(screen.getByText(props.series.title)).toHaveStyle({"background-color": props.series.accentColour})
   });
 });
