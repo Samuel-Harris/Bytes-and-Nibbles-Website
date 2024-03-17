@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+# IDE files
+.idea/
+
 # build files
 .next/
 out/

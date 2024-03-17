@@ -28,18 +28,33 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
   const publishDateString: string = getDateString(byte.publishDate);
   const lastModifiedDateString: string = getDateString(byte.lastModifiedDate);
 
+  const headingSpacing = "mb-1";
+
   return (
     <main
       className={`grid justify-self-center pt-5 ${theme.pageWidth} ${theme.pageBottomMargin}`}
     >
-      <p className={`text-5xl font-bold ${theme.secondaryColourText}`}>
+      <p
+        className={`text-5xl font-bold ${headingSpacing} ${theme.secondaryColourText}`}
+      >
         {byte.title}
       </p>
-      <p className={`text-2xl ${theme.tertiaryColourText}`}>{byte.subtitle}</p>
-      <p className={`${theme.dateStyle}`}>Published: {publishDateString}</p>
+      <p className={`text-2xl ${headingSpacing} ${theme.tertiaryColourText}`}>
+        {byte.subtitle}
+      </p>
+      <p
+        style={{ backgroundColor: byte.series.accentColour }} // cannot be set in tailwind as this is dynamically generated
+        className={`text-md inline-flex px-1 py-1 font-medium ring-1 ring-inset ring-slate-500 ${headingSpacing}`}
+      >
+        {byte.series.title}
+      </p>
+      <p className={`mb-1 ${theme.dateStyle} ${theme.tertiaryColourText}`}>
+        Published: <span className="text-white">{publishDateString}</span>
+      </p>
       {publishDateString !== lastModifiedDateString && (
-        <p className={`${theme.dateStyle}`}>
-          Last modified: {lastModifiedDateString}
+        <p className={`${theme.dateStyle} ${theme.tertiaryColourText}`}>
+          Last modified:{" "}
+          <span className="text-white">{lastModifiedDateString}</span>
         </p>
       )}
       <img

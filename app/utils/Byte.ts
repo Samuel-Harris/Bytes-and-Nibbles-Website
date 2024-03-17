@@ -1,6 +1,12 @@
+export type Series = {
+  title: string;
+  accentColour: string;
+};
+
 export type ByteOverview = {
   title: string;
   subtitle: string;
+  series: Series;
   thumbnail: string;
   publishDate: Date;
   slug: string;
@@ -37,6 +43,7 @@ export type SectionType = {
 export type Byte = {
   title: string;
   subtitle: string;
+  series: Series;
   slug: string;
   thumbnail: string;
   coverPhoto: string;
