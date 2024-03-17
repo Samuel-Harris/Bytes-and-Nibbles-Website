@@ -1,8 +1,6 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {
   DocumentData,
-  DocumentReference,
-  DocumentSnapshot,
   Firestore,
   Query,
   QueryDocumentSnapshot,

@@ -25,6 +25,7 @@ describe("Bytes page", () => {
       {
         title: "Title 1",
         subtitle: "Subtitle 1",
+        series: {title: "Series 1", accentColour: "#ac3Ef"},
         thumbnail: "Thumbnail 1",
         publishDate: new Date(2024, 2, 5),
         slug: "slug-1",
@@ -32,6 +33,7 @@ describe("Bytes page", () => {
       {
         title: "Title 2",
         subtitle: "Subtitle 2",
+        series: {title: "Series 2", accentColour: "#FC3Ef"},
         thumbnail: "Thumbnail 2",
         publishDate: new Date(2024, 3, 6),
         slug: "slug-2",

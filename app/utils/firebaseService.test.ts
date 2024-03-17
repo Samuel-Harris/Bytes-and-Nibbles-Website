@@ -6,6 +6,7 @@ import {
   QuerySnapshot,
   Timestamp,
   collection,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -35,6 +36,7 @@ describe("Firebase service", () => {
       {
         title: "My title 1",
         subtitle: "My subtitle 1",
+        series: {title: "My series 1", accentColour: "#ac3Ef"},
         slug: "my-slug-1",
         thumbnail: "My thumbnail 1",
         coverPhoto: "My cover photo 1",
@@ -50,6 +52,7 @@ describe("Firebase service", () => {
       {
         title: "My title 2",
         subtitle: "My subtitle 2",
+        series: {title: "My series 2", accentColour: "#FA3FE"},
         slug: "my-slug-2",
         thumbnail: "My thumbnail 2",
         coverPhoto: "My cover photo 2",
@@ -77,6 +80,10 @@ describe("Firebase service", () => {
     const initializeAppMock = mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
+    const getDocMock = mocked(getDoc);
+    // @ts-ignore
+    getDocMock.mockImplementation((series) => ({data: () => series}));
+
     const rawBytes = bytes.map((byte) => ({
       ...byte,
       publishDate: new Timestamp(bytes[0].publishDate.getUTCSeconds(), 0),
@@ -96,6 +103,7 @@ describe("Firebase service", () => {
         coverPhoto: mock<StorageReference>(),
       });
     }
+
     const refMock = mocked(ref);
     refMock.mockImplementation((_storage, path) => {
       for (let i = 0; i < bytes.length; i++) {
@@ -174,6 +182,7 @@ describe("Firebase service", () => {
     );
 
     expect(refMock).toHaveBeenCalledTimes(2 * bytes.length);
+    expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
     for (const byte of bytes) {
       expect(refMock).toHaveBeenCalledWith(
         firebaseService["storage"],
@@ -183,6 +192,8 @@ describe("Firebase service", () => {
         firebaseService["storage"],
         byte.coverPhoto
       );
+
+      expect(getDocMock).toHaveBeenCalledWith(byte.series);
     }
 
     expect(getDownloadURLMock).toHaveBeenCalledTimes(2 * bytes.length);
@@ -238,6 +249,7 @@ describe("Firebase service", () => {
         (byte): ByteOverview => ({
           title: byte.title,
           subtitle: byte.subtitle,
+          series: byte.series,
           thumbnail: byte.thumbnail,
           publishDate: byte.publishDate,
           slug: byte.slug,
