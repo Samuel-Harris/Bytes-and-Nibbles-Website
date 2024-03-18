@@ -24,7 +24,6 @@ import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, Series } from "./Byte";
 
 export default class FirebaseService {
-  private static instance: FirebaseService;
   private app: FirebaseApp;
   private firestore: Firestore;
   private storage: FirebaseStorage;
@@ -39,13 +38,11 @@ export default class FirebaseService {
   }
 
   public static async getInstance(): Promise<FirebaseService> {
-    if (!FirebaseService.instance) {
-      FirebaseService.instance = new FirebaseService();
+    const instance = new FirebaseService();
 
-      await FirebaseService.instance.fetchBytes();
-    }
+    await instance.fetchBytes();
 
-    return Promise.resolve(FirebaseService.instance);
+    return Promise.resolve(instance);
   }
 
   private async fetchBytes(): Promise<void> {

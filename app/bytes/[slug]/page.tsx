@@ -11,10 +11,8 @@ type BytePageProps = {
 
 export async function generateStaticParams() {
   return await FirebaseService.getInstance().then(
-    async (firebaseService: FirebaseService) =>
-      firebaseService.getSlugs().map((slug) => ({
-        slug: slug,
-      }))
+    (firebaseService: FirebaseService): { slug: string }[] =>
+      firebaseService.getSlugs().map((slug) => ({ slug }))
   );
 }
 

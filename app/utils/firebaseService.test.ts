@@ -205,29 +205,6 @@ describe("Firebase service", () => {
     expect(_.isEqual(expectedBytes, firebaseService["bytes"]));
   });
 
-  it("should not initialise multiple firebase services", async () => {
-    const fetchBytesMock = jest.spyOn(
-      FirebaseService.prototype as any,
-      "fetchBytes"
-    );
-    fetchBytesMock.mockImplementation(() => Promise.resolve());
-
-    const firebaseService1 = await FirebaseService.getInstance();
-    const firebaseService2 = await FirebaseService.getInstance();
-
-    expect(firebaseService1).toBeInstanceOf(FirebaseService);
-    expect(firebaseService2).toBeInstanceOf(FirebaseService);
-    expect(firebaseService1).toBe(firebaseService2);
-
-    expect(initializeApp).toHaveBeenCalledTimes(1);
-
-    expect(getFirestore).toHaveBeenCalledTimes(1);
-
-    expect(getStorage).toHaveBeenCalledTimes(1);
-
-    expect(fetchBytesMock).toHaveBeenCalledTimes(1);
-  });
-
   it("should list bytes", async () => {
     const fetchBytesMock = jest.spyOn(
       FirebaseService.prototype as any,
