@@ -1,34 +1,28 @@
 "use client";
 
-import React from "react";
+import React, { SetStateAction, useState } from "react";
 import FirebaseService from "../utils/firebaseService";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../components/tilecard";
-import { useImmerReducer } from "use-immer";
 import { ByteOverview } from "../utils/Byte";
-import { Action, ActionType, State, reducer } from "./State";
 
 export default function BytesPage(): React.JSX.Element {
-  const initState: State = { byteOverviews: [] };
-  const [state, dispatch]: [State, Dispatch<Action>] = useImmerReducer(
-    reducer,
-    initState
-  );
+  const [byteOverviews, setByteOverviews]: [
+    ByteOverview[],
+    Dispatch<SetStateAction<ByteOverview[]>>
+  ] = useState<ByteOverview[]>([]);
 
   useEffect(() => {
     FirebaseService.getInstance().then(
       (firebaseService: FirebaseService): void =>
-        dispatch({
-          type: ActionType.UPDATE_BYTE_LIST,
-          newByteOverviews: firebaseService.listBytes(),
-        })
+        setByteOverviews(firebaseService.listBytes())
     );
-  }, [dispatch]);
+  }, [setByteOverviews]);
 
   return (
     <main className="grid grid-rows-auto justify-items-center ">
       {React.Children.toArray(
-        state.byteOverviews.map((byteOverview: ByteOverview) => (
+        byteOverviews.map((byteOverview: ByteOverview) => (
           <Tilecard
             title={byteOverview.title}
             subtitle={byteOverview.subtitle}
