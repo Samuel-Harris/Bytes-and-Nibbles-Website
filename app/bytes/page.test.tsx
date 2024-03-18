@@ -1,10 +1,10 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import BytesPage from "./page";
-import FirebaseService from "@/utils/firebaseService";
+import FirebaseService from "@/common/firebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
-import { ByteOverview } from "@/utils/Byte";
+import { ByteOverview } from "@/common/Byte";
 import Tilecard, { TilecardProps } from "@/components/tilecard";
 
 jest.mock("@/utils/firebaseService");

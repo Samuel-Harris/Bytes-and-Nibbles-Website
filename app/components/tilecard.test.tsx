@@ -2,7 +2,7 @@ import React from "react";
 import Tilecard, { TilecardProps } from "./tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { getDateString } from "../utils/timeUtils";
+import { getDateString } from "../common/timeUtils";
 
 describe("Tilecard", () => {
   it("should render all given data", () => {

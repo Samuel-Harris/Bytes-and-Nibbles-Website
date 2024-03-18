@@ -1,9 +1,9 @@
 import React from "react";
 import { FC } from "react";
-import theme from "../utils/theme";
-import { getDateString } from "../utils/timeUtils";
+import theme from "../common/theme";
+import { getDateString } from "../common/timeUtils";
 import Link from "next/link";
-import { Series } from "@/utils/Byte";
+import { Series } from "@/common/Byte";
 
 export type TilecardProps = {
   title: string;

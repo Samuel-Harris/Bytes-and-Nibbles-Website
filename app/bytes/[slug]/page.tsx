@@ -1,8 +1,8 @@
 import React from "react";
-import { Byte } from "@/utils/Byte";
-import FirebaseService from "@/utils/firebaseService";
-import theme from "@/utils/theme";
-import { getDateString } from "@/utils/timeUtils";
+import { Byte } from "@/common/Byte";
+import FirebaseService from "@/common/firebaseService";
+import theme from "@/common/theme";
+import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
 
 type BytePageProps = {

@@ -1,12 +1,12 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import FirebaseService from "@/utils/firebaseService";
+import FirebaseService from "@/common/firebaseService";
 import { render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateStaticParams } from "./page";
-import { Byte, SectionType } from "@/utils/Byte";
+import { Byte, SectionType } from "@/common/Byte";
 import Section from "./Section";
-import { getDateString } from "@/utils/timeUtils";
+import { getDateString } from "@/common/timeUtils";
 
 jest.mock("@/utils/firebaseService");
 jest.mock("@/utils/timeUtils");
