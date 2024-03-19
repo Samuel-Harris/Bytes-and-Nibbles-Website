@@ -3,7 +3,13 @@ import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/firebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
-import { DATE_STYLE, PAGE_BOTTOM_MARGIN, PAGE_WIDTH, SECONDARY_COLOUR_TEXT, TERTIARY_COLOUR_TEXT } from "@/common/theme";
+import {
+  DATE_STYLE,
+  PAGE_BOTTOM_MARGIN,
+  PAGE_WIDTH,
+  SECONDARY_COLOUR_TEXT,
+  TERTIARY_COLOUR_TEXT,
+} from "@/common/theme";
 
 type BytePageProps = {
   params: { slug: string };
@@ -46,11 +52,11 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
       >
         {byte.series.title}
       </p>
-      <p className={`mb-1 ${DATE_STYLE} ${TERTIARY_COLOUR_TEXT}`}>
+      <p className={`mb-1 text-md ${TERTIARY_COLOUR_TEXT}`}>
         Published: <span className="text-white">{publishDateString}</span>
       </p>
       {publishDateString !== lastModifiedDateString && (
-        <p className={`${DATE_STYLE} ${TERTIARY_COLOUR_TEXT}`}>
+        <p className={`text-md ${TERTIARY_COLOUR_TEXT}`}>
           Last modified:{" "}
           <span className="text-white">{lastModifiedDateString}</span>
         </p>

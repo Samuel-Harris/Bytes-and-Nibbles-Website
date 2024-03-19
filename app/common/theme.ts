@@ -6,8 +6,6 @@ export const TERTIARY_COLOUR_TEXT = "text-neutral-400";
 
 export const HOVER_BACKGROUND_COLOUR = "hover:bg-zinc-900";
 
-export const DATE_STYLE = "text-md";
-
 export const PAGE_WIDTH = "w-10/12 md:w-5/12";
 
 export const PAGE_BOTTOM_MARGIN = "mb-6 md:mb-10";
