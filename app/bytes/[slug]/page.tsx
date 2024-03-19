@@ -1,9 +1,9 @@
 import React from "react";
 import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/firebaseService";
-import theme from "@/common/theme";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
+import { DATE_STYLE, PAGE_BOTTOM_MARGIN, PAGE_WIDTH, SECONDARY_COLOUR_TEXT, TERTIARY_COLOUR_TEXT } from "@/common/theme";
 
 type BytePageProps = {
   params: { slug: string };
@@ -30,14 +30,14 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
 
   return (
     <main
-      className={`grid justify-self-center pt-5 ${theme.pageWidth} ${theme.pageBottomMargin}`}
+      className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
     >
       <p
-        className={`text-5xl font-bold ${headingSpacing} ${theme.secondaryColourText}`}
+        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
       >
         {byte.title}
       </p>
-      <p className={`text-2xl ${headingSpacing} ${theme.tertiaryColourText}`}>
+      <p className={`text-2xl ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
         {byte.subtitle}
       </p>
       <p
@@ -46,11 +46,11 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
       >
         {byte.series.title}
       </p>
-      <p className={`mb-1 ${theme.dateStyle} ${theme.tertiaryColourText}`}>
+      <p className={`mb-1 ${DATE_STYLE} ${TERTIARY_COLOUR_TEXT}`}>
         Published: <span className="text-white">{publishDateString}</span>
       </p>
       {publishDateString !== lastModifiedDateString && (
-        <p className={`${theme.dateStyle} ${theme.tertiaryColourText}`}>
+        <p className={`${DATE_STYLE} ${TERTIARY_COLOUR_TEXT}`}>
           Last modified:{" "}
           <span className="text-white">{lastModifiedDateString}</span>
         </p>

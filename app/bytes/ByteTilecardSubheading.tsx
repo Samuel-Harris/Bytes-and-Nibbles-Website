@@ -1,5 +1,5 @@
 import { Series } from "@/common/Byte";
-import theme, { TILECARD_TEXT_PADDING } from "@/common/theme";
+import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
 
 export type ByteTilecardSubheadingProps = {
   subtitle: string;
@@ -12,7 +12,7 @@ export const ByteTilecardSubheading: React.FC<ByteTilecardSubheadingProps> = ({
 }) => (
   <>
     <p
-      className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${TILECARD_TEXT_PADDING} ${theme.tertiaryColourText}`}
+      className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${TILECARD_TEXT_PADDING} ${TERTIARY_COLOUR_TEXT}`}
     >
       {subtitle}
     </p>

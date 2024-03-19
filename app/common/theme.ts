@@ -1,20 +1,15 @@
-// tailwind style classes
-const theme: { [key: string]: string } = {
-  // colours
-  primaryColourBg: "bg-black",
-  secondaryColourText: "text-green-500",
-  tertiaryColourText: "text-neutral-400",
-  hoverColour: "hover:bg-zinc-900",
+export const PRIMARY_COLOUR_BG = "bg-black";
 
-  // text styles
-  dateStyle: "text-md",
+export const SECONDARY_COLOUR_TEXT = "text-green-500";
 
-  // page specifications (excl. bytes and nibbles list pages)
-  pageWidth: "w-10/12 md:w-5/12",
-  pageBottomMargin: "mb-6 md:mb-10",
+export const TERTIARY_COLOUR_TEXT = "text-neutral-400";
 
-  // tile styles
-};
-export default theme;
+export const HOVER_BACKGROUND_COLOUR = "hover:bg-zinc-900";
+
+export const DATE_STYLE = "text-md";
+
+export const PAGE_WIDTH = "w-10/12 md:w-5/12";
+
+export const PAGE_BOTTOM_MARGIN = "mb-6 md:mb-10";
 
 export const TILECARD_TEXT_PADDING = "pl-5";
