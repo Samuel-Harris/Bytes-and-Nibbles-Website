@@ -7,8 +7,9 @@ import { Series } from "@/common/Byte";
 
 export type TilecardProps = {
   title: string;
-  subtitle: string;
-  series: Series;
+  subtitle: string | undefined;
+  series: Series | undefined;
+  timeTakenMinutes: number | undefined;
   thumbnail: string;
   publishDate: Date;
   linkPath: string;
@@ -18,6 +19,7 @@ const Tilecard: FC<TilecardProps> = ({
   title,
   subtitle,
   series,
+  timeTakenMinutes,
   thumbnail,
   publishDate,
   linkPath,
@@ -37,20 +39,29 @@ const Tilecard: FC<TilecardProps> = ({
         >
           {title}
         </p>
-        <p
-          className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${textStyle} ${theme.tertiaryColourText}`}
-        >
-          {subtitle}
-        </p>
-        <p
-          style={{ backgroundColor: series.accentColour }} // cannot be set in tailwind as this is dynamically generated
-          className={`text-sm md:text-base inline-flex rounded-full mx-3 px-2 py-1 sm:mb-2 md:mb-3 font-medium ring-1 ring-inset ring-slate-500`}
-        >
-          {series.title}
-        </p>
-        <p
-          className={`text-sm md:text-base text-white ${textStyle}`}
-        >
+        {subtitle && (
+          <p
+            className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${textStyle} ${theme.tertiaryColourText}`}
+          >
+            {subtitle}
+          </p>
+        )}
+        {series && (
+          <p
+            style={{ backgroundColor: series.accentColour }} // cannot be set in tailwind as this is dynamically generated
+            className={`text-sm md:text-base inline-flex rounded-full mx-3 px-2 py-1 sm:mb-2 md:mb-3 font-medium ring-1 ring-inset ring-slate-500`}
+          >
+            {series.title}
+          </p>
+        )}
+        {timeTakenMinutes && (
+          <p
+            className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${textStyle} ${theme.tertiaryColourText}`}
+          >
+            {timeTakenMinutes} minutes
+          </p>
+        )}
+        <p className={`text-sm md:text-base text-white ${textStyle}`}>
           {getDateString(publishDate)}
         </p>
       </div>

@@ -1,39 +1,34 @@
 "use client";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Metadata } from "next";
-import { ByteOverview } from "@/common/Byte";
 import FirebaseService from "@/common/firebaseService";
 import Tilecard from "@/components/tilecard";
-
-export const metadata: Metadata = {
-  title: "Nibbles",
-  description: "The recipes of the Bytes and Nibbles blog.",
-};
+import { NibbleOverview } from "@/common/Nibble";
 
 export default function NibblesPage(): React.JSX.Element {
-  const [byteOverviews, setByteOverviews]: [
-    ByteOverview[],
-    Dispatch<SetStateAction<ByteOverview[]>>
-  ] = useState<ByteOverview[]>([]);
+  const [nibbleOverviews, setNibbleOverviews]: [
+    NibbleOverview[],
+    Dispatch<SetStateAction<NibbleOverview[]>>
+  ] = useState<NibbleOverview[]>([]);
 
   useEffect(() => {
     FirebaseService.getInstance().then(
       (firebaseService: FirebaseService): void =>
-        setByteOverviews(firebaseService.listBytes())
+        setNibbleOverviews(firebaseService.listNibbles())
     );
-  }, [setByteOverviews]);
+  }, [setNibbleOverviews]);
 
   return (
     <main className="grid grid-rows-auto justify-items-center ">
       {React.Children.toArray(
-        byteOverviews.map((byteOverview: ByteOverview) => (
+        nibbleOverviews.map((nibbleOverview: NibbleOverview) => (
           <Tilecard
-            title={byteOverview.title}
-            subtitle={byteOverview.subtitle}
-            series={byteOverview.series}
-            thumbnail={byteOverview.thumbnail}
-            publishDate={byteOverview.publishDate}
-            linkPath={`/bytes/${byteOverview.slug}`}
+            title={nibbleOverview.title}
+            subtitle={undefined}
+            series={undefined}
+            timeTakenMinutes={nibbleOverview.timeTakenMinutes}
+            thumbnail={nibbleOverview.thumbnail}
+            publishDate={nibbleOverview.publishDate}
+            linkPath={`/nibbles/${nibbleOverview.slug}`}
           />
         ))
       )}

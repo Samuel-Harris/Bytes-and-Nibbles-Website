@@ -27,6 +27,7 @@ export default function BytesPage(): React.JSX.Element {
             title={byteOverview.title}
             subtitle={byteOverview.subtitle}
             series={byteOverview.series}
+            timeTakenMinutes={undefined}
             thumbnail={byteOverview.thumbnail}
             publishDate={byteOverview.publishDate}
             linkPath={`/bytes/${byteOverview.slug}`}

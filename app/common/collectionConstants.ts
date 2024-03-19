@@ -5,4 +5,5 @@ export const bytesCollection = {
 
 export const nibblesCollection = {
   name: "v1_nibbles",
+  isPublishedField: "isPublished",
 };
