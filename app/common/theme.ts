@@ -14,7 +14,7 @@ const theme: { [key: string]: string } = {
   pageBottomMargin: "mb-6 md:mb-10",
 
   // tile styles
-  tileTextPadding: "pl-5",
 };
-
 export default theme;
+
+export const TILECARD_TEXT_PADDING = "pl-5";

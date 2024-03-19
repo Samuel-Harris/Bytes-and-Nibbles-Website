@@ -1,6 +1,6 @@
 import React from "react";
 import { FC } from "react";
-import theme from "../common/theme";
+import theme, { TILECARD_TEXT_PADDING } from "../common/theme";
 import { getDateString } from "../common/timeUtils";
 import Link from "next/link";
 
@@ -27,12 +27,12 @@ const Tilecard: FC<TilecardProps> = ({
     <img src={thumbnail} alt={title} />
     <div className="col-span-3">
       <p
-        className={`text-2xl sm:text-3xl md:text-5xl sm:mb-1 md:mb-3 ${theme.textPadding} ${theme.secondaryColourText}`}
+        className={`text-2xl sm:text-3xl md:text-5xl sm:mb-1 md:mb-3 ${TILECARD_TEXT_PADDING} ${theme.secondaryColourText}`}
       >
         {title}
       </p>
       {children}
-      <p className={`text-sm md:text-base text-white ${theme.textPadding}`}>
+      <p className={`text-sm md:text-base text-white ${TILECARD_TEXT_PADDING}`}>
         {getDateString(publishDate)}
       </p>
     </div>
