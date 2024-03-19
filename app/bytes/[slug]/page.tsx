@@ -4,7 +4,6 @@ import FirebaseService from "@/common/firebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
 import {
-  DATE_STYLE,
   PAGE_BOTTOM_MARGIN,
   PAGE_WIDTH,
   SECONDARY_COLOUR_TEXT,
