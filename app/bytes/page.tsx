@@ -3,8 +3,9 @@
 import React, { SetStateAction, useState } from "react";
 import FirebaseService from "../common/firebaseService";
 import { Dispatch, useEffect } from "react";
-import Tilecard from "../components/tilecard";
+import Tilecard from "../tilecard/Tilecard";
 import { ByteOverview } from "../common/Byte";
+import { ByteTilecardSubheading } from "@/bytes/ByteTilecardSubheading";
 
 export default function BytesPage(): React.JSX.Element {
   const [byteOverviews, setByteOverviews]: [
@@ -25,13 +26,15 @@ export default function BytesPage(): React.JSX.Element {
         byteOverviews.map((byteOverview: ByteOverview) => (
           <Tilecard
             title={byteOverview.title}
-            subtitle={byteOverview.subtitle}
-            series={byteOverview.series}
-            timeTakenMinutes={undefined}
             thumbnail={byteOverview.thumbnail}
             publishDate={byteOverview.publishDate}
             linkPath={`/bytes/${byteOverview.slug}`}
-          />
+          >
+            <ByteTilecardSubheading
+              subtitle={byteOverview.subtitle}
+              series={byteOverview.series}
+            />
+          </Tilecard>
         ))
       )}
     </main>

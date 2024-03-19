@@ -1,5 +1,5 @@
 import React from "react";
-import Tilecard, { TilecardProps } from "./tilecard";
+import Tilecard, { TilecardProps } from "./Tilecard";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { getDateString } from "../common/timeUtils";
@@ -9,6 +9,7 @@ describe("Tilecard", () => {
     const props: TilecardProps = {
       title: "My title",
       subtitle: "My subtitle",
+      timeTakenMinutes: undefined,
       series: {
         title: "Series title",
         accentColour: "Series colour",

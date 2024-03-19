@@ -1,8 +1,10 @@
 "use client";
+
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FirebaseService from "@/common/firebaseService";
-import Tilecard from "@/components/tilecard";
 import { NibbleOverview } from "@/common/Nibble";
+import Tilecard from "@/tilecard/Tilecard";
+import { NibbleTilecardSubheading } from "./NibbleTilecardSubheading";
 
 export default function NibblesPage(): React.JSX.Element {
   const [nibbleOverviews, setNibbleOverviews]: [
@@ -23,13 +25,14 @@ export default function NibblesPage(): React.JSX.Element {
         nibbleOverviews.map((nibbleOverview: NibbleOverview) => (
           <Tilecard
             title={nibbleOverview.title}
-            subtitle={undefined}
-            series={undefined}
-            timeTakenMinutes={nibbleOverview.timeTakenMinutes}
             thumbnail={nibbleOverview.thumbnail}
             publishDate={nibbleOverview.publishDate}
             linkPath={`/nibbles/${nibbleOverview.slug}`}
-          />
+          >
+            <NibbleTilecardSubheading
+              timeTakenMinutes={nibbleOverview.timeTakenMinutes}
+            />
+          </Tilecard>
         ))
       )}
     </main>

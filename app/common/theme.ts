@@ -12,6 +12,9 @@ const theme: { [key: string]: string } = {
   // page specifications (excl. bytes and nibbles list pages)
   pageWidth: "w-10/12 md:w-5/12",
   pageBottomMargin: "mb-6 md:mb-10",
+
+  // tile styles
+  tileTextPadding: "pl-5",
 };
 
 export default theme;

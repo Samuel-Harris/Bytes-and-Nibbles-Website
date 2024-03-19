@@ -5,7 +5,7 @@ import FirebaseService from "@/common/firebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";
-import Tilecard, { TilecardProps } from "@/components/tilecard";
+import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 
 jest.mock("@/utils/firebaseService");
 jest.mock("@/components/tilecard");
