@@ -6,7 +6,10 @@ import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
-import { ByteTilecardSubheading, ByteTilecardSubheadingProps } from "./ByteTilecardSubheading";
+import {
+  ByteTilecardSubheading,
+  ByteTilecardSubheadingProps,
+} from "./ByteTilecardSubheading";
 
 jest.mock("@/common/firebaseService");
 jest.mock("@/tilecard/Tilecard");
@@ -21,13 +24,15 @@ let tilecardMock: MockedFunction<FC<TilecardProps>>;
 describe("Bytes page", () => {
   beforeAll(() => {
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
-    firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
+    firebaseGetInstanceMock.mockReturnValue(
+      Promise.resolve(FirebaseService.prototype)
+    );
 
     byteOverviewsMock = [
       {
         title: "Title 1",
         subtitle: "Subtitle 1",
-        series: {title: "Series 1", accentColour: "#ac3Ef"},
+        series: { title: "Series 1", accentColour: "#ac3Ef" },
         thumbnail: "Thumbnail 1",
         publishDate: new Date(2024, 2, 5),
         slug: "slug-1",
@@ -35,7 +40,7 @@ describe("Bytes page", () => {
       {
         title: "Title 2",
         subtitle: "Subtitle 2",
-        series: {title: "Series 2", accentColour: "#FC3Ef"},
+        series: { title: "Series 2", accentColour: "#FC3Ef" },
         thumbnail: "Thumbnail 2",
         publishDate: new Date(2024, 3, 6),
         slug: "slug-2",
@@ -46,13 +51,20 @@ describe("Bytes page", () => {
 
     tilecardMock = mocked(Tilecard);
     tilecardMock.mockImplementation((props: TilecardProps) => {
-      return <div><p>{props.title}</p>{props.children}</div>;
+      return (
+        <div>
+          <p>{props.title}</p>
+          {props.children}
+        </div>
+      );
     });
 
     byteTilecardSubheadingMock = mocked(ByteTilecardSubheading);
-    byteTilecardSubheadingMock.mockImplementation((props: ByteTilecardSubheadingProps) => {
-      return <p>{props.subtitle}</p>;
-    });
+    byteTilecardSubheadingMock.mockImplementation(
+      (props: ByteTilecardSubheadingProps) => {
+        return <p>{props.subtitle}</p>;
+      }
+    );
   });
 
   afterEach(() => {
@@ -69,7 +81,7 @@ describe("Bytes page", () => {
     await waitFor((): void => {
       expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
     });
-    
+
     byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
       expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
       expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();
