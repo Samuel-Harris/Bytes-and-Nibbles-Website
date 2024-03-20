@@ -1,31 +1,38 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import BytesPage from "./page";
-import FirebaseService from "@/utils/firebaseService";
+import FirebaseService from "@/common/FirebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
-import { ByteOverview } from "@/utils/Byte";
-import Tilecard, { TilecardProps } from "@/components/tilecard";
+import { ByteOverview } from "@/common/Byte";
+import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
+import {
+  ByteTilecardSubheading,
+  ByteTilecardSubheadingProps,
+} from "./ByteTilecardSubheading";
 
-jest.mock("@/utils/firebaseService");
-jest.mock("@/components/tilecard");
+jest.mock("@/common/FirebaseService");
+jest.mock("@/tilecard/Tilecard");
+jest.mock("./ByteTilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listBytesMock: MockedFunction<() => ByteOverview[]>;
 let byteOverviewsMock: ByteOverview[];
+let byteTilecardSubheadingMock: MockedFunction<FC<ByteTilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
-let mockTextPrefix: string;
 
 describe("Bytes page", () => {
   beforeAll(() => {
-    // set up firebaseService mock
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
-    listBytesMock = mocked(FirebaseService.prototype.listBytes);
+    firebaseGetInstanceMock.mockReturnValue(
+      Promise.resolve(FirebaseService.prototype)
+    );
+
     byteOverviewsMock = [
       {
         title: "Title 1",
         subtitle: "Subtitle 1",
-        series: {title: "Series 1", accentColour: "#ac3Ef"},
+        series: { title: "Series 1", accentColour: "#ac3Ef" },
         thumbnail: "Thumbnail 1",
         publishDate: new Date(2024, 2, 5),
         slug: "slug-1",
@@ -33,43 +40,51 @@ describe("Bytes page", () => {
       {
         title: "Title 2",
         subtitle: "Subtitle 2",
-        series: {title: "Series 2", accentColour: "#FC3Ef"},
+        series: { title: "Series 2", accentColour: "#FC3Ef" },
         thumbnail: "Thumbnail 2",
         publishDate: new Date(2024, 3, 6),
         slug: "slug-2",
       },
     ];
-
-    firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
+    listBytesMock = mocked(FirebaseService.prototype.listBytes);
     listBytesMock.mockReturnValue(byteOverviewsMock);
 
-    mockTextPrefix = "mock_";
     tilecardMock = mocked(Tilecard);
     tilecardMock.mockImplementation((props: TilecardProps) => {
-      return <p>{mockTextPrefix}{props.title}</p>;
+      return (
+        <div>
+          <p>{props.title}</p>
+          {props.children}
+        </div>
+      );
     });
+
+    byteTilecardSubheadingMock = mocked(ByteTilecardSubheading);
+    byteTilecardSubheadingMock.mockImplementation(
+      (props: ByteTilecardSubheadingProps) => {
+        return <p>{props.subtitle}</p>;
+      }
+    );
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should call firebaseService.listBytes()", async () => {
-    render(<BytesPage />);
-
-    await waitFor(() => {
-      expect(listBytesMock).toHaveBeenCalledTimes(1);
-    });
-  });
-
   it("should should render all of the tilecards", async () => {
     render(<BytesPage />);
 
-    await waitFor(() => {  // test breaks if waitFor is not used here
+    await waitFor((): void => {
+      expect(listBytesMock).toHaveBeenCalledTimes(1);
+    });
+
+    await waitFor((): void => {
       expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
     });
-    byteOverviewsMock.forEach((byteOverview) => {
-      expect(screen.getByText(mockTextPrefix + byteOverview.title)).toBeInTheDocument();
+
+    byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
+      expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
+      expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();
     });
   });
 });

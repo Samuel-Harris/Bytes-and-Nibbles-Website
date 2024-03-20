@@ -1,5 +1,5 @@
+import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 import React from "react";
-import theme from "@/utils/theme";
 
 export type CaptionedImageProps = {
   image: string;
@@ -15,7 +15,7 @@ const CaptionedImage: React.FC<CaptionedImageProps> = (
       alt={props.caption}
       className={`justify-self-center w-fit`}
     />
-    <p className={`${theme.tertiaryColourText}`}>{props.caption}</p>
+    <p className={`${TERTIARY_COLOUR_TEXT}`}>{props.caption}</p>
   </div>
 );
 export default CaptionedImage;

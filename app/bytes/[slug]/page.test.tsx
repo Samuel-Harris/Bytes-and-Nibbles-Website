@@ -1,16 +1,16 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import FirebaseService from "@/utils/firebaseService";
+import FirebaseService from "@/common/FirebaseService";
 import { render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateStaticParams } from "./page";
-import { Byte, SectionType } from "@/utils/Byte";
+import { Byte, SectionType } from "@/common/Byte";
 import Section from "./Section";
-import { getDateString } from "@/utils/timeUtils";
+import { getDateString } from "@/common/timeUtils";
 
-jest.mock("@/utils/firebaseService");
-jest.mock("@/utils/timeUtils");
-jest.mock("@/components/tilecard");
+jest.mock("@/common/FirebaseService");
+jest.mock("@/common/timeUtils");
+jest.mock("@/tilecard/Tilecard");
 jest.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
@@ -30,7 +30,7 @@ describe("Individual byte page", () => {
     byte = {
       title: "Blog title",
       subtitle: "Blog subtitle",
-      series: {title: "My series", accentColour: "#ac3Ef"},
+      series: { title: "My series", accentColour: "#ac3Ef" },
       slug: "my-blog-page",
       thumbnail: "Thumbnail src",
       coverPhoto: "Cover photo src",
@@ -137,7 +137,9 @@ describe("Individual byte page", () => {
     expect(screen.getByText(byte.sections[1].title)).toBeInTheDocument();
 
     expect(screen.getByText(byte.series.title)).toBeInTheDocument();
-    expect(screen.getByText(byte.series.title)).toHaveStyle({"background-color": byte.series.accentColour})
+    expect(screen.getByText(byte.series.title)).toHaveStyle({
+      "background-color": byte.series.accentColour,
+    });
   });
 
   it("should render the page with the same publish and last modified date correctly", async () => {

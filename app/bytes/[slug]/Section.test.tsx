@@ -2,7 +2,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import { CaptionedImageType, ParagraphType } from "@/utils/Byte";
+import { CaptionedImageType, ParagraphType } from "@/common/Byte";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import Section from "./Section";
 import { mocked, MockedFunction } from "jest-mock";

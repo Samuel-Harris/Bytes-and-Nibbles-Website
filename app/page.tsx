@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { config } from "./utils/config";
+import { config } from "./common/config";
 
 export const metadata: Metadata = {
   title: config.websiteName,
