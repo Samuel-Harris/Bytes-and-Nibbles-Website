@@ -21,7 +21,6 @@ export type Nibble = {
     source: string;
     ingredients: Ingredient[];
     steps: string[];
-    isPublished: boolean;
     publishDate: Date;
     lastModifiedDate: Date;
     timeTakenMinutes: number;

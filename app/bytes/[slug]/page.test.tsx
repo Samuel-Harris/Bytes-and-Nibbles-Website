@@ -8,9 +8,9 @@ import { Byte, SectionType } from "@/common/Byte";
 import Section from "./Section";
 import { getDateString } from "@/common/timeUtils";
 
-jest.mock("@/utils/firebaseService");
-jest.mock("@/utils/timeUtils");
-jest.mock("@/components/tilecard");
+jest.mock("@/common/firebaseService");
+jest.mock("@/common/timeUtils");
+jest.mock("@/tilecard/Tilecard");
 jest.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;

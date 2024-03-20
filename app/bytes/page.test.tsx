@@ -7,8 +7,8 @@ import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 
-jest.mock("@/utils/firebaseService");
-jest.mock("@/components/tilecard");
+jest.mock("@/common/firebaseService");
+jest.mock("@/tilecard/Tilecard");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listBytesMock: MockedFunction<() => ByteOverview[]>;

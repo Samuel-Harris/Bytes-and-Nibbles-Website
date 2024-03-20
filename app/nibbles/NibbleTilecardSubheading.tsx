@@ -1,3 +1,4 @@
+import React from "react";
 import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
 
 export type NibbleTilecardSubheadingProps = {
