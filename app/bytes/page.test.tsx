@@ -20,9 +20,9 @@ let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
   beforeAll(() => {
-    // set up firebaseService mock
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
-    listBytesMock = mocked(FirebaseService.prototype.listBytes);
+    firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
+
     byteOverviewsMock = [
       {
         title: "Title 1",
@@ -41,8 +41,7 @@ describe("Bytes page", () => {
         slug: "slug-2",
       },
     ];
-
-    firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
+    listBytesMock = mocked(FirebaseService.prototype.listBytes);
     listBytesMock.mockReturnValue(byteOverviewsMock);
 
     tilecardMock = mocked(Tilecard);
@@ -63,15 +62,15 @@ describe("Bytes page", () => {
   it("should should render all of the tilecards", async () => {
     render(<BytesPage />);
 
-    await waitFor(() => {
+    await waitFor((): void => {
       expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
 
-    await waitFor(() => {
+    await waitFor((): void => {
       expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
     });
     
-    byteOverviewsMock.forEach((byteOverview) => {
+    byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
       expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
       expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();
     });
