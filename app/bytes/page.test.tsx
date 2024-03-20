@@ -11,7 +11,7 @@ import {
   ByteTilecardSubheadingProps,
 } from "./ByteTilecardSubheading";
 
-jest.mock("@/common/firebaseService");
+jest.mock("@/common/FirebaseService");
 jest.mock("@/tilecard/Tilecard");
 jest.mock("./ByteTilecardSubheading");
 
