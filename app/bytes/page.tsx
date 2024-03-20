@@ -1,7 +1,7 @@
 "use client";
 
 import React, { SetStateAction, useState } from "react";
-import FirebaseService from "../common/firebaseService";
+import FirebaseService from "../common/firebaseService_";
 import { Dispatch, useEffect } from "react";
 import Tilecard from "../tilecard/Tilecard";
 import { ByteOverview } from "../common/Byte";

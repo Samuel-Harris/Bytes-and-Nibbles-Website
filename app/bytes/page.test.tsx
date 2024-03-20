@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import BytesPage from "./page";
-import FirebaseService from "@/common/firebaseService";
+import FirebaseService from "@/common/firebaseService_";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";

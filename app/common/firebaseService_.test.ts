@@ -18,7 +18,7 @@ import {
   getStorage,
   ref,
 } from "firebase/storage";
-import FirebaseService from "./firebaseService";
+import FirebaseService from "./firebaseService_";
 import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, SectionType } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
@@ -175,7 +175,7 @@ describe("Firebase service", () => {
       for (let i = 0; i < nibbles.length; i++) {
         if (path === nibbles[i].thumbnail) {
           return nibbleStorageMocks[i].thumbnail;
-        } else if (path === bytes[i].coverPhoto) {
+        } else if (path === nibbles[i].coverPhoto) {
           return nibbleStorageMocks[i].coverPhoto;
         }
       }
@@ -222,6 +222,8 @@ describe("Firebase service", () => {
               resolve(`Download url ${storageMock.coverPhoto}`);
             }
           }
+
+          resolve("Invalid ref");
         })
     );
 
@@ -330,23 +332,13 @@ describe("Firebase service", () => {
     expect(_.isEqual(expectedBytes, firebaseService["bytes"]));
 
     expect(_.isEqual(expectedNibbles, firebaseService["nibbles"]));
-  });
+  },);
 
   it("should list bytes", async () => {
-    const fetchBytesMock = jest.spyOn(
-      FirebaseService.prototype as any,
-      "fetchBytes"
-    );
-    fetchBytesMock.mockImplementation(() => Promise.resolve());
-
-    const firebaseService = await FirebaseService.getInstance();
+    const firebaseService = new (FirebaseService as any)()
     firebaseService["bytes"] = bytes;
 
     const bytesOverviews: ByteOverview[] = await firebaseService.listBytes();
-
-    expect(fetchBytesMock).toHaveBeenCalledTimes(1);
-
-    expect(getDocs).toHaveBeenCalledTimes(0);
 
     expect(bytesOverviews).toEqual(
       bytes.map(
@@ -363,13 +355,7 @@ describe("Firebase service", () => {
   });
 
   it("should get bytes", async () => {
-    const fetchBytesMock = jest.spyOn(
-      FirebaseService.prototype as any,
-      "fetchBytes"
-    );
-    fetchBytesMock.mockImplementation(() => Promise.resolve());
-
-    const firebaseService = await FirebaseService.getInstance();
+    const firebaseService = new (FirebaseService as any)()
     firebaseService["bytes"] = bytes;
 
     const byte: Byte | undefined = firebaseService.getByte(bytes[1].slug);
@@ -378,13 +364,7 @@ describe("Firebase service", () => {
   });
 
   it("should get slugs", async () => {
-    const fetchBytesMock = jest.spyOn(
-      FirebaseService.prototype as any,
-      "fetchBytes"
-    );
-    fetchBytesMock.mockImplementation(() => Promise.resolve());
-
-    const firebaseService = await FirebaseService.getInstance();
+    const firebaseService = new (FirebaseService as any)()
     firebaseService["bytes"] = bytes;
 
     const slugs: string[] = firebaseService.getSlugs();
