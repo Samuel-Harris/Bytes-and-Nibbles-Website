@@ -8,7 +8,7 @@ import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 import { NibbleOverview } from "@/common/Nibble";
 import { NibbleTilecardSubheading, NibbleTilecardSubheadingProps } from "./NibbleTilecardSubheading";
 
-jest.mock("@/common/firebaseService");
+jest.mock("@/common/FirebaseService");
 jest.mock("@/tilecard/Tilecard");
 jest.mock("./NibbleTilecardSubheading");
 
