@@ -18,7 +18,7 @@ import {
   getStorage,
   ref,
 } from "firebase/storage";
-import FirebaseService from "./firebaseService_";
+import FirebaseService from "./FirebaseService";
 import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, SectionType } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";

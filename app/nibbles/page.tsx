@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import FirebaseService from "@/common/firebaseService_";
+import FirebaseService from "@/common/FirebaseService";
 import { NibbleOverview } from "@/common/Nibble";
 import Tilecard from "@/tilecard/Tilecard";
 import { NibbleTilecardSubheading } from "./NibbleTilecardSubheading";

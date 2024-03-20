@@ -1,6 +1,6 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import FirebaseService from "@/common/firebaseService_";
+import FirebaseService from "@/common/FirebaseService";
 import { render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateStaticParams } from "./page";
