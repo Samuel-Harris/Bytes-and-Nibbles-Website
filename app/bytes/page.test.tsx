@@ -6,15 +6,17 @@ import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
+import { ByteTilecardSubheading, ByteTilecardSubheadingProps } from "./ByteTilecardSubheading";
 
 jest.mock("@/common/firebaseService");
 jest.mock("@/tilecard/Tilecard");
+jest.mock("./ByteTilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listBytesMock: MockedFunction<() => ByteOverview[]>;
 let byteOverviewsMock: ByteOverview[];
+let byteTilecardSubheadingMock: MockedFunction<FC<ByteTilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
-let mockTextPrefix: string;
 
 describe("Bytes page", () => {
   beforeAll(() => {
@@ -43,10 +45,14 @@ describe("Bytes page", () => {
     firebaseGetInstanceMock.mockReturnValue(Promise.resolve(FirebaseService.prototype));
     listBytesMock.mockReturnValue(byteOverviewsMock);
 
-    mockTextPrefix = "mock_";
     tilecardMock = mocked(Tilecard);
     tilecardMock.mockImplementation((props: TilecardProps) => {
-      return <p>{mockTextPrefix}{props.title}</p>;
+      return <div><p>{props.title}</p>{props.children}</div>;
+    });
+
+    byteTilecardSubheadingMock = mocked(ByteTilecardSubheading);
+    byteTilecardSubheadingMock.mockImplementation((props: ByteTilecardSubheadingProps) => {
+      return <p>{props.subtitle}</p>;
     });
   });
 
@@ -54,22 +60,20 @@ describe("Bytes page", () => {
     jest.clearAllMocks();
   });
 
-  it("should call firebaseService.listBytes()", async () => {
+  it("should should render all of the tilecards", async () => {
     render(<BytesPage />);
 
     await waitFor(() => {
       expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
-  });
 
-  it("should should render all of the tilecards", async () => {
-    render(<BytesPage />);
-
-    await waitFor(() => {  // test breaks if waitFor is not used here
+    await waitFor(() => {
       expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
     });
+    
     byteOverviewsMock.forEach((byteOverview) => {
-      expect(screen.getByText(mockTextPrefix + byteOverview.title)).toBeInTheDocument();
+      expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
+      expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();
     });
   });
 });

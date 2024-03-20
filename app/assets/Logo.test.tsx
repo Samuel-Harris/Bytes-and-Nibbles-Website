@@ -14,6 +14,6 @@ describe("Logo", () => {
     render(<Logo {...props} />);
 
     expect(screen.getByTitle(logoTitle)).toBeInTheDocument();
-    expect(screen.getByTitle(logoTitle)).toHaveStyle("color: rgb(34 197 94);");
+    expect(screen.getByTitle(logoTitle)).toHaveStyle({color: "rgb(34 197 94);"});
   });
 });
