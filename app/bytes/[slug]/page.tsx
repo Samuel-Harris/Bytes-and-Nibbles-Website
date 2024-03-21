@@ -9,16 +9,38 @@ import {
   SECONDARY_COLOUR_TEXT,
   TERTIARY_COLOUR_TEXT,
 } from "@/common/theme";
+import { WEBSITE_NAME } from "@/common/constants";
+import { Metadata } from "next";
 
-type BytePageProps = {
-  params: { slug: string };
+type RouteParams = {
+  slug: string;
 };
 
-export async function generateStaticParams() {
+type BytePageProps = {
+  params: RouteParams;
+};
+
+export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): { slug: string }[] =>
-      firebaseService.getSlugs().map((slug) => ({ slug }))
+    (firebaseService: FirebaseService): RouteParams[] =>
+      firebaseService.getSlugs().map((slug: string): RouteParams => ({ slug }))
   );
+}
+
+export async function generateMetadata({
+  params: { slug },
+}: BytePageProps): Promise<Metadata> {
+  const title: string = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): string => {
+      const byte = firebaseService.getByte(slug);
+      
+      return byte ? byte.title : "Untitled byte";
+    }
+  );
+
+  return {
+    title: `${title} - ${WEBSITE_NAME}`,
+  };
 }
 
 export default async function BytePage({ params: { slug } }: BytePageProps) {

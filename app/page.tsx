@@ -1,9 +1,9 @@
 import React from "react";
 import { Metadata } from "next";
-import { config } from "./common/config";
+import { WEBSITE_NAME } from "./common/constants";
 
 export const metadata: Metadata = {
-  title: config.websiteName,
+  title: WEBSITE_NAME,
   description:
     "The blog about two of my favourite hobbies: coding and cooking.",
 };
