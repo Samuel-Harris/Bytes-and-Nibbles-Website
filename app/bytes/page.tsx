@@ -3,6 +3,13 @@ import FirebaseService from "../common/FirebaseService";
 import Tilecard from "../tilecard/Tilecard";
 import { ByteOverview } from "../common/Byte";
 import { ByteTilecardSubheading } from "@/bytes/ByteTilecardSubheading";
+import { Metadata } from "next";
+import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
+
+export const metadata: Metadata = {
+  title: `Bytes - ${WEBSITE_NAME}`,
+  description: `The list of published coding blogs. ${METADATA_DESCRIPTION_CREDITS}`,
+};
 
 export default async function BytesPage(): Promise<React.JSX.Element> {
   const byteOverviews: ByteOverview[] = await FirebaseService.getInstance().then(
