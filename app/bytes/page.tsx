@@ -1,24 +1,14 @@
-"use client";
-
-import React, { SetStateAction, useState } from "react";
+import React from "react";
 import FirebaseService from "../common/FirebaseService";
-import { Dispatch, useEffect } from "react";
 import Tilecard from "../tilecard/Tilecard";
 import { ByteOverview } from "../common/Byte";
 import { ByteTilecardSubheading } from "@/bytes/ByteTilecardSubheading";
 
-export default function BytesPage(): React.JSX.Element {
-  const [byteOverviews, setByteOverviews]: [
-    ByteOverview[],
-    Dispatch<SetStateAction<ByteOverview[]>>
-  ] = useState<ByteOverview[]>([]);
-
-  useEffect(() => {
-    FirebaseService.getInstance().then(
-      (firebaseService: FirebaseService): void =>
-        setByteOverviews(firebaseService.listBytes())
-    );
-  }, [setByteOverviews]);
+export default async function BytesPage(): Promise<React.JSX.Element> {
+  const byteOverviews: ByteOverview[] = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): ByteOverview[] =>
+      firebaseService.listBytes()
+  );
 
   return (
     <main className="grid grid-rows-auto justify-items-center ">
