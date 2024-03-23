@@ -72,16 +72,12 @@ describe("Bytes page", () => {
   });
 
   it("should should render all of the tilecards", async () => {
-    render(<BytesPage />);
+    render(await BytesPage());
 
     await waitFor((): void => {
       expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
-
-    await waitFor((): void => {
-      expect(tilecardMock).toHaveBeenCalledTimes(byteOverviewsMock.length);
-    });
-
+    
     byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
       expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
       expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();

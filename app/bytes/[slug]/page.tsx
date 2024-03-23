@@ -49,7 +49,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
     (firebaseService) => firebaseService.getByte(slug)
   );
 
-  if (!byte) return <main>Byte not found</main>;
+  if (!byte) return <p>Byte not found</p>;
 
   const publishDateString: string = getDateString(byte.publishDate);
   const lastModifiedDateString: string = getDateString(byte.lastModifiedDate);
@@ -57,7 +57,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
   const headingSpacing = "mb-1";
 
   return (
-    <main
+    <div
       className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
     >
       <p
@@ -89,6 +89,6 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
       {React.Children.toArray(byte.sections.map(Section))}
-    </main>
+    </div>
   );
 }

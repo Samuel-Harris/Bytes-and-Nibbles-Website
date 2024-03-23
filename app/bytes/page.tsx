@@ -12,28 +12,28 @@ export const metadata: Metadata = {
 };
 
 export default async function BytesPage(): Promise<React.JSX.Element> {
-  const byteOverviews: ByteOverview[] = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): ByteOverview[] =>
-      firebaseService.listBytes()
-  );
+  const byteOverviews: ByteOverview[] =
+    await FirebaseService.getInstance().then(
+      (firebaseService: FirebaseService): ByteOverview[] =>
+        firebaseService.listBytes()
+    );
 
   return (
-    <main className="grid grid-rows-auto justify-items-center ">
-      {React.Children.toArray(
-        byteOverviews.map((byteOverview: ByteOverview) => (
-          <Tilecard
-            title={byteOverview.title}
-            thumbnail={byteOverview.thumbnail}
-            publishDate={byteOverview.publishDate}
-            linkPath={`/bytes/${byteOverview.slug}`}
-          >
-            <ByteTilecardSubheading
-              subtitle={byteOverview.subtitle}
-              series={byteOverview.series}
-            />
-          </Tilecard>
-        ))
-      )}
-    </main>
+    <div className="grid grid-rows-auto justify-items-center ">
+      {byteOverviews.map((byteOverview: ByteOverview) => (
+        <Tilecard
+          key={byteOverview.slug}
+          title={byteOverview.title}
+          thumbnail={byteOverview.thumbnail}
+          publishDate={byteOverview.publishDate}
+          linkPath={`/bytes/${byteOverview.slug}`}
+        >
+          <ByteTilecardSubheading
+            subtitle={byteOverview.subtitle}
+            series={byteOverview.series}
+          />
+        </Tilecard>
+      ))}
+    </div>
   );
 }

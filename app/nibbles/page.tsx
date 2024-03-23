@@ -19,21 +19,20 @@ export default async function NibblesPage(): Promise<React.JSX.Element> {
     );
 
   return (
-    <main className="grid grid-rows-auto justify-items-center ">
-      {React.Children.toArray(
-        nibbleOverviews.map((nibbleOverview: NibbleOverview) => (
-          <Tilecard
-            title={nibbleOverview.title}
-            thumbnail={nibbleOverview.thumbnail}
-            publishDate={nibbleOverview.publishDate}
-            linkPath={`/nibbles/${nibbleOverview.slug}`}
-          >
-            <NibbleTilecardSubheading
-              timeTakenMinutes={nibbleOverview.timeTakenMinutes}
-            />
-          </Tilecard>
-        ))
-      )}
-    </main>
+    <div className="grid grid-rows-auto justify-items-center ">
+      {nibbleOverviews.map((nibbleOverview: NibbleOverview) => (
+        <Tilecard
+          key={nibbleOverview.slug}
+          title={nibbleOverview.title}
+          thumbnail={nibbleOverview.thumbnail}
+          publishDate={nibbleOverview.publishDate}
+          linkPath={`/nibbles/${nibbleOverview.slug}`}
+        >
+          <NibbleTilecardSubheading
+            timeTakenMinutes={nibbleOverview.timeTakenMinutes}
+          />
+        </Tilecard>
+      ))}
+    </div>
   );
 }
