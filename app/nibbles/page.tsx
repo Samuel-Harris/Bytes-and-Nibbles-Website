@@ -1,23 +1,15 @@
-"use client";
-
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React from "react";
 import FirebaseService from "@/common/FirebaseService";
 import { NibbleOverview } from "@/common/Nibble";
 import Tilecard from "@/tilecard/Tilecard";
 import { NibbleTilecardSubheading } from "./NibbleTilecardSubheading";
 
-export default function NibblesPage(): React.JSX.Element {
-  const [nibbleOverviews, setNibbleOverviews]: [
-    NibbleOverview[],
-    Dispatch<SetStateAction<NibbleOverview[]>>
-  ] = useState<NibbleOverview[]>([]);
-
-  useEffect(() => {
-    FirebaseService.getInstance().then(
-      (firebaseService: FirebaseService): void =>
-        setNibbleOverviews(firebaseService.listNibbles())
+export default async function NibblesPage(): Promise<React.JSX.Element> {
+  const nibbleOverviews: NibbleOverview[] =
+    await FirebaseService.getInstance().then(
+      (firebaseService: FirebaseService): NibbleOverview[] =>
+        firebaseService.listNibbles()
     );
-  }, [setNibbleOverviews]);
 
   return (
     <main className="grid grid-rows-auto justify-items-center ">
