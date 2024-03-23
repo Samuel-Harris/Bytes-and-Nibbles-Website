@@ -9,7 +9,7 @@ import {
   SECONDARY_COLOUR_TEXT,
   TERTIARY_COLOUR_TEXT,
 } from "@/common/theme";
-import { WEBSITE_NAME } from "@/common/constants";
+import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 
 type RouteParams = {
@@ -40,6 +40,7 @@ export async function generateMetadata({
 
   return {
     title: `${title} - ${WEBSITE_NAME}`,
+    description: `The coding blog: ${title}. ${METADATA_DESCRIPTION_CREDITS}`,
   };
 }
 

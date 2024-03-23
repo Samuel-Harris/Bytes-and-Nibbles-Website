@@ -3,6 +3,13 @@ import FirebaseService from "@/common/FirebaseService";
 import { NibbleOverview } from "@/common/Nibble";
 import Tilecard from "@/tilecard/Tilecard";
 import { NibbleTilecardSubheading } from "./NibbleTilecardSubheading";
+import { Metadata } from "next";
+import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
+
+export const metadata: Metadata = {
+  title: `Nibbles - ${WEBSITE_NAME}`,
+  description: `The list of published recipes. ${METADATA_DESCRIPTION_CREDITS}`,
+};
 
 export default async function NibblesPage(): Promise<React.JSX.Element> {
   const nibbleOverviews: NibbleOverview[] =
