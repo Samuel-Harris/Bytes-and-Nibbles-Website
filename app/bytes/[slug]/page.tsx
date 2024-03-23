@@ -9,16 +9,39 @@ import {
   SECONDARY_COLOUR_TEXT,
   TERTIARY_COLOUR_TEXT,
 } from "@/common/theme";
+import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
+import { Metadata } from "next";
 
-type BytePageProps = {
-  params: { slug: string };
+type RouteParams = {
+  slug: string;
 };
 
-export async function generateStaticParams() {
+type BytePageProps = {
+  params: RouteParams;
+};
+
+export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): { slug: string }[] =>
-      firebaseService.getSlugs().map((slug) => ({ slug }))
+    (firebaseService: FirebaseService): RouteParams[] =>
+      firebaseService.getSlugs().map((slug: string): RouteParams => ({ slug }))
   );
+}
+
+export async function generateMetadata({
+  params: { slug },
+}: BytePageProps): Promise<Metadata> {
+  const title: string = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): string => {
+      const byte = firebaseService.getByte(slug);
+      
+      return byte ? byte.title : "Untitled byte";
+    }
+  );
+
+  return {
+    title: `${title} - ${WEBSITE_NAME}`,
+    description: `The coding blog: ${title}. ${METADATA_DESCRIPTION_CREDITS}`,
+  };
 }
 
 export default async function BytePage({ params: { slug } }: BytePageProps) {
@@ -26,7 +49,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
     (firebaseService) => firebaseService.getByte(slug)
   );
 
-  if (!byte) return <main>Byte not found</main>;
+  if (!byte) return <p>Byte not found</p>;
 
   const publishDateString: string = getDateString(byte.publishDate);
   const lastModifiedDateString: string = getDateString(byte.lastModifiedDate);
@@ -34,7 +57,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
   const headingSpacing = "mb-1";
 
   return (
-    <main
+    <div
       className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
     >
       <p
@@ -66,6 +89,6 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
       {React.Children.toArray(byte.sections.map(Section))}
-    </main>
+    </div>
   );
 }

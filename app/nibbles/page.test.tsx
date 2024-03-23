@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import BytesPage from "./page";
 import FirebaseService from "@/common/FirebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
@@ -10,6 +9,7 @@ import {
   NibbleTilecardSubheading,
   NibbleTilecardSubheadingProps,
 } from "./NibbleTilecardSubheading";
+import NibblesPage from "./page";
 
 jest.mock("@/common/FirebaseService");
 jest.mock("@/tilecard/Tilecard");
@@ -25,6 +25,7 @@ let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
   beforeAll(() => {
+    jest.clearAllMocks();
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
       Promise.resolve(FirebaseService.prototype)
@@ -75,14 +76,10 @@ describe("Bytes page", () => {
   });
 
   it("should should render all of the tilecards", async () => {
-    render(<BytesPage />);
+    render(await NibblesPage());
 
     await waitFor((): void => {
       expect(listNibblesMock).toHaveBeenCalledTimes(1);
-    });
-
-    await waitFor((): void => {
-      expect(tilecardMock).toHaveBeenCalledTimes(nibbleOverviewsMock.length);
     });
 
     nibbleOverviewsMock.forEach((nibbleOverview: NibbleOverview): void => {

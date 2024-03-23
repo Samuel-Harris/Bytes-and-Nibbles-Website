@@ -1,42 +1,39 @@
-"use client";
-
-import React, { SetStateAction, useState } from "react";
+import React from "react";
 import FirebaseService from "../common/FirebaseService";
-import { Dispatch, useEffect } from "react";
 import Tilecard from "../tilecard/Tilecard";
 import { ByteOverview } from "../common/Byte";
 import { ByteTilecardSubheading } from "@/bytes/ByteTilecardSubheading";
+import { Metadata } from "next";
+import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 
-export default function BytesPage(): React.JSX.Element {
-  const [byteOverviews, setByteOverviews]: [
-    ByteOverview[],
-    Dispatch<SetStateAction<ByteOverview[]>>
-  ] = useState<ByteOverview[]>([]);
+export const metadata: Metadata = {
+  title: `Bytes - ${WEBSITE_NAME}`,
+  description: `The list of published coding blogs. ${METADATA_DESCRIPTION_CREDITS}`,
+};
 
-  useEffect(() => {
-    FirebaseService.getInstance().then(
-      (firebaseService: FirebaseService): void =>
-        setByteOverviews(firebaseService.listBytes())
+export default async function BytesPage(): Promise<React.JSX.Element> {
+  const byteOverviews: ByteOverview[] =
+    await FirebaseService.getInstance().then(
+      (firebaseService: FirebaseService): ByteOverview[] =>
+        firebaseService.listBytes()
     );
-  }, [setByteOverviews]);
 
   return (
-    <main className="grid grid-rows-auto justify-items-center ">
-      {React.Children.toArray(
-        byteOverviews.map((byteOverview: ByteOverview) => (
-          <Tilecard
-            title={byteOverview.title}
-            thumbnail={byteOverview.thumbnail}
-            publishDate={byteOverview.publishDate}
-            linkPath={`/bytes/${byteOverview.slug}`}
-          >
-            <ByteTilecardSubheading
-              subtitle={byteOverview.subtitle}
-              series={byteOverview.series}
-            />
-          </Tilecard>
-        ))
-      )}
-    </main>
+    <div className="grid grid-rows-auto justify-items-center ">
+      {byteOverviews.map((byteOverview: ByteOverview) => (
+        <Tilecard
+          key={byteOverview.slug}
+          title={byteOverview.title}
+          thumbnail={byteOverview.thumbnail}
+          publishDate={byteOverview.publishDate}
+          linkPath={`/bytes/${byteOverview.slug}`}
+        >
+          <ByteTilecardSubheading
+            subtitle={byteOverview.subtitle}
+            series={byteOverview.series}
+          />
+        </Tilecard>
+      ))}
+    </div>
   );
 }
