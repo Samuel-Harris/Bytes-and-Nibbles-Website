@@ -147,8 +147,16 @@ export default class FirebaseService {
     return this.bytes.find((byte: Byte) => byte.slug === slug);
   }
 
-  public getSlugs(): string[] {
+  public getNibble(slug: string): Nibble | undefined {
+    return this.nibbles.find((nibble: Nibble) => nibble.slug === slug);
+  }
+
+  public getByteSlugs(): string[] {
     return this.bytes.map((byte: Byte) => byte.slug);
+  }
+
+  public getNibbleSlugs(): string[] {
+    return this.nibbles.map((nibble: Nibble) => nibble.slug);
   }
 
   private getImage(path: string): Promise<string> {

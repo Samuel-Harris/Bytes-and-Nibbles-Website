@@ -2,7 +2,6 @@ import React from "react";
 import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
-import Section from "./Section";
 import {
   PAGE_BOTTOM_MARGIN,
   PAGE_WIDTH,
@@ -11,12 +10,13 @@ import {
 } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
+import { Nibble } from "@/common/Nibble";
 
 type RouteParams = {
   slug: string;
 };
 
-type BytePageProps = {
+type NibblePageProps = {
   params: RouteParams;
 };
 
@@ -24,38 +24,40 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
-        .getByteSlugs()
+        .getNibbleSlugs()
         .map((slug: string): RouteParams => ({ slug }))
   );
 }
 
 export async function generateMetadata({
   params: { slug },
-}: BytePageProps): Promise<Metadata> {
+}: NibblePageProps): Promise<Metadata> {
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
-      const byte: Byte | undefined = firebaseService.getByte(slug);
+      const nibble: Nibble | undefined = firebaseService.getNibble(slug);
 
-      return byte ? byte.title : "Untitled byte";
+      return nibble ? nibble.title : "Untitled byte";
     }
   );
 
   return {
     title: `${title} - ${WEBSITE_NAME}`,
-    description: `The coding blog: ${title}. ${METADATA_DESCRIPTION_CREDITS}`,
+    description: `The recipe: ${title}. ${METADATA_DESCRIPTION_CREDITS}`,
   };
 }
 
-export default async function BytePage({ params: { slug } }: BytePageProps) {
-  const byte: Byte | undefined = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): Byte | undefined =>
-      firebaseService.getByte(slug)
+export default async function NibblePage({
+  params: { slug },
+}: NibblePageProps) {
+  const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): Nibble | undefined =>
+      firebaseService.getNibble(slug)
   );
 
-  if (!byte) return <p>Byte not found</p>;
+  if (!nibble) return <p>Nibble not found</p>;
 
-  const publishDateString: string = getDateString(byte.publishDate);
-  const lastModifiedDateString: string = getDateString(byte.lastModifiedDate);
+  const publishDateString: string = getDateString(nibble.publishDate);
+  const lastModifiedDateString: string = getDateString(nibble.lastModifiedDate);
 
   const headingSpacing = "mb-1";
 
@@ -66,16 +68,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
       <p
         className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
       >
-        {byte.title}
-      </p>
-      <p className={`text-2xl ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
-        {byte.subtitle}
-      </p>
-      <p
-        style={{ backgroundColor: byte.series.accentColour }} // cannot be set in tailwind as this is dynamically generated
-        className={`text-md inline-flex px-1 py-1 font-medium ring-1 ring-inset ring-slate-500 ${headingSpacing}`}
-      >
-        {byte.series.title}
+        {nibble.title}
       </p>
       <p className={`mb-1 text-md ${TERTIARY_COLOUR_TEXT}`}>
         Published: <span className="text-white">{publishDateString}</span>
@@ -87,11 +80,13 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
         </p>
       )}
       <img
-        src={byte.coverPhoto}
-        alt={byte.title}
+        src={nibble.coverPhoto}
+        alt={nibble.title}
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
-      {React.Children.toArray(byte.sections.map(Section))}
+      <p className={`text-l ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
+        Approx. {nibble.timeTakenMinutes} minutes
+      </p>
     </div>
   );
 }
