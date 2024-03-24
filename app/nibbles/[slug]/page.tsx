@@ -10,7 +10,7 @@ import {
 } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
-import { Nibble } from "@/common/Nibble";
+import { Ingredient, Nibble } from "@/common/Nibble";
 
 type RouteParams = {
   slug: string;
@@ -61,6 +61,8 @@ export default async function NibblePage({
 
   const headingSpacing = "mb-1";
 
+  console.log(nibble.ingredients);
+
   return (
     <div
       className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
@@ -84,9 +86,21 @@ export default async function NibblePage({
         alt={nibble.title}
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
-      <p className={`text-l ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
+      <p className={`text-l ${headingSpacing}`}>
         Approx. {nibble.timeTakenMinutes} minutes
       </p>
+      <div className="my-4">
+        <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
+          Ingredients
+        </p>
+        <ul className={`list-disc list-inside ${SECONDARY_COLOUR_TEXT}`}>
+          {nibble.ingredients.map((ingredient: Ingredient) => (
+            <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+              <span className={SECONDARY_COLOUR_TEXT}>{ingredient.name}</span> - {ingredient.quantity} {ingredient.measurement}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
