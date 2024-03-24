@@ -117,7 +117,7 @@ describe("Firebase service", () => {
   });
 
   it("should initialise a connection to firebase and fetch all bytes on instantiation", async () => {
-    const appMock = mock<FirebaseApp>();
+    const appMock: FirebaseApp = mock<FirebaseApp>();
     const initializeAppMock = mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
@@ -264,7 +264,7 @@ describe("Firebase service", () => {
       >
     );
 
-    const firebaseService = await FirebaseService.getInstance();
+    const firebaseService: FirebaseService = await FirebaseService.getInstance();
 
     expect(firebaseService).toBeInstanceOf(FirebaseService);
 
@@ -318,7 +318,9 @@ describe("Firebase service", () => {
       );
     }
 
-    expect(getDownloadURLMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
+    expect(getDownloadURLMock).toHaveBeenCalledTimes(
+      2 * (bytes.length + nibbles.length)
+    );
     for (const storageMock of byteStorageMocks) {
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.thumbnail);
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.coverPhoto);
@@ -332,10 +334,10 @@ describe("Firebase service", () => {
     expect(_.isEqual(expectedBytes, firebaseService["bytes"]));
 
     expect(_.isEqual(expectedNibbles, firebaseService["nibbles"]));
-  },);
+  });
 
   it("should list bytes", async () => {
-    const firebaseService = new (FirebaseService as any)()
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
     const bytesOverviews: ByteOverview[] = await firebaseService.listBytes();
@@ -355,7 +357,7 @@ describe("Firebase service", () => {
   });
 
   it("should get bytes", async () => {
-    const firebaseService = new (FirebaseService as any)()
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
     const byte: Byte | undefined = firebaseService.getByte(bytes[1].slug);
@@ -364,10 +366,10 @@ describe("Firebase service", () => {
   });
 
   it("should get slugs", async () => {
-    const firebaseService = new (FirebaseService as any)()
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
-    const slugs: string[] = firebaseService.getSlugs();
+    const slugs: string[] = firebaseService.getByteSlugs();
 
     expect(slugs.length).toEqual(bytes.length);
     for (const slug of slugs) {
