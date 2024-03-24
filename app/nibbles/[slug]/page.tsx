@@ -1,5 +1,4 @@
 import React from "react";
-import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
 import {
@@ -61,8 +60,6 @@ export default async function NibblePage({
 
   const headingSpacing = "mb-1";
 
-  console.log(nibble.ingredients);
-
   return (
     <div
       className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
@@ -87,19 +84,38 @@ export default async function NibblePage({
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
       <p className={`text-l ${headingSpacing}`}>
-        Approx. {nibble.timeTakenMinutes} minutes
+        This took me <span className={SECONDARY_COLOUR_TEXT}>{nibble.timeTakenMinutes} minutes</span>
       </p>
       <div className="my-4">
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Ingredients
         </p>
         <ul className={`list-disc list-inside ${SECONDARY_COLOUR_TEXT}`}>
-          {nibble.ingredients.map((ingredient: Ingredient) => (
-            <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-              <span className={SECONDARY_COLOUR_TEXT}>{ingredient.name}</span> - {ingredient.quantity} {ingredient.measurement}
-            </li>
-          ))}
+          {nibble.ingredients.map(
+            (ingredient: Ingredient): JSX.Element => (
+              <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+                <span className={SECONDARY_COLOUR_TEXT}>{ingredient.name}</span>{" "}
+                - {ingredient.quantity} {ingredient.measurement}
+              </li>
+            )
+          )}
         </ul>
+      </div>
+      <div className="mt-4">
+        <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
+          Steps
+        </p>
+        <ol className={`list-decimal list-inside ${SECONDARY_COLOUR_TEXT}`}>
+          {React.Children.toArray(
+            nibble.steps.map(
+              (step: string): JSX.Element => (
+                <li className={`pb-2 ${SECONDARY_COLOUR_TEXT}`}>
+                  <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
+                </li>
+              )
+            )
+          )}
+        </ol>
       </div>
     </div>
   );
