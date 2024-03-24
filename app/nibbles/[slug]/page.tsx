@@ -60,6 +60,8 @@ export default async function NibblePage({
 
   const headingSpacing = "mb-1";
 
+  const isSourceUrl = nibble.source.slice(0, 4) === "http";
+
   return (
     <div
       className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
@@ -84,7 +86,13 @@ export default async function NibblePage({
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
       <p className={`text-l ${headingSpacing}`}>
-        This took me <span className={SECONDARY_COLOUR_TEXT}>{nibble.timeTakenMinutes} minutes</span>
+        This took me{" "}
+        <span className={SECONDARY_COLOUR_TEXT}>
+          {nibble.timeTakenMinutes} minutes
+        </span>
+      </p>
+      <p className={`text-l ${headingSpacing}`}>
+        Adapted from <span className={SECONDARY_COLOUR_TEXT}>{isSourceUrl ? <a href={nibble.source}>{nibble.source}</a> : nibble.source}</span>
       </p>
       <div className="my-4">
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
