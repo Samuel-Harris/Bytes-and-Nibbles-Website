@@ -16,7 +16,7 @@ jest.mock("@/tilecard/Tilecard");
 jest.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-let byteExample: Byte = {
+const byteExample: Byte = {
   title: "Blog title",
   subtitle: "Blog subtitle",
   series: { title: "My series", accentColour: "#ac3Ef" },

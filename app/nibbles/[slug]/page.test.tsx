@@ -13,7 +13,7 @@ jest.mock("@/common/timeUtils");
 jest.mock("@/tilecard/Tilecard");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-let nibbleExample: Nibble = {
+const nibbleExample: Nibble = {
   title: "My title",
   thumbnail: "Thumbnail src",
   coverPhoto: "Cover photo src",
