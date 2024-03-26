@@ -23,92 +23,94 @@ import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";
-import { Nibble } from "./Nibble";
+import { Nibble, NibbleOverview } from "./Nibble";
 
 jest.mock("firebase/app");
 jest.mock("firebase/firestore");
 jest.mock("firebase/storage");
 
-let bytes: Byte[];
-let nibbles: Nibble[];
+const bytes: Byte[] = [
+  {
+    title: "My title 1",
+    subtitle: "My subtitle 1",
+    series: { title: "My series 1", accentColour: "#ac3Ef" },
+    slug: "my-slug-1",
+    thumbnail: "My thumbnail 1",
+    coverPhoto: "My cover photo 1",
+    publishDate: new Date("03/12/03"),
+    lastModifiedDate: new Date("04/12/03"),
+    sections: [
+      {
+        title: "Section title 1",
+        body: [{ type: "paragraph", value: "My paragraph 1" }],
+      },
+    ],
+  },
+  {
+    title: "My title 2",
+    subtitle: "My subtitle 2",
+    series: { title: "My series 2", accentColour: "#FA3FE" },
+    slug: "my-slug-2",
+    thumbnail: "My thumbnail 2",
+    coverPhoto: "My cover photo 2",
+    publishDate: new Date("11/05/24"),
+    lastModifiedDate: new Date("12/06/24"),
+    sections: [
+      {
+        title: "Section title 2",
+        body: [
+          { type: "paragraph", value: "My paragraph 2" },
+          { type: "paragraph", value: "My paragraph 3" },
+        ],
+      },
+      {
+        title: "Section title 3",
+        body: [{ type: "paragraph", value: "My paragraph 4" }],
+      },
+    ],
+  },
+];
+
+const nibbles: Nibble[] = [
+  {
+    title: "My nibble 1",
+    thumbnail: "My thumbnail 3",
+    coverPhoto: "My cover photo 3",
+    slug: "my-slug-3",
+    source: "My source 1",
+    ingredients: [
+      {
+        name: "Garam masala",
+        quantity: 1,
+        measurement: "cup",
+      },
+    ],
+    steps: ["Drink the powder"],
+    publishDate: new Date("11/05/24"),
+    lastModifiedDate: new Date("01/05/24"),
+    timeTakenMinutes: 60,
+  },
+  {
+    title: "My nibble 2",
+    thumbnail: "My thumbnail 4",
+    coverPhoto: "My cover photo 4",
+    slug: "my-slug-4",
+    source: "My source 2",
+    ingredients: [
+      {
+        name: "Turmeric",
+        quantity: 2,
+        measurement: "Tbsp",
+      },
+    ],
+    steps: ["Consume the yellow"],
+    publishDate: new Date("12/03/21"),
+    lastModifiedDate: new Date("01/05/24"),
+    timeTakenMinutes: 65,
+  },
+];
 
 describe("Firebase service", () => {
-  beforeEach(() => {
-    bytes = [
-      {
-        title: "My title 1",
-        subtitle: "My subtitle 1",
-        series: { title: "My series 1", accentColour: "#ac3Ef" },
-        slug: "my-slug-1",
-        thumbnail: "My thumbnail 1",
-        coverPhoto: "My cover photo 1",
-        publishDate: new Date("03/12/03"),
-        lastModifiedDate: new Date("04/12/03"),
-        sections: [
-          {
-            title: "Section title 1",
-            body: [{ type: "paragraph", value: "My paragraph 1" }],
-          },
-        ],
-      },
-      {
-        title: "My title 2",
-        subtitle: "My subtitle 2",
-        series: { title: "My series 2", accentColour: "#FA3FE" },
-        slug: "my-slug-2",
-        thumbnail: "My thumbnail 2",
-        coverPhoto: "My cover photo 2",
-        publishDate: new Date("11/05/24"),
-        lastModifiedDate: new Date("12/06/24"),
-        sections: [
-          {
-            title: "Section title 2",
-            body: [{ type: "paragraph", value: "My paragraph 2" }],
-          },
-        ],
-      },
-    ];
-
-    nibbles = [
-      {
-        title: "My nibble 1",
-        thumbnail: "My thumbnail 3",
-        coverPhoto: "My cover photo 3",
-        slug: "my-slug-3",
-        source: "My source 1",
-        ingredients: [
-          {
-            name: "Garam masala",
-            quantity: 1,
-            measurement: "cup",
-          },
-        ],
-        steps: ["Drink the powder"],
-        publishDate: new Date("11/05/24"),
-        lastModifiedDate: new Date("01/05/24"),
-        timeTakenMinutes: 60,
-      },
-      {
-        title: "My nibble 2",
-        thumbnail: "My thumbnail 4",
-        coverPhoto: "My cover photo 4",
-        slug: "my-slug-4",
-        source: "My source 2",
-        ingredients: [
-          {
-            name: "Turmeric",
-            quantity: 2,
-            measurement: "Tbsp",
-          },
-        ],
-        steps: ["Consume the yellow"],
-        publishDate: new Date("12/03/21"),
-        lastModifiedDate: new Date("01/05/24"),
-        timeTakenMinutes: 65,
-      },
-    ];
-  });
-
   afterEach(() => {
     // @ts-ignore
     FirebaseService["instance"] = undefined;
@@ -117,7 +119,7 @@ describe("Firebase service", () => {
   });
 
   it("should initialise a connection to firebase and fetch all bytes on instantiation", async () => {
-    const appMock = mock<FirebaseApp>();
+    const appMock: FirebaseApp = mock<FirebaseApp>();
     const initializeAppMock = mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
@@ -183,15 +185,13 @@ describe("Firebase service", () => {
       return mock<StorageReference>();
     });
 
-    const expectedBytes = rawBytes.map((byte) => {
-      return {
-        ...byte,
-        thumbnail: `Download url ${byte.title} ${byte.thumbnail}`,
-        coverPhoto: `Download url ${byte.title} ${byte.coverPhoto}`,
-        publishDate: byte.publishDate.toDate(),
-        lastModifiedDate: byte.lastModifiedDate.toDate(),
-      };
-    });
+    const expectedBytes = rawBytes.map((byte) => ({
+      ...byte,
+      thumbnail: `Download url ${byte.title} ${byte.thumbnail}`,
+      coverPhoto: `Download url ${byte.title} ${byte.coverPhoto}`,
+      publishDate: byte.publishDate.toDate(),
+      lastModifiedDate: byte.lastModifiedDate.toDate(),
+    }));
 
     const expectedNibbles = rawNibbles.map((nibble) => {
       return {
@@ -264,7 +264,8 @@ describe("Firebase service", () => {
       >
     );
 
-    const firebaseService = await FirebaseService.getInstance();
+    const firebaseService: FirebaseService =
+      await FirebaseService.getInstance();
 
     expect(firebaseService).toBeInstanceOf(FirebaseService);
 
@@ -318,7 +319,9 @@ describe("Firebase service", () => {
       );
     }
 
-    expect(getDownloadURLMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
+    expect(getDownloadURLMock).toHaveBeenCalledTimes(
+      2 * (bytes.length + nibbles.length)
+    );
     for (const storageMock of byteStorageMocks) {
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.thumbnail);
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.coverPhoto);
@@ -332,10 +335,10 @@ describe("Firebase service", () => {
     expect(_.isEqual(expectedBytes, firebaseService["bytes"]));
 
     expect(_.isEqual(expectedNibbles, firebaseService["nibbles"]));
-  },);
+  });
 
   it("should list bytes", async () => {
-    const firebaseService = new (FirebaseService as any)()
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
     const bytesOverviews: ByteOverview[] = await firebaseService.listBytes();
@@ -354,8 +357,29 @@ describe("Firebase service", () => {
     );
   });
 
+  it("should list nibbles", async () => {
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    firebaseService["nibbles"] = nibbles;
+
+    const nibbleOverviews: NibbleOverview[] =
+      await firebaseService.listNibbles();
+
+    expect(nibbleOverviews).toEqual(
+      nibbles.map(
+        (nibble): NibbleOverview => ({
+          title: nibble.title,
+          thumbnail: nibble.thumbnail,
+          coverPhoto: nibble.coverPhoto,
+          slug: nibble.slug,
+          publishDate: nibble.publishDate,
+          timeTakenMinutes: nibble.timeTakenMinutes,
+        })
+      )
+    );
+  });
+
   it("should get bytes", async () => {
-    const firebaseService = new (FirebaseService as any)()
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
     const byte: Byte | undefined = firebaseService.getByte(bytes[1].slug);
@@ -363,15 +387,38 @@ describe("Firebase service", () => {
     expect(byte).toEqual(bytes[1]);
   });
 
-  it("should get slugs", async () => {
-    const firebaseService = new (FirebaseService as any)()
+  it("should get nibbles", async () => {
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    firebaseService["nibbles"] = nibbles;
+
+    const nibble: Nibble | undefined = firebaseService.getNibble(
+      nibbles[1].slug
+    );
+
+    expect(nibble).toEqual(nibbles[1]);
+  });
+
+  it("should get byte slugs", async () => {
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
-    const slugs: string[] = firebaseService.getSlugs();
+    const slugs: string[] = firebaseService.getByteSlugs();
 
     expect(slugs.length).toEqual(bytes.length);
     for (const slug of slugs) {
       expect(bytes.find((byte) => byte.slug === slug)).toBeDefined();
+    }
+  });
+
+  it("should get nibble slugs", async () => {
+    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    firebaseService["nibbles"] = nibbles;
+
+    const slugs: string[] = firebaseService.getNibbleSlugs();
+
+    expect(slugs.length).toEqual(nibbles.length);
+    for (const slug of slugs) {
+      expect(nibbles.find((nibble) => nibble.slug === slug)).toBeDefined();
     }
   });
 });

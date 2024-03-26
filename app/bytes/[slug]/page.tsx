@@ -23,7 +23,9 @@ type BytePageProps = {
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
-      firebaseService.getSlugs().map((slug: string): RouteParams => ({ slug }))
+      firebaseService
+        .getByteSlugs()
+        .map((slug: string): RouteParams => ({ slug }))
   );
 }
 
@@ -32,8 +34,8 @@ export async function generateMetadata({
 }: BytePageProps): Promise<Metadata> {
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
-      const byte = firebaseService.getByte(slug);
-      
+      const byte: Byte | undefined = firebaseService.getByte(slug);
+
       return byte ? byte.title : "Untitled byte";
     }
   );
@@ -46,7 +48,8 @@ export async function generateMetadata({
 
 export default async function BytePage({ params: { slug } }: BytePageProps) {
   const byte: Byte | undefined = await FirebaseService.getInstance().then(
-    (firebaseService) => firebaseService.getByte(slug)
+    (firebaseService: FirebaseService): Byte | undefined =>
+      firebaseService.getByte(slug)
   );
 
   if (!byte) return <p>Byte not found</p>;

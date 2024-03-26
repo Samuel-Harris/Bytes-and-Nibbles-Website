@@ -5,13 +5,13 @@ export type NibbleOverview = {
     slug: string;
     publishDate: Date;
     timeTakenMinutes: number;
-}
+};
 
 export type Ingredient = {
     name: string;
     quantity: number;
     measurement: string;
-}
+};
 
 export type Nibble = {
     title: string;
@@ -24,4 +24,4 @@ export type Nibble = {
     publishDate: Date;
     lastModifiedDate: Date;
     timeTakenMinutes: number;
-}
+};
