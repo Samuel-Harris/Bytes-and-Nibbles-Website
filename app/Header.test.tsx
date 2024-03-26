@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import "@testing-library/jest-dom";
-import Header from "./layout";
+import Header from "./Header";
 import Logo, { LogoProps } from "./assets/Logo";
 import { mocked, MockedFunction } from "jest-mock";
 import { screen } from "@testing-library/dom";
