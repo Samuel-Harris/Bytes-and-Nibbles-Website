@@ -72,7 +72,7 @@ describe("Individual nibbles page", () => {
   });
 
   it.each([nibbleExample, undefined])(
-    "should use the nibble title for the page title",
+    "should use apply the appropriate metadata",
     async (nibble: Nibble | undefined) => {
       getNibbleMock.mockReturnValue(nibble);
 
