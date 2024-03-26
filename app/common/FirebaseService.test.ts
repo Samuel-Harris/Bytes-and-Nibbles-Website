@@ -20,7 +20,7 @@ import {
 } from "firebase/storage";
 import FirebaseService from "./FirebaseService";
 import { firebaseConfig } from "./firebaseConstants";
-import { Byte, ByteOverview, CaptionedImageType } from "./Byte";
+import { Byte, ByteOverview } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";
 import { Nibble, NibbleOverview } from "./Nibble";
