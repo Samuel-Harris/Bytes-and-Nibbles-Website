@@ -66,6 +66,10 @@ describe("Individual byte page", () => {
     getDateStringMock = mocked(getDateString);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   sectionMock = mocked(Section);
   sectionMock.mockImplementation((props: SectionType) => {
     return <p>{props.title}</p>;
@@ -86,11 +90,7 @@ describe("Individual byte page", () => {
     expect(params).toEqual(mockSlugs.map((slug) => ({ slug })));
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("should render the page with separate publish and last modified date correctly", async () => {
+  it("should render pages with differing publish and last modified dates correctly", async () => {
     const publishDateString = "22/02/24";
     const lastModifiedDateString = "23/02/24";
     getDateStringMock.mockImplementation((date: Date): string => {
@@ -124,7 +124,6 @@ describe("Individual byte page", () => {
     expect(screen.getByText(byte.subtitle)).toBeInTheDocument();
     expect(screen.getByRole("img")).toHaveAttribute("src", byte.coverPhoto);
 
-    // both publish date and last modified date should be displayed
     expect(
       screen.getByText(publishDateString, { exact: false })
     ).toBeInTheDocument();
@@ -142,7 +141,7 @@ describe("Individual byte page", () => {
     });
   });
 
-  it("should render the page with the same publish and last modified date correctly", async () => {
+  it("should render pages with identical publish and last modified dates correctly", async () => {
     const dateString = "20/02/24";
     getDateStringMock.mockImplementation((date: Date): string => {
       if (date === byte.publishDate || date === byte.lastModifiedDate) {
@@ -173,7 +172,6 @@ describe("Individual byte page", () => {
     expect(screen.getByText(byte.subtitle)).toBeInTheDocument();
     expect(screen.getByRole("img")).toHaveAttribute("src", byte.coverPhoto);
 
-    // either publish date or last modified date should be displayed. Not both
     expect(screen.getByText(dateString, { exact: false })).toBeInTheDocument();
     expect(screen.getAllByText(dateString, { exact: false }).length).toEqual(1);
 

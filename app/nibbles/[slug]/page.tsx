@@ -35,7 +35,7 @@ export async function generateMetadata({
     (firebaseService: FirebaseService): string => {
       const nibble: Nibble | undefined = firebaseService.getNibble(slug);
 
-      return nibble ? nibble.title : "Untitled byte";
+      return nibble ? nibble.title : "Untitled nibble";
     }
   );
 
@@ -92,7 +92,14 @@ export default async function NibblePage({
         </span>
       </p>
       <p className={`text-l ${headingSpacing}`}>
-        Adapted from <span className={SECONDARY_COLOUR_TEXT}>{isSourceUrl ? <a href={nibble.source}>{nibble.source}</a> : nibble.source}</span>
+        Adapted from{" "}
+        <span className={SECONDARY_COLOUR_TEXT}>
+          {isSourceUrl ? (
+            <a href={nibble.source}>{nibble.source}</a>
+          ) : (
+            nibble.source
+          )}
+        </span>
       </p>
       <div className="my-4">
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
@@ -103,7 +110,8 @@ export default async function NibblePage({
             (ingredient: Ingredient): JSX.Element => (
               <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
                 <span className={SECONDARY_COLOUR_TEXT}>{ingredient.name}</span>{" "}
-                - {ingredient.quantity} {ingredient.measurement}
+                - {ingredient.quantity}
+                {ingredient.measurement ? ` ${ingredient.measurement}` : ""}
               </li>
             )
           )}
