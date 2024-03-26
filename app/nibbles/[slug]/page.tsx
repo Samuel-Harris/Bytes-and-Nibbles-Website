@@ -83,7 +83,7 @@ export default async function NibblePage({
       <img
         src={nibble.coverPhoto}
         alt={nibble.title}
-        className={`justify-self-center w-fit mt-2 sm:mt-6`}
+        className={`justify-self-center w-fit mt-2 sm:mt-6 mb-3`}
       />
       <p className={`text-l ${headingSpacing}`}>
         This took me{" "}
