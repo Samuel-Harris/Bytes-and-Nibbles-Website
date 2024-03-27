@@ -105,7 +105,7 @@ export default async function NibblePage({
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Ingredients
         </p>
-        <ul className={`list-disc list-inside ${SECONDARY_COLOUR_TEXT}`}>
+        <ul className={`list-inside ${SECONDARY_COLOUR_TEXT}`}>
           {nibble.ingredients.map(
             (ingredient: Ingredient): JSX.Element => (
               <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
@@ -121,11 +121,11 @@ export default async function NibblePage({
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Steps
         </p>
-        <ol className={`list-decimal list-inside ${SECONDARY_COLOUR_TEXT}`}>
+        <ol className={`list-inside ${SECONDARY_COLOUR_TEXT}`}>
           {React.Children.toArray(
             nibble.steps.map(
               (step: string): JSX.Element => (
-                <li className={`pb-2 ${SECONDARY_COLOUR_TEXT}`}>
+                <li className={`pb-2`}>
                   <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
                 </li>
               )
