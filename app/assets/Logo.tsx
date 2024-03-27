@@ -4,7 +4,7 @@ export type LogoProps = {
   className?: string;
 }
 
-const Logo: FC<LogoProps> = (props: LogoProps) => (
+const Logo: FC<LogoProps> = (props) => (
   <svg
     fill="none"
     viewBox="0 0 32.96244 20.937038"

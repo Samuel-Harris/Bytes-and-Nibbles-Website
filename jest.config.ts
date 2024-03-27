@@ -5,13 +5,13 @@ const config: Config = {
   collectCoverageFrom: ["app/**/*.{ts,tsx}"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "jest.tsconfig.json" }],
-    "^.+\\.css$": "jest-transform-css"
+    "^.+\\.css$": "jest-transform-css",
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",
   moduleNameMapper: {
-        "^@/(.*)$": "<rootDir>/app/$1",
-  }
+    "^@/(.*)$": "<rootDir>/app/$1",
+  },
 };
 
 export default config;
