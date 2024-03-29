@@ -17,14 +17,6 @@ export type ParagraphType = {
   value: string;
 };
 
-export type CodeType = {
-  type: "code";
-  value: {
-    language: string;
-    code: string;
-  };
-};
-
 export type CaptionedImageType = {
   type: "captionedImage";
   value: {
@@ -33,7 +25,7 @@ export type CaptionedImageType = {
   };
 };
 
-export type BodyComponent = ParagraphType | CodeType | CaptionedImageType;
+export type BodyComponent = ParagraphType | CaptionedImageType;
 
 export type SectionType = {
   title: string;

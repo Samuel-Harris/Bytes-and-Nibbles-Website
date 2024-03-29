@@ -42,10 +42,6 @@ const byteExample: Byte = {
           type: "captionedImage",
           value: { image: "Image src", caption: "Image caption" },
         },
-        {
-          type: "code",
-          value: { language: "Python", code: "print('Hello world!')" },
-        },
       ],
     },
   ],
