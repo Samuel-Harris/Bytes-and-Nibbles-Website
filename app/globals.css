@@ -30,6 +30,7 @@ body {
   ul,
   ol {
     list-style: revert-layer;
+    list-style-position: inside;
   }
 
   pre {
