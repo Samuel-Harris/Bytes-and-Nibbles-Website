@@ -102,7 +102,7 @@ export default async function NibblePage({
         </span>
       </p>
       <div className="my-4">
-        <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Ingredients
         </p>
         <ul className={SECONDARY_COLOUR_TEXT}>
@@ -118,7 +118,7 @@ export default async function NibblePage({
         </ul>
       </div>
       <div className="mt-4">
-        <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Steps
         </p>
         <ol className={SECONDARY_COLOUR_TEXT}>

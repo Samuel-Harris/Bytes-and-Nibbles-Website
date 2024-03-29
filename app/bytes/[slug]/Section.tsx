@@ -6,7 +6,7 @@ import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 
 const Section: React.FC<SectionType> = (props: SectionType) => (
   <div className="my-4">
-    <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
+    <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
       {props.title}
     </p>
     {React.Children.toArray(
