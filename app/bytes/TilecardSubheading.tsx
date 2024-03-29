@@ -2,12 +2,12 @@ import React from "react";
 import { Series } from "@/common/Byte";
 import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
 
-export type ByteTilecardSubheadingProps = {
+export type TilecardSubheadingProps = {
   subtitle: string;
   series: Series;
 };
 
-export const ByteTilecardSubheading: React.FC<ByteTilecardSubheadingProps> = ({
+const TilecardSubheading: React.FC<TilecardSubheadingProps> = ({
   subtitle,
   series,
 }) => (
@@ -25,3 +25,4 @@ export const ByteTilecardSubheading: React.FC<ByteTilecardSubheadingProps> = ({
     </p>
   </>
 );
+export default TilecardSubheading;

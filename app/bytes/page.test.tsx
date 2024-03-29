@@ -6,19 +6,18 @@ import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import { ByteOverview } from "@/common/Byte";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
-import {
-  ByteTilecardSubheading,
-  ByteTilecardSubheadingProps,
-} from "./ByteTilecardSubheading";
+import TilecardSubheading, {
+  TilecardSubheadingProps,
+} from "./TilecardSubheading";
 
 jest.mock("@/common/FirebaseService");
 jest.mock("@/tilecard/Tilecard");
-jest.mock("./ByteTilecardSubheading");
+jest.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listBytesMock: MockedFunction<() => ByteOverview[]>;
 let byteOverviewsMock: ByteOverview[];
-let byteTilecardSubheadingMock: MockedFunction<FC<ByteTilecardSubheadingProps>>;
+let byteTilecardSubheadingMock: MockedFunction<FC<TilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
@@ -59,9 +58,9 @@ describe("Bytes page", () => {
       );
     });
 
-    byteTilecardSubheadingMock = mocked(ByteTilecardSubheading);
+    byteTilecardSubheadingMock = mocked(TilecardSubheading);
     byteTilecardSubheadingMock.mockImplementation(
-      (props: ByteTilecardSubheadingProps) => {
+      (props: TilecardSubheadingProps) => {
         return <p>{props.subtitle}</p>;
       }
     );
@@ -77,7 +76,7 @@ describe("Bytes page", () => {
     await waitFor((): void => {
       expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
-    
+
     byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
       expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
       expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();

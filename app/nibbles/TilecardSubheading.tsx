@@ -1,12 +1,12 @@
 import React from "react";
 import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
 
-export type NibbleTilecardSubheadingProps = {
+export type TilecardSubheadingProps = {
   timeTakenMinutes: number;
 };
 
-export const NibbleTilecardSubheading: React.FC<
-  NibbleTilecardSubheadingProps
+const TilecardSubheading: React.FC<
+  TilecardSubheadingProps
 > = ({ timeTakenMinutes }) => (
   <>
     <p
@@ -16,3 +16,4 @@ export const NibbleTilecardSubheading: React.FC<
     </p>
   </>
 );
+export default TilecardSubheading;

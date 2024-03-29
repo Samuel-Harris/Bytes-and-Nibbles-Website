@@ -5,22 +5,19 @@ import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 import { NibbleOverview } from "@/common/Nibble";
-import {
-  NibbleTilecardSubheading,
-  NibbleTilecardSubheadingProps,
-} from "./NibbleTilecardSubheading";
+import TilecardSubheading, {
+  TilecardSubheadingProps,
+} from "./TilecardSubheading";
 import NibblesPage from "./page";
 
 jest.mock("@/common/FirebaseService");
 jest.mock("@/tilecard/Tilecard");
-jest.mock("./NibbleTilecardSubheading");
+jest.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listNibblesMock: MockedFunction<() => NibbleOverview[]>;
 let nibbleOverviewsMock: NibbleOverview[];
-let nibbleTilecardSubheadingMock: MockedFunction<
-  FC<NibbleTilecardSubheadingProps>
->;
+let tilecardSubheadingMock: MockedFunction<FC<TilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
@@ -63,9 +60,9 @@ describe("Bytes page", () => {
       );
     });
 
-    nibbleTilecardSubheadingMock = mocked(NibbleTilecardSubheading);
-    nibbleTilecardSubheadingMock.mockImplementation(
-      (props: NibbleTilecardSubheadingProps) => {
+    tilecardSubheadingMock = mocked(TilecardSubheading);
+    tilecardSubheadingMock.mockImplementation(
+      (props: TilecardSubheadingProps) => {
         return <p>{props.timeTakenMinutes}</p>;
       }
     );
