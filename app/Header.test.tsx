@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import "@testing-library/jest-dom";
-import Header from "./layout";
+import Header, { Tab } from "./Header";
 import Logo, { LogoProps } from "./assets/Logo";
 import { mocked, MockedFunction } from "jest-mock";
 import { screen } from "@testing-library/dom";
@@ -26,7 +26,7 @@ describe("Header", () => {
     };
   });
 
-  it("should render the header", () => {
+  it.each([Tab.Home, Tab.Bytes, Tab.Nibbles])("should render the header", (tab: Tab) => {
     const pathname: string = "/";
     const usePathnameMock: MockedFunction<() => string> = mocked(usePathname);
     usePathnameMock.mockReturnValue(pathname);
@@ -37,7 +37,7 @@ describe("Header", () => {
     logoMock.mockReturnValue(logo);
 
     render(
-      <Header>
+      <Header tab={tab}>
         <></>
       </Header>
     );

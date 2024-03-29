@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "./common/constants";
+import Header, { Tab } from "./Header";
 
 export const metadata: Metadata = {
   title: WEBSITE_NAME,
@@ -9,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function Home(): React.JSX.Element {
   return (
-    <div>
+    <Header tab={Tab.Home}>
       <p>Home page</p>
-    </div>
+    </Header>
   );
 }

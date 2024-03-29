@@ -2,7 +2,7 @@ import React from "react";
 import FirebaseService from "@/common/FirebaseService";
 import { NibbleOverview } from "@/common/Nibble";
 import Tilecard from "@/tilecard/Tilecard";
-import { NibbleTilecardSubheading } from "./NibbleTilecardSubheading";
+import TilecardSubheading from "./TilecardSubheading";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 
@@ -28,7 +28,7 @@ export default async function NibblesPage(): Promise<React.JSX.Element> {
           publishDate={nibbleOverview.publishDate}
           linkPath={`/nibbles/${nibbleOverview.slug}`}
         >
-          <NibbleTilecardSubheading
+          <TilecardSubheading
             timeTakenMinutes={nibbleOverview.timeTakenMinutes}
           />
         </Tilecard>
