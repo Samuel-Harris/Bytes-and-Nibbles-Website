@@ -10,6 +10,7 @@ import {
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 import { Ingredient, Nibble } from "@/common/Nibble";
+import HighlightedText from "@/common/HighlightedText";
 
 type RouteParams = {
   slug: string;
@@ -71,13 +72,14 @@ export default async function NibblePage({
       >
         {nibble.title}
       </p>
-      <p className={`mb-1 text-md ${TERTIARY_COLOUR_TEXT}`}>
-        Published: <span className="text-white">{publishDateString}</span>
+      <p className={`mb-1 text-md`}>
+        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
-        <p className={`text-md ${TERTIARY_COLOUR_TEXT}`}>
-          Last modified:{" "}
-          <span className="text-white">{lastModifiedDateString}</span>
+        <p className={`text-md`}>
+          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          {lastModifiedDateString}
         </p>
       )}
       <img
@@ -87,9 +89,7 @@ export default async function NibblePage({
       />
       <p className={`text-l ${headingSpacing}`}>
         This took me{" "}
-        <span className={SECONDARY_COLOUR_TEXT}>
-          {nibble.timeTakenMinutes} minutes
-        </span>
+        <HighlightedText>{nibble.timeTakenMinutes} minutes</HighlightedText>
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from{" "}
@@ -105,12 +105,12 @@ export default async function NibblePage({
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Ingredients
         </p>
-        <ul className={`list-inside ${SECONDARY_COLOUR_TEXT}`}>
+        <ul className={SECONDARY_COLOUR_TEXT}>
           {nibble.ingredients.map(
             (ingredient: Ingredient): JSX.Element => (
               <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-                <span className={SECONDARY_COLOUR_TEXT}>{ingredient.name}</span>{" "}
-                - {ingredient.quantity}
+                <HighlightedText>{ingredient.name}</HighlightedText> -{" "}
+                {ingredient.quantity}
                 {ingredient.measurement ? ` ${ingredient.measurement}` : ""}
               </li>
             )
@@ -121,7 +121,7 @@ export default async function NibblePage({
         <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
           Steps
         </p>
-        <ol className={`list-inside ${SECONDARY_COLOUR_TEXT}`}>
+        <ol className={SECONDARY_COLOUR_TEXT}>
           {React.Children.toArray(
             nibble.steps.map(
               (step: string): JSX.Element => (
