@@ -1,3 +1,4 @@
+import "./globals.css";
 import React from "react";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "./common/constants";

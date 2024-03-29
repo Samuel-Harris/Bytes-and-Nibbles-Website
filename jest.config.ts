@@ -11,6 +11,7 @@ const config: Config = {
   testEnvironment: "jsdom",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/app/$1",
+    'react-markdown': '<rootDir>/node_modules/react-markdown/react-markdown.min.js',
   },
 };
 
