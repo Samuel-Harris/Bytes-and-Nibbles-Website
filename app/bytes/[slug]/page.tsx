@@ -77,13 +77,14 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
       >
         {byte.series.title}
       </p>
-      <p className={`mb-1 text-md ${TERTIARY_COLOUR_TEXT}`}>
-        Published: <span className="text-white">{publishDateString}</span>
+      <p className={`mb-1 text-md`}>
+        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
-        <p className={`text-md ${TERTIARY_COLOUR_TEXT}`}>
-          Last modified:{" "}
-          <span className="text-white">{lastModifiedDateString}</span>
+        <p className={`text-md`}>
+          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          {lastModifiedDateString}
         </p>
       )}
       <img

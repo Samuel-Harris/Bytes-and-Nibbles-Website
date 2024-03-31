@@ -51,19 +51,19 @@ describe("Bytes page", () => {
     listNibblesMock.mockReturnValue(nibbleOverviewsMock);
 
     tilecardMock = mocked(Tilecard);
-    tilecardMock.mockImplementation((props: TilecardProps) => {
+    tilecardMock.mockImplementation(({ title, children }: TilecardProps) => {
       return (
         <div>
-          <p>{props.title}</p>
-          {props.children}
+          <p>{title}</p>
+          {children}
         </div>
       );
     });
 
     tilecardSubheadingMock = mocked(TilecardSubheading);
     tilecardSubheadingMock.mockImplementation(
-      (props: TilecardSubheadingProps) => {
-        return <p>{props.timeTakenMinutes}</p>;
+      ({ timeTakenMinutes }: TilecardSubheadingProps) => {
+        return <p>{timeTakenMinutes}</p>;
       }
     );
   });

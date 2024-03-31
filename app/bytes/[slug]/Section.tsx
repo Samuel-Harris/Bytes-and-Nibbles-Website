@@ -4,13 +4,11 @@ import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 
-const Section: React.FC<SectionType> = (props: SectionType) => (
+const Section: React.FC<SectionType> = ({ title, body }: SectionType) => (
   <div className="my-4">
-    <p className={`text-2xl font-underline mb-2 ${TERTIARY_COLOUR_TEXT}`}>
-      {props.title}
-    </p>
+    <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>{title}</p>
     {React.Children.toArray(
-      props.body.map((bodyComponent) => {
+      body.map((bodyComponent) => {
         switch (bodyComponent.type) {
           case "paragraph":
             return <Paragraph value={bodyComponent.value} />;

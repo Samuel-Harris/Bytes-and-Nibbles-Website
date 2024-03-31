@@ -42,10 +42,6 @@ const byteExample: Byte = {
           type: "captionedImage",
           value: { image: "Image src", caption: "Image caption" },
         },
-        {
-          type: "code",
-          value: { language: "Python", code: "print('Hello world!')" },
-        },
       ],
     },
   ],
@@ -72,8 +68,8 @@ describe("Individual byte page", () => {
   });
 
   sectionMock = mocked(Section);
-  sectionMock.mockImplementation((props: SectionType) => {
-    return <p>{props.title}</p>;
+  sectionMock.mockImplementation(({ title }: SectionType) => {
+    return <p>{title}</p>;
   });
 
   it("should use slugs for static params", async () => {
