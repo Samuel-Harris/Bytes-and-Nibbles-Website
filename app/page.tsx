@@ -32,9 +32,10 @@ const Home = (): JSX.Element => (
         />
         <p className={TERTIARY_COLOUR_TEXT}>
           A <HT>photomosaic</HT> of the author of this website,{" "}
-          <HT>Sam Harris</HT>, that was made using an AI photomosaic generator
-          that he made. This photomosaic was made using <HT>215,988</HT> images
-          from <HL href="https://www.kaggle.com">Kaggle</HL> and{" "}
+          <HT>Sam Harris</HT>, that was made using an{" "}
+          <HT>AI photomosaic generator</HT> that he made. This photomosaic was
+          made using <HT>215,988</HT> images from{" "}
+          <HL href="https://www.kaggle.com">Kaggle</HL> and{" "}
           <HL href="https://unsample.net">unsample</HL>. The source code for the
           photomosaic generator can be found{" "}
           <HL href="https://github.com/Samuel-Harris/photomosaic_generator">
