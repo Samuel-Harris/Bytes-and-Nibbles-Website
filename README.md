@@ -4,6 +4,8 @@ My tech blog and recipe website.
 
 See my website hosted  at https://bytes-and-nibbles.web.app.
 
+![A screenshot of the 1.0.0 version of the website](website_screenshot.png)
+
 ## Usage instructions
 
 To install dependencies, run ```npm install```.

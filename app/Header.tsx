@@ -1,13 +1,17 @@
 import React from "react";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
-import CookieIcon from "./assets/cookieIcon";
+import CookieIcon from "./assets/CookieIcon";
 import Link from "next/link";
 import Logo from "./assets/Logo";
 import {
   HOVER_BACKGROUND_COLOUR,
   PRIMARY_COLOUR_BG,
+  SECONDARY_COLOUR_FILL,
   SECONDARY_COLOUR_TEXT,
 } from "./common/theme";
+import GithubLogo from "./assets/GithubLogo";
+import LinkedInLogo from "./assets/LinkedInLogo";
+import { GITHUB_URL, LINKEDIN_URL } from "./common/constants";
 
 export enum Tab {
   Home,
@@ -38,11 +42,24 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
             <h1 className="text-2xl sm:text-5xl md:text-7xl font-bold">
               Bytes and nibbles
             </h1>
-            <p
-              className={`text-s sm:text-lg font-bold ${SECONDARY_COLOUR_TEXT}`}
-            >
-              By Samuel Matsuo Harris
-            </p>
+            <div className="flex flex-row items-center">
+              <p
+                className={`text-s sm:text-lg font-bold ${SECONDARY_COLOUR_TEXT}`}
+              >
+                By Samuel Matsuo Harris
+              </p>
+              <Link href={LINKEDIN_URL}>
+                <LinkedInLogo
+                  svgClassName={`size-8 ${SECONDARY_COLOUR_FILL}`}
+                />
+              </Link>
+              <Link href={GITHUB_URL}>
+                <GithubLogo
+                  svgClassName="size-6"
+                  pathClassName={SECONDARY_COLOUR_FILL}
+                ></GithubLogo>
+              </Link>
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-3 text-center mb-2 sm:mb-0">

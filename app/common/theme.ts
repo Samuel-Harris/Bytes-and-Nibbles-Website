@@ -1,5 +1,7 @@
 export const PRIMARY_COLOUR_BG = "bg-black";
 
+export const SECONDARY_COLOUR_FILL = "fill-green-500";
+
 export const SECONDARY_COLOUR_TEXT = "text-green-500";
 
 export const TERTIARY_COLOUR_TEXT = "text-neutral-400";
