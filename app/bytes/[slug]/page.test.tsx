@@ -68,8 +68,8 @@ describe("Individual byte page", () => {
   });
 
   sectionMock = mocked(Section);
-  sectionMock.mockImplementation((props: SectionType) => {
-    return <p>{props.title}</p>;
+  sectionMock.mockImplementation(({ title }: SectionType) => {
+    return <p>{title}</p>;
   });
 
   it("should use slugs for static params", async () => {

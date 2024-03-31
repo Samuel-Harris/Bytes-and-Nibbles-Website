@@ -2,16 +2,16 @@ import React, { FC } from "react";
 
 export type LogoProps = {
   className?: string;
-}
+};
 
-const Logo: FC<LogoProps> = (props) => (
+const Logo: FC<LogoProps> = ({ className }) => (
   <svg
     fill="none"
     viewBox="0 0 32.96244 20.937038"
     strokeWidth="1.5"
     stroke="currentColor"
     data-slot="icon"
-    className={props.className}
+    className={className}
     version="1.1"
     id="svg1"
     width="32.96244"

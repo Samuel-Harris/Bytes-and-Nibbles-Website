@@ -2,9 +2,9 @@ import React from "react";
 
 export type CookieIconProps = {
   className?: string;
-}
+};
 
-const CookieIcon: React.FC<CookieIconProps> = (props) => (
+const CookieIcon: React.FC<CookieIconProps> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
@@ -12,7 +12,7 @@ const CookieIcon: React.FC<CookieIconProps> = (props) => (
     strokeWidth="1.5"
     stroke="currentColor"
     data-slot="icon"
-    className={props.className}
+    className={className}
   >
     <path
       strokeLinecap="round"

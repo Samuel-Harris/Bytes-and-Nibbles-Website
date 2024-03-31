@@ -3,19 +3,16 @@ import React from "react";
 
 export type CaptionedImageProps = {
   image: string;
-  caption: string
-}
+  caption: string;
+};
 
-const CaptionedImage: React.FC<CaptionedImageProps> = (
-  props: CaptionedImageProps
-) => (
+const CaptionedImage: React.FC<CaptionedImageProps> = ({
+  image,
+  caption,
+}: CaptionedImageProps) => (
   <div className="my-7">
-    <img
-      src={props.image}
-      alt={props.caption}
-      className={`justify-self-center w-fit`}
-    />
-    <p className={`${TERTIARY_COLOUR_TEXT}`}>{props.caption}</p>
+    <img src={image} alt={caption} className={`justify-self-center w-fit`} />
+    <p className={`${TERTIARY_COLOUR_TEXT}`}>{caption}</p>
   </div>
 );
 export default CaptionedImage;
