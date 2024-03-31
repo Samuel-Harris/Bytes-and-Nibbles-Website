@@ -6,6 +6,7 @@ import { mocked, MockedFunction } from "jest-mock";
 import { screen } from "@testing-library/dom";
 import { usePathname } from "next/navigation";
 import { render } from "@testing-library/react";
+import { GITHUB_URL, LINKEDIN_URL } from "./common/constants";
 
 jest.mock("./assets/Logo");
 jest.mock("./assets/cookieIcon");
@@ -50,23 +51,38 @@ describe("Header", () => {
     expect(screen.getByText("By Samuel Matsuo Harris")).toBeInTheDocument();
 
     // check that expected links are present
-    const expectedLinks: [string, string][] = [
+    const expectedBannerLinks: [string, string][] = [
       ["Home", "/"],
       ["Bytes", "/bytes"],
       ["Nibbles", "/nibbles"],
     ];
+    const expectedSocialLinks: string[] =  [LINKEDIN_URL, GITHUB_URL]
+
     const links = screen.getAllByRole("link");
-    expect(links).toHaveLength(expectedLinks.length);
+    expect(links).toHaveLength(expectedBannerLinks.length + expectedSocialLinks.length);
+    for (const link of expectedBannerLinks) {
+      expect(screen.getByText(link[0]))
+    }
+
     for (const link of links) {
       var oneOfExpectedLinks = false;
-      for (var i = 0; i < expectedLinks.length; i++) {
-        const expectedLink: [string, string] = expectedLinks[i];
-        if (link.textContent?.includes(expectedLink[0])) {
-          expect(link).toHaveAttribute("href", expectedLink[1]);
+      for (var i = 0; i < expectedBannerLinks.length; i++) {
+        const [text, url]: [string, string] = expectedBannerLinks[i];
+        if (link.textContent?.includes(text)) {
+          expect(link).toHaveAttribute("href", url);
           oneOfExpectedLinks = true;
-          expectedLinks.splice(i, 1); // link has been seen. Shouldn't see it again
+          expectedBannerLinks.splice(i, 1);
         }
       }
+
+      for (var i = 0; i < expectedSocialLinks.length; i++) {
+        const url: string = expectedSocialLinks[i];
+        if (link.attributes.getNamedItem("href")?.value === url) {
+          oneOfExpectedLinks = true;
+          expectedSocialLinks.splice(i, 1);
+        }
+      }
+
       expect(oneOfExpectedLinks).toBe(true);
     }
   });
