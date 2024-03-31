@@ -1,3 +1,4 @@
+import React from "react";
 import { SECONDARY_COLOUR_TEXT } from "./theme";
 
 const HighlightedText: React.FC<{ children: React.ReactNode }> = ({
