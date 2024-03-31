@@ -9,7 +9,7 @@ import { render } from "@testing-library/react";
 import { GITHUB_URL, LINKEDIN_URL } from "./common/constants";
 
 jest.mock("./assets/Logo");
-jest.mock("./assets/cookieIcon");
+jest.mock("./assets/CookieIcon");
 jest.mock("./globals.css");
 jest.mock("@heroicons/react/24/outline");
 jest.mock("next/navigation");
