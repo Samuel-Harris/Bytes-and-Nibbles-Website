@@ -25,11 +25,12 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ tab, children }) => {
-  const headerOptionStyle = `sm:py-2 md:py-3 ${HOVER_BACKGROUND_COLOUR}`;
+  const headerOptionStyle = `no-underline sm:py-2 md:py-3 ${HOVER_BACKGROUND_COLOUR}`;
   const headerOptionIconStyle = `inline h-auto w-5 sm:w-8 ${SECONDARY_COLOUR_TEXT}`;
 
-  const defaultTabStyle = "inline align-middle pl-2 text-base sm:text-xl";
-  const selectedTabStyle = `${defaultTabStyle} ${SECONDARY_COLOUR_TEXT}`;
+  const tabStyle = "inline align-middle pl-2 text-base sm:text-xl"
+  const defaultTabStyle = `text-white ${tabStyle}`;
+  const selectedTabStyle = `${SECONDARY_COLOUR_TEXT} ${tabStyle}`;
 
   return (
     <html lang="en">
