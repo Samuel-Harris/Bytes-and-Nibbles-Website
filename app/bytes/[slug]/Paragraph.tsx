@@ -7,7 +7,7 @@ export type ParagraphProps = {
 };
 
 const Paragraph: React.FC<ParagraphProps> = ({ value }: ParagraphProps) => (
-  <ReactMarkdown className="whitespace-pre-wrap" remarkPlugins={[gfm]}>
+  <ReactMarkdown className="mb-8" remarkPlugins={[gfm]}>
     {value}
   </ReactMarkdown>
 );
