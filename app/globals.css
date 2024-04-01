@@ -28,9 +28,14 @@ body {
 
 @layer base {
   ul,
-  ol {
+  ol,
+  menu {
     list-style: revert-layer;
-    list-style-position: inside;
+    padding-left: 20px;
+  }
+
+  li {
+    margin: 0px 0;
   }
 
   pre {
