@@ -69,4 +69,10 @@ body {
   strong {
     color: rgb(34 197 94);
   }
+
+  a {
+    color: rgb(34 197 94);
+    text-decoration-line: underline;
+    text-decoration-color: inherit;
+  }
 }

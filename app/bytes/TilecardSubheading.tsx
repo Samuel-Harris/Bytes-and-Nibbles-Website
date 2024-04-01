@@ -19,7 +19,7 @@ const TilecardSubheading: React.FC<TilecardSubheadingProps> = ({
     </p>
     <p
       style={{ backgroundColor: series.accentColour }} // cannot be set in tailwind as this is dynamically generated
-      className={`text-sm md:text-base inline-flex rounded-full mx-3 px-2 py-1 sm:mb-2 md:mb-3 font-medium ring-1 ring-inset ring-slate-500`}
+      className={`text-white text-sm md:text-base inline-flex rounded-full mx-3 px-2 py-1 sm:mb-2 md:mb-3 font-medium ring-1 ring-inset ring-slate-500`}
     >
       {series.title}
     </p>

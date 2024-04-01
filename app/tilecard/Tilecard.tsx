@@ -26,7 +26,7 @@ const Tilecard: FC<TilecardProps> = ({
   <Link
     href={linkPath}
     title={title}
-    className={`grid grid-cols-4 justify-items-left w-11/12 sm:w-4/5 py-6 sm:py-7 md:py-12 px-5 my-0 sm:my-4 md:my-7 ${HOVER_BACKGROUND_COLOUR}`}
+    className={`grid grid-cols-4 justify-items-left w-11/12 sm:w-4/5 py-6 sm:py-7 md:py-12 px-5 my-0 sm:my-4 md:my-7 no-underline ${HOVER_BACKGROUND_COLOUR}`}
   >
     <img src={thumbnail} alt={title} />
     <div className="col-span-3">
