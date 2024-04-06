@@ -70,8 +70,8 @@ const Home = (): JSX.Element => (
           </p>
           <p>
             This website was finally completed in <HT>April 2024</HT>, and
-            whether you came for the <HL href="/nibbles">food</HL> or the{" "}
-            <HL href="/bytes">functions</HL>, I hope you like it.
+            whether you came for the <HL href="/bytes">bytes</HL> (tech blogs)
+            or the <HL href="/nibbles">nibbles</HL> (recipes), I hope you like it.
           </p>
         </div>
         <div className="space-y-2">
