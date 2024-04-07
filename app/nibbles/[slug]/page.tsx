@@ -105,17 +105,13 @@ export default async function NibblePage({
         </span>
       </p>
       <div className="my-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
-          Ingredients
-        </p>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Ingredients</p>
         <ul className={SECONDARY_COLOUR_TEXT}>
           {nibble.ingredients.map(renderIngredient)}
         </ul>
       </div>
       <div className="mt-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
-          Steps
-        </p>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
           {React.Children.toArray(
             nibble.steps.map(
@@ -136,7 +132,7 @@ const renderIngredient = (ingredient: Ingredient): JSX.Element => {
   let suffix: string = "";
   if (ingredient.quantity || ingredient.measurement) {
     suffix = "-";
-    
+
     if (ingredient.quantity) {
       suffix += ` ${ingredient.quantity}`;
     }
@@ -146,7 +142,12 @@ const renderIngredient = (ingredient: Ingredient): JSX.Element => {
     }
   }
 
-  return  <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-    <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
-  </li>
-}
+  return (
+    <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+      <HighlightedText>{ingredient.name}</HighlightedText> {suffix}{" "}
+      <span className="text-white">
+        {ingredient.optional ? "(optional)" : ""}
+      </span>
+    </li>
+  );
+};
