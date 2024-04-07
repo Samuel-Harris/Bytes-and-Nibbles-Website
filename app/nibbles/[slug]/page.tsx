@@ -144,10 +144,8 @@ const renderIngredient = (ingredient: Ingredient): JSX.Element => {
 
   return (
     <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-      <HighlightedText>{ingredient.name}</HighlightedText> {suffix}{" "}
-      <span className="text-white">
-        {ingredient.optional ? "(optional)" : ""}
-      </span>
+      <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
+      {ingredient.optional && <span className="text-white"> (optional)</span>}
     </li>
   );
 };

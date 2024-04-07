@@ -31,7 +31,7 @@ const nibbleExample: Nibble = {
       name: "Double cream",
       quantity: 5,
       measurement: "tbsp",
-      optional: true
+      optional: true,
     },
   ],
   steps: ["Dice tomatoes.", "Add cream.", "Blend and serve"],
@@ -166,13 +166,22 @@ describe("Individual nibbles page", () => {
     ).toBeInTheDocument();
 
     nibble.ingredients.forEach((ingredient) => {
-      const measurementStr = ingredient.measurement
-        ? ` ${ingredient.measurement}`
-        : "";
+      let suffix = "-";
+
+      if (ingredient.quantity) {
+        suffix += ` ${ingredient.quantity}`;
+      }
+
+      if (ingredient.measurement) {
+        suffix += ` ${ingredient.measurement}`;
+      }
+
       expect(
         screen.getByText(
           textContent(
-            `${ingredient.name} - ${ingredient.quantity + measurementStr}`
+            `${ingredient.name} ${suffix}${
+              ingredient.optional ? " (optional)" : ""
+            }`
           )
         )
       ).toBeInTheDocument();
