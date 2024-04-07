@@ -18,17 +18,20 @@ const nibbleExample: Nibble = {
   thumbnail: "Thumbnail src",
   coverPhoto: "Cover photo src",
   slug: "nibble-slug",
+  nServings: 5,
   source: "https://my-source.co.uk",
   ingredients: [
     {
       name: "Tomatoes",
       quantity: 2,
       measurement: "",
+      optional: false,
     },
     {
       name: "Double cream",
       quantity: 5,
       measurement: "tbsp",
+      optional: true
     },
   ],
   steps: ["Dice tomatoes.", "Add cream.", "Blend and serve"],
@@ -149,7 +152,7 @@ describe("Individual nibbles page", () => {
     }
 
     expect(
-      screen.getByText(textContent(`Adapted from ${nibble.source}`))
+      screen.getByText(textContent(`Adapted from: ${nibble.source}`))
     ).toBeInTheDocument();
     if (nibble.source.slice(0, 4) === "http") {
       expect(screen.getByRole("link")).toBeInTheDocument();
@@ -157,6 +160,10 @@ describe("Individual nibbles page", () => {
     } else {
       expect(screen.queryByRole("link")).not.toBeInTheDocument();
     }
+
+    expect(
+      screen.getByText(textContent(`Serves: ${nibble.nServings}`))
+    ).toBeInTheDocument();
 
     nibble.ingredients.forEach((ingredient) => {
       const measurementStr = ingredient.measurement
