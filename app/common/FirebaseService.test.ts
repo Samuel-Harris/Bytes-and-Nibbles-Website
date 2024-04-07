@@ -77,12 +77,14 @@ const nibbles: Nibble[] = [
     thumbnail: "My thumbnail 3",
     coverPhoto: "My cover photo 3",
     slug: "my-slug-3",
+    nServings: 4,
     source: "My source 1",
     ingredients: [
       {
         name: "Garam masala",
         quantity: 1,
         measurement: "cup",
+        optional: false,
       },
     ],
     steps: ["Drink the powder"],
@@ -95,12 +97,14 @@ const nibbles: Nibble[] = [
     thumbnail: "My thumbnail 4",
     coverPhoto: "My cover photo 4",
     slug: "my-slug-4",
+    nServings: 6,
     source: "My source 2",
     ingredients: [
       {
         name: "Turmeric",
         quantity: 2,
         measurement: "Tbsp",
+        optional: true,
       },
     ],
     steps: ["Consume the yellow"],

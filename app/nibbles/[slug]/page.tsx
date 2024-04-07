@@ -88,11 +88,14 @@ export default async function NibblePage({
         className={`justify-self-center w-fit mt-2 sm:mt-6 mb-3`}
       />
       <p className={`text-l ${headingSpacing}`}>
-        This took me{" "}
+        Serves: <HighlightedText>{nibble.nServings}</HighlightedText>
+      </p>
+      <p className={`text-l ${headingSpacing}`}>
+        This took me:{" "}
         <HighlightedText>{nibble.timeTakenMinutes} minutes</HighlightedText>
       </p>
       <p className={`text-l ${headingSpacing}`}>
-        Adapted from{" "}
+        Adapted from:{" "}
         <span className={SECONDARY_COLOUR_TEXT}>
           {isSourceUrl ? (
             <a href={nibble.source}>{nibble.source}</a>
@@ -102,25 +105,13 @@ export default async function NibblePage({
         </span>
       </p>
       <div className="my-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
-          Ingredients
-        </p>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Ingredients</p>
         <ul className={SECONDARY_COLOUR_TEXT}>
-          {nibble.ingredients.map(
-            (ingredient: Ingredient): JSX.Element => (
-              <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-                <HighlightedText>{ingredient.name}</HighlightedText> -{" "}
-                {ingredient.quantity}
-                {ingredient.measurement ? ` ${ingredient.measurement}` : ""}
-              </li>
-            )
-          )}
+          {nibble.ingredients.map(renderIngredient)}
         </ul>
       </div>
       <div className="mt-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>
-          Steps
-        </p>
+        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
           {React.Children.toArray(
             nibble.steps.map(
@@ -136,3 +127,25 @@ export default async function NibblePage({
     </div>
   );
 }
+
+const renderIngredient = (ingredient: Ingredient): JSX.Element => {
+  let suffix: string = "";
+  if (ingredient.quantity || ingredient.measurement) {
+    suffix = "-";
+
+    if (ingredient.quantity) {
+      suffix += ` ${ingredient.quantity}`;
+    }
+
+    if (ingredient.measurement) {
+      suffix += ` ${ingredient.measurement}`;
+    }
+  }
+
+  return (
+    <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+      <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
+      {ingredient.optional && <span className="text-white"> (optional)</span>}
+    </li>
+  );
+};
