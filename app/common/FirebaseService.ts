@@ -9,6 +9,7 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -50,7 +51,8 @@ export default class FirebaseService {
   private async fetchBytes(): Promise<void> {
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.firestore, bytesCollection.name),
-      where(bytesCollection.isPublishedField, "==", true)
+      where(bytesCollection.isPublishedField, "==", true),
+      orderBy(nibblesCollection.publishDateField, "desc"),
     );
 
     const queryResults: DocumentData[] = await getDocs(q).then(
@@ -89,7 +91,8 @@ export default class FirebaseService {
   private async fetchNibbles(): Promise<void> {
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.firestore, nibblesCollection.name),
-      where(nibblesCollection.isPublishedField, "==", true)
+      where(nibblesCollection.isPublishedField, "==", true),
+      orderBy(nibblesCollection.publishDateField, "desc"),
     );
 
     const queryResults: DocumentData[] = await getDocs(q).then(
