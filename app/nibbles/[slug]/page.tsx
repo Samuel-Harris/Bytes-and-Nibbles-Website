@@ -11,6 +11,7 @@ import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 import { Ingredient, Nibble } from "@/common/Nibble";
 import HighlightedText from "@/common/HighlightedText";
+import { getDisplayTime } from "../timeUtils";
 
 type RouteParams = {
   slug: string;
@@ -92,7 +93,7 @@ export default async function NibblePage({
       </p>
       <p className={`text-l ${headingSpacing}`}>
         This took me:{" "}
-        <HighlightedText>{nibble.timeTakenMinutes} minutes</HighlightedText>
+        <HighlightedText>{getDisplayTime(nibble.timeTakenMinutes)}</HighlightedText>
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from:{" "}
