@@ -16,9 +16,9 @@ const HL: React.FC<{ href: string; children: string }> = ({
   href,
   children,
 }) => (
-  <Link href={href} title={children}>
+  <a href={href} title={children}>
     <HT>{children}</HT>
-  </Link>
+  </a>
 );
 
 const Home = (): JSX.Element => (

@@ -63,23 +63,23 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
           </div>
         </div>
         <div className="grid grid-cols-3 text-center mb-2 sm:mb-0">
-          <Link href="/" className={headerOptionStyle}>
+          <a href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle} />
             <p
               className={tab === Tab.Home ? selectedTabStyle : defaultTabStyle}
             >
               Home
             </p>
-          </Link>
-          <Link href="/bytes" className={headerOptionStyle}>
+          </a>
+          <a href="/bytes" className={headerOptionStyle}>
             <CodeBracketIcon className={headerOptionIconStyle} />
             <p
               className={tab === Tab.Bytes ? selectedTabStyle : defaultTabStyle}
             >
               Bytes
             </p>
-          </Link>
-          <Link href="/nibbles" className={headerOptionStyle}>
+          </a>
+          <a href="/nibbles" className={headerOptionStyle}>
             <CookieIcon className={headerOptionIconStyle} />
             <p
               className={
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
             >
               Nibbles
             </p>
-          </Link>
+          </a>
         </div>
         {children}
       </div>
