@@ -33,8 +33,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
   const selectedTabStyle = `${SECONDARY_COLOUR_TEXT} ${tabStyle}`;
 
   return (
-    <html lang="en">
-      <body className={`grid inter.className pb-6 ${PRIMARY_COLOUR_BG}`}>
+      <div className={`grid inter.className pb-6 ${PRIMARY_COLOUR_BG}`}>
         <div className="grid grid-cols-3 py-2 sm:py-4 md:py-7">
           <Logo
             className={`justify-self-center col-span-1 h-auto w-20 sm:w-40 ${SECONDARY_COLOUR_TEXT}`}
@@ -64,23 +63,23 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
           </div>
         </div>
         <div className="grid grid-cols-3 text-center mb-2 sm:mb-0">
-          <Link href="/" className={headerOptionStyle}>
+          <a href="/" className={headerOptionStyle}>
             <HomeIcon className={headerOptionIconStyle} />
             <p
               className={tab === Tab.Home ? selectedTabStyle : defaultTabStyle}
             >
               Home
             </p>
-          </Link>
-          <Link href="/bytes" className={headerOptionStyle}>
+          </a>
+          <a href="/bytes" className={headerOptionStyle}>
             <CodeBracketIcon className={headerOptionIconStyle} />
             <p
               className={tab === Tab.Bytes ? selectedTabStyle : defaultTabStyle}
             >
               Bytes
             </p>
-          </Link>
-          <Link href="/nibbles" className={headerOptionStyle}>
+          </a>
+          <a href="/nibbles" className={headerOptionStyle}>
             <CookieIcon className={headerOptionIconStyle} />
             <p
               className={
@@ -89,11 +88,10 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
             >
               Nibbles
             </p>
-          </Link>
+          </a>
         </div>
         {children}
-      </body>
-    </html>
+      </div>
   );
 };
 export default Header;
