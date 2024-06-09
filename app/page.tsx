@@ -4,7 +4,6 @@ import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "./common/constants";
 import Header, { Tab } from "./Header";
 import { TERTIARY_COLOUR_TEXT } from "./common/theme";
 import { default as HT } from "./common/HighlightedText";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: WEBSITE_NAME,

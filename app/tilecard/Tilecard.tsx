@@ -6,7 +6,6 @@ import {
   TILECARD_TEXT_PADDING,
 } from "../common/theme";
 import { getDateString } from "../common/timeUtils";
-import Link from "next/link";
 
 export type TilecardProps = {
   children: React.ReactNode;
