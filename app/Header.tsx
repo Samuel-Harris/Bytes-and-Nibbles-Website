@@ -33,8 +33,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
   const selectedTabStyle = `${SECONDARY_COLOUR_TEXT} ${tabStyle}`;
 
   return (
-    <html lang="en">
-      <body className={`grid inter.className pb-6 ${PRIMARY_COLOUR_BG}`}>
+      <div className={`grid inter.className pb-6 ${PRIMARY_COLOUR_BG}`}>
         <div className="grid grid-cols-3 py-2 sm:py-4 md:py-7">
           <Logo
             className={`justify-self-center col-span-1 h-auto w-20 sm:w-40 ${SECONDARY_COLOUR_TEXT}`}
@@ -92,8 +91,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => {
           </Link>
         </div>
         {children}
-      </body>
-    </html>
+      </div>
   );
 };
 export default Header;
