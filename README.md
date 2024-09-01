@@ -1,4 +1,6 @@
 # Bytes and Nibbles Website
+[![Deploy workflow](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml)
+
 ## Introduction
 My tech blog and recipe website.
 
