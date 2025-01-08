@@ -1,3 +1,4 @@
+import { PAGE_WIDTH } from "@/common/theme";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
@@ -7,7 +8,7 @@ export type ParagraphProps = {
 };
 
 const Paragraph: React.FC<ParagraphProps> = ({ value }: ParagraphProps) => (
-  <ReactMarkdown className="mb-8" remarkPlugins={[gfm]}>
+  <ReactMarkdown className="mb-8 overflow-scroll" remarkPlugins={[gfm]}>
     {value}
   </ReactMarkdown>
 );
