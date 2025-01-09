@@ -52,7 +52,7 @@ export default class FirebaseService {
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.firestore, bytesCollection.name),
       where(bytesCollection.isPublishedField, "==", true),
-      orderBy(nibblesCollection.publishDateField, "desc"),
+      orderBy(nibblesCollection.publishDateField, "desc")
     );
 
     const queryResults: DocumentData[] = await getDocs(q).then(
@@ -74,10 +74,19 @@ export default class FirebaseService {
         } as Byte;
 
         for (const section of byte.sections) {
-          for (const bodyComponent of section.body) {
-            if (bodyComponent.type === "captionedImage") {
-              bodyComponent.value.image = await this.getImage(
-                bodyComponent.value.image
+          for (const sectionBodyComponent of section.body) {
+            if (sectionBodyComponent.type === "subsection") {
+              for (const subsectionBodyComponent of sectionBodyComponent.value
+                .body) {
+                if (subsectionBodyComponent.type === "captionedImage") {
+                  subsectionBodyComponent.value.image = await this.getImage(
+                    subsectionBodyComponent.value.image
+                  );
+                }
+              }
+            } else if (sectionBodyComponent.type === "captionedImage") {
+              sectionBodyComponent.value.image = await this.getImage(
+                sectionBodyComponent.value.image
               );
             }
           }
@@ -92,7 +101,7 @@ export default class FirebaseService {
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.firestore, nibblesCollection.name),
       where(nibblesCollection.isPublishedField, "==", true),
-      orderBy(nibblesCollection.publishDateField, "desc"),
+      orderBy(nibblesCollection.publishDateField, "desc")
     );
 
     const queryResults: DocumentData[] = await getDocs(q).then(
