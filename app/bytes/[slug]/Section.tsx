@@ -3,6 +3,7 @@ import { SectionType } from "@/common/Byte";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
+import Subsection from "./Subsection";
 
 const Section: React.FC<SectionType> = ({ title, body }: SectionType) => (
   <div className="my-4">
@@ -10,6 +11,16 @@ const Section: React.FC<SectionType> = ({ title, body }: SectionType) => (
     {React.Children.toArray(
       body.map((bodyComponent) => {
         switch (bodyComponent.type) {
+          case "subsection":
+            return (<>
+              <p>hello</p>
+              <p>{bodyComponent.value.title}</p>
+              <Subsection
+                title={bodyComponent.value.title}
+                body={bodyComponent.value.body}
+              />
+              </>
+            );
           case "paragraph":
             return <Paragraph value={bodyComponent.value} />;
           case "captionedImage":

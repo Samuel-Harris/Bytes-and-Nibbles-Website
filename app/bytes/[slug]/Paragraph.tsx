@@ -1,4 +1,3 @@
-import { PAGE_WIDTH } from "@/common/theme";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";

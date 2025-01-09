@@ -25,11 +25,19 @@ export type CaptionedImageType = {
   };
 };
 
-export type BodyComponent = ParagraphType | CaptionedImageType;
+export type BodyType = (ParagraphType | CaptionedImageType)[];
+
+export type SubsectionType = {
+  type: "subsection";
+  value: {
+    title: string;
+    body: BodyType;
+  }
+};
 
 export type SectionType = {
   title: string;
-  body: BodyComponent[];
+  body: (SubsectionType | ParagraphType | CaptionedImageType)[];
 };
 
 export type Byte = {
