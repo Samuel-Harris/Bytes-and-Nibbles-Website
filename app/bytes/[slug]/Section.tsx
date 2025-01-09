@@ -12,14 +12,11 @@ const Section: React.FC<SectionType> = ({ title, body }: SectionType) => (
       body.map((bodyComponent) => {
         switch (bodyComponent.type) {
           case "subsection":
-            return (<>
-              <p>hello</p>
-              <p>{bodyComponent.value.title}</p>
+            return (
               <Subsection
                 title={bodyComponent.value.title}
                 body={bodyComponent.value.body}
               />
-              </>
             );
           case "paragraph":
             return <Paragraph value={bodyComponent.value} />;
