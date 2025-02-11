@@ -43,7 +43,7 @@
     "jest-css-modules-transform": "^4.4.2",
     "jest-environment-jsdom": "^29.7.0",
     "jest-mock-extended": "^3.0.5",
-    "jest-transform-css": "^6.0.1",
+    "jest-transform-css": "^6.0.2",
     "lodash": "^4.17.21",
     "postcss": "^8.4.35",
     "ts-jest": "^29.1.2"
