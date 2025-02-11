@@ -61,7 +61,7 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
 
   return (
     <div
-      className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
+      className={`grid grid-cols-1 justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
     >
       <p
         className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
