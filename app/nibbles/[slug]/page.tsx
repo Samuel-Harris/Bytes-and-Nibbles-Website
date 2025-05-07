@@ -18,7 +18,7 @@ type RouteParams = {
 };
 
 type NibblePageProps = {
-  params: RouteParams;
+  params: Promise<RouteParams>;
 };
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
@@ -31,8 +31,10 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
 }
 
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: NibblePageProps): Promise<Metadata> {
+  const { slug }: RouteParams = await params;
+
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
       const nibble: Nibble | undefined = firebaseService.getNibble(slug);
@@ -47,9 +49,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function NibblePage({
-  params: { slug },
-}: NibblePageProps) {
+export default async function NibblePage({ params }: NibblePageProps) {
+  const { slug }: RouteParams = await params;
+
   const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): Nibble | undefined =>
       firebaseService.getNibble(slug)
@@ -117,10 +119,10 @@ export default async function NibblePage({
         <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
           {nibble.steps.map(
-              (step: string): JSX.Element => (
+            (step: string): JSX.Element => (
               <li className={`pb-2`} key={step}>
-                  <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
-                </li>
+                <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
+              </li>
             )
           )}
         </ol>
