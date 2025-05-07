@@ -93,7 +93,9 @@ export default async function NibblePage({
       </p>
       <p className={`text-l ${headingSpacing}`}>
         This took me:{" "}
-        <HighlightedText>{getDisplayTime(nibble.timeTakenMinutes)}</HighlightedText>
+        <HighlightedText>
+          {getDisplayTime(nibble.timeTakenMinutes)}
+        </HighlightedText>
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from:{" "}
@@ -114,13 +116,11 @@ export default async function NibblePage({
       <div className="mt-4">
         <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
-          {React.Children.toArray(
-            nibble.steps.map(
+          {nibble.steps.map(
               (step: string): JSX.Element => (
-                <li className={`pb-2`}>
+              <li className={`pb-2`} key={step}>
                   <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
                 </li>
-              )
             )
           )}
         </ol>

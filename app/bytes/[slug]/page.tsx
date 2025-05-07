@@ -92,7 +92,9 @@ export default async function BytePage({ params: { slug } }: BytePageProps) {
         alt={byte.title}
         className={`justify-self-center w-fit mt-2 sm:mt-6`}
       />
-      {React.Children.toArray(byte.sections.map(Section))}
+      {byte.sections.map((sectionProps, index) => (
+        <Section key={index} {...sectionProps} />
+      ))}
     </div>
   );
 }
