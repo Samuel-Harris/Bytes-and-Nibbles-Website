@@ -18,7 +18,7 @@ type RouteParams = {
 };
 
 type NibblePageProps = {
-  params: RouteParams;
+  params: Promise<RouteParams>;
 };
 
 export async function generateStaticParams(): Promise<RouteParams[]> {
@@ -31,8 +31,10 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
 }
 
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: NibblePageProps): Promise<Metadata> {
+  const { slug }: RouteParams = await params;
+
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
       const nibble: Nibble | undefined = firebaseService.getNibble(slug);
@@ -47,9 +49,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function NibblePage({
-  params: { slug },
-}: NibblePageProps) {
+export default async function NibblePage({ params }: NibblePageProps) {
+  const { slug }: RouteParams = await params;
+
   const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): Nibble | undefined =>
       firebaseService.getNibble(slug)
@@ -93,7 +95,9 @@ export default async function NibblePage({
       </p>
       <p className={`text-l ${headingSpacing}`}>
         This took me:{" "}
-        <HighlightedText>{getDisplayTime(nibble.timeTakenMinutes)}</HighlightedText>
+        <HighlightedText>
+          {getDisplayTime(nibble.timeTakenMinutes)}
+        </HighlightedText>
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from:{" "}
@@ -114,13 +118,11 @@ export default async function NibblePage({
       <div className="mt-4">
         <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
-          {React.Children.toArray(
-            nibble.steps.map(
-              (step: string): JSX.Element => (
-                <li className={`pb-2`}>
-                  <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
-                </li>
-              )
+          {nibble.steps.map(
+            (step: string): JSX.Element => (
+              <li className={`pb-2`} key={step}>
+                <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
+              </li>
             )
           )}
         </ol>
