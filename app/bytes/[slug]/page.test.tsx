@@ -93,7 +93,7 @@ describe("Individual byte page", () => {
       getByteMock.mockReturnValue(byte);
 
       const metadata: Metadata = await generateMetadata({
-        params: { slug: byteExample.slug },
+        params: Promise.resolve({ slug: byteExample.slug }),
       });
 
       expect(firebaseGetInstanceMock).toHaveBeenCalledTimes(1);
@@ -128,9 +128,9 @@ describe("Individual byte page", () => {
       );
 
       const jsx = await BytePage({
-        params: {
+        params: Promise.resolve({
           slug: byte.slug,
-        },
+        }),
       });
       render(jsx);
 
@@ -178,9 +178,9 @@ describe("Individual byte page", () => {
     getByteMock.mockReturnValue(undefined);
 
     const jsx = await BytePage({
-      params: {
+      params: Promise.resolve({
         slug: byteExample.slug,
-      },
+      }),
     });
     render(jsx);
 

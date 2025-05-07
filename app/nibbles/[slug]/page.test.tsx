@@ -80,7 +80,7 @@ describe("Individual nibbles page", () => {
       getNibbleMock.mockReturnValue(nibble);
 
       const metadata: Metadata = await generateMetadata({
-        params: { slug: nibbleExample.slug },
+        params: Promise.resolve({ slug: nibbleExample.slug }),
       });
 
       expect(firebaseGetInstanceMock).toHaveBeenCalledTimes(1);
@@ -117,9 +117,9 @@ describe("Individual nibbles page", () => {
     );
 
     const jsx = await NibblePage({
-      params: {
+      params: Promise.resolve({
         slug: nibble.slug,
-      },
+      }),
     });
     render(jsx);
 
@@ -196,9 +196,9 @@ describe("Individual nibbles page", () => {
     getNibbleMock.mockReturnValue(undefined);
 
     const jsx = await NibblePage({
-      params: {
+      params: Promise.resolve({
         slug: nibbleExample.slug,
-      },
+      }),
     });
     render(jsx);
 
