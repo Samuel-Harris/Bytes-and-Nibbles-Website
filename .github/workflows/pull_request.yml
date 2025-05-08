@@ -55,7 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [test, lint]
     permissions:
-      contents: read
       checks: write
     steps:
       - name: Checkout code
