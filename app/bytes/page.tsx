@@ -22,11 +22,11 @@ export default async function BytesPage(): Promise<React.JSX.Element> {
     <div className="grid grid-rows-auto justify-items-center ">
       {byteOverviews.map((byteOverview: ByteOverview) => (
         <Tilecard
-          key={byteOverview.slug}
           title={byteOverview.title}
           thumbnail={byteOverview.thumbnail}
           publishDate={byteOverview.publishDate}
           linkPath={`/bytes/${byteOverview.slug}`}
+          key={byteOverview.slug}
         >
           <TilecardSubheading
             subtitle={byteOverview.subtitle}
