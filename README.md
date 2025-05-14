@@ -1,5 +1,6 @@
 # Bytes and Nibbles Website
 [![Deploy workflow](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Samuel-Harris/Bytes-and-Nibbles-Website?utm_source=oss&utm_medium=github&utm_campaign=Samuel-Harris%2FBytes-and-Nibbles-Website&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 ## Introduction
 My tech blog and recipe website.
