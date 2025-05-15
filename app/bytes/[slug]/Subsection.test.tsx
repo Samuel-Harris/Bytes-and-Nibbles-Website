@@ -18,7 +18,7 @@ let captionedImageMockCaption: string;
 
 let sectionTitle: string;
 let paragraph: ParagraphType;
-let captionedImage: CaptionedImageType
+let captionedImage: CaptionedImageType;
 
 describe("Byte section", () => {
   beforeAll(() => {
@@ -46,7 +46,9 @@ describe("Byte section", () => {
   });
 
   it("should render the subsection title and body", () => {
-    render(<Subsection title={sectionTitle} body={[paragraph, captionedImage]} />);
+    render(
+      <Subsection title={sectionTitle} body={[paragraph, captionedImage]} />,
+    );
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
 

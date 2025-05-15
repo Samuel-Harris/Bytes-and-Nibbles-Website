@@ -15,7 +15,7 @@ describe("timeUtils", () => {
       "Mon, 15 Oct 2029": new Date(2029, 9, 15),
       "Thu, 15 Nov 2029": new Date(2029, 10, 15),
       "Sat, 15 Dec 2029": new Date(2029, 11, 15),
-    }
+    };
 
     Object.entries(dates).forEach(([dateString, date]) => {
       expect(getDateString(date)).toBe(dateString);

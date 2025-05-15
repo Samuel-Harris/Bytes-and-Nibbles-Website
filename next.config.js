@@ -4,7 +4,7 @@ const nextConfig = {
   output: "export",
   distDir: "out",
   eslint: {
-    ignoreDuringBuilds: true,  // turn linting back on if lint action is disabled
+    ignoreDuringBuilds: true, // turn linting back on if lint action is disabled
   },
 };
 

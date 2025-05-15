@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier . --write"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
@@ -47,6 +48,7 @@
     "jest-transform-css": "^6.0.2",
     "lodash": "^4.17.21",
     "postcss": "^8.4.35",
+    "prettier": "^3.5.3",
     "ts-jest": "^29.1.2"
   }
 }

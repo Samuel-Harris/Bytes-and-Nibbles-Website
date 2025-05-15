@@ -4,9 +4,7 @@ export type LinkedInLogoProps = {
   svgClassName?: string;
 };
 
-const LinkedInLogo: React.FC<LinkedInLogoProps> = ({
-  svgClassName,
-}) => (
+const LinkedInLogo: React.FC<LinkedInLogoProps> = ({ svgClassName }) => (
   // SVG source: https://www.svgrepo.com/svg/500918/linkedin
   <svg
     className={svgClassName}
