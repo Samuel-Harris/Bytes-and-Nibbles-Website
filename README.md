@@ -7,7 +7,7 @@
 
 My tech blog and recipe website.
 
-See my website hosted at [https://bytes-and-nibbles.web.app](https://bytes-and-nibbles.web.app).
+See my website hosted at [Bytes and Nibbles](https://bytes-and-nibbles.web.app).
 
 ![A screenshot of the 1.0.0 version of the website](website_screenshot.png)
 
