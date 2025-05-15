@@ -1,6 +1,6 @@
 import React from "react";
 import { Series } from "@/common/Byte";
-import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
+import { theme } from "@/common/theme";
 
 export type TilecardSubheadingProps = {
   subtitle: string;
@@ -13,7 +13,7 @@ const TilecardSubheading: React.FC<TilecardSubheadingProps> = ({
 }) => (
   <>
     <p
-      className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${TILECARD_TEXT_PADDING} ${TERTIARY_COLOUR_TEXT}`}
+      className={`text-lg sm:text-xl md:text-3xl sm:mb-2 md:mb-3 ${theme.layout.tilecard.textPadding} ${theme.colours.tertiary.text}`}
     >
       {subtitle}
     </p>

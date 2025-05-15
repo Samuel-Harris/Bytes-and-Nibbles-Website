@@ -3,12 +3,7 @@ import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
+import { theme } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 
@@ -25,7 +20,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
         .getByteSlugs()
-        .map((slug: string): RouteParams => ({ slug }))
+        .map((slug: string): RouteParams => ({ slug })),
   );
 }
 
@@ -39,7 +34,7 @@ export async function generateMetadata({
       const byte: Byte | undefined = firebaseService.getByte(slug);
 
       return byte ? byte.title : "Untitled byte";
-    }
+    },
   );
 
   return {
@@ -53,7 +48,7 @@ export default async function BytePage({ params }: BytePageProps) {
 
   const byte: Byte | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): Byte | undefined =>
-      firebaseService.getByte(slug)
+      firebaseService.getByte(slug),
   );
 
   if (!byte) return <p>Byte not found</p>;
@@ -65,14 +60,16 @@ export default async function BytePage({ params }: BytePageProps) {
 
   return (
     <div
-      className={`grid grid-cols-1 justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
+      className={`grid grid-cols-1 justify-self-center pt-5 ${theme.layout.page.width} ${theme.layout.page.bottomMargin}`}
     >
       <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
+        className={`text-5xl font-bold ${headingSpacing} ${theme.colours.secondary.text}`}
       >
         {byte.title}
       </p>
-      <p className={`text-2xl ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
+      <p
+        className={`text-2xl ${headingSpacing} ${theme.colours.tertiary.text}`}
+      >
         {byte.subtitle}
       </p>
       <p
@@ -82,12 +79,12 @@ export default async function BytePage({ params }: BytePageProps) {
         {byte.series.title}
       </p>
       <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        <span className={theme.colours.tertiary.text}>Published: </span>
         {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
         <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          <span className={theme.colours.tertiary.text}>Last modified: </span>
           {lastModifiedDateString}
         </p>
       )}

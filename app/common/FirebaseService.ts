@@ -4,7 +4,6 @@ import {
   Firestore,
   Query,
   QueryDocumentSnapshot,
-  QuerySnapshot,
   collection,
   getDoc,
   getDocs,
@@ -25,46 +24,54 @@ import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, Series } from "./Byte";
 import { Nibble, NibbleOverview } from "./Nibble";
 
+// Define generic types for content to reduce duplication
+interface BaseContent {
+  slug: string;
+  title: string;
+  thumbnail: string;
+  publishDate: Date;
+}
+
 export default class FirebaseService {
   private app: FirebaseApp;
   private firestore: Firestore;
   private storage: FirebaseStorage;
-  private bytes: Byte[];
-  private nibbles: Nibble[];
+  private bytes: Byte[] = [];
+  private nibbles: Nibble[] = [];
+  private static instance: FirebaseService | null = null;
+  private isInitialized = false;
 
   private constructor() {
     this.app = initializeApp(firebaseConfig);
     this.firestore = getFirestore(this.app);
     this.storage = getStorage(this.app);
-    this.bytes = [];
-    this.nibbles = [];
   }
 
   public static async getInstance(): Promise<FirebaseService> {
-    const instance = new FirebaseService();
-    await instance.fetchBytes();
-    await instance.fetchNibbles();
+    if (!FirebaseService.instance) {
+      FirebaseService.instance = new FirebaseService();
+    }
 
-    return Promise.resolve(instance);
+    if (!FirebaseService.instance.isInitialized) {
+      await FirebaseService.instance.initialize();
+    }
+
+    return FirebaseService.instance;
+  }
+
+  private async initialize(): Promise<void> {
+    await Promise.all([this.fetchBytes(), this.fetchNibbles()]);
+    this.isInitialized = true;
   }
 
   private async fetchBytes(): Promise<void> {
-    const q: Query<DocumentData, DocumentData> = query(
-      collection(this.firestore, bytesCollection.name),
-      where(bytesCollection.isPublishedField, "==", true),
-      orderBy(nibblesCollection.publishDateField, "desc")
-    );
-
-    const queryResults: DocumentData[] = await getDocs(q).then(
-      (response: QuerySnapshot<DocumentData, DocumentData>) =>
-        response.docs.map(
-          (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => doc.data()
-        )
-    );
+    const q: Query<DocumentData, DocumentData> =
+      this.createPublishedContentQuery(bytesCollection.name);
+    const queryResults: DocumentData[] = await this.executeQuery(q);
 
     this.bytes = await Promise.all(
       queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
-        const byte: Byte = {
+        const byte = {
           ...byteResponse,
           series: (await getDoc(byteResponse.series)).data() as Series,
           publishDate: byteResponse.publishDate.toDate(),
@@ -73,59 +80,66 @@ export default class FirebaseService {
           coverPhoto: await this.getImage(byteResponse.coverPhoto),
         } as Byte;
 
-        for (const section of byte.sections) {
-          for (const sectionBodyComponent of section.body) {
-            if (sectionBodyComponent.type === "subsection") {
-              for (const subsectionBodyComponent of sectionBodyComponent.value
-                .body) {
-                if (subsectionBodyComponent.type === "captionedImage") {
-                  subsectionBodyComponent.value.image = await this.getImage(
-                    subsectionBodyComponent.value.image
-                  );
-                }
-              }
-            } else if (sectionBodyComponent.type === "captionedImage") {
-              sectionBodyComponent.value.image = await this.getImage(
-                sectionBodyComponent.value.image
-              );
-            }
-          }
-        }
-
+        await this.processByteImages(byte);
         return byte;
-      })
+      }),
     );
   }
 
-  private async fetchNibbles(): Promise<void> {
-    const q: Query<DocumentData, DocumentData> = query(
-      collection(this.firestore, nibblesCollection.name),
-      where(nibblesCollection.isPublishedField, "==", true),
-      orderBy(nibblesCollection.publishDateField, "desc")
-    );
+  private async processByteImages(byte: Byte): Promise<void> {
+    for (const section of byte.sections) {
+      for (const component of section.body) {
+        if (component.type === "subsection") {
+          for (const subComponent of component.value.body) {
+            if (subComponent.type === "captionedImage") {
+              subComponent.value.image = await this.getImage(
+                subComponent.value.image,
+              );
+            }
+          }
+        } else if (component.type === "captionedImage") {
+          component.value.image = await this.getImage(component.value.image);
+        }
+      }
+    }
+  }
 
-    const queryResults: DocumentData[] = await getDocs(q).then(
-      (response: QuerySnapshot<DocumentData, DocumentData>) =>
-        response.docs.map(
-          (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => doc.data()
-        )
-    );
+  private async fetchNibbles(): Promise<void> {
+    const q = this.createPublishedContentQuery(nibblesCollection.name);
+    const queryResults = await this.executeQuery(q);
 
     this.nibbles = await Promise.all(
       queryResults.map(
-        async (nibbleResponse: DocumentData): Promise<Nibble> => {
-          // convert received nibble into nibble object
-          const nibble: Nibble = {
+        async (nibbleResponse): Promise<Nibble> =>
+          ({
             ...nibbleResponse,
             publishDate: nibbleResponse.publishDate.toDate(),
             lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
             thumbnail: await this.getImage(nibbleResponse.thumbnail),
             coverPhoto: await this.getImage(nibbleResponse.coverPhoto),
-          } as Nibble;
+          }) as Nibble,
+      ),
+    );
+  }
 
-          return nibble;
-        }
-      )
+  private createPublishedContentQuery(
+    collectionName: string,
+  ): Query<DocumentData> {
+    return query(
+      collection(this.firestore, collectionName),
+      where(
+        `${collectionName === bytesCollection.name ? bytesCollection.isPublishedField : nibblesCollection.isPublishedField}`,
+        "==",
+        true,
+      ),
+      orderBy(nibblesCollection.publishDateField, "desc"),
+    );
+  }
+
+  private async executeQuery(q: Query<DocumentData>): Promise<DocumentData[]> {
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
+      doc.data(),
     );
   }
 
@@ -138,7 +152,7 @@ export default class FirebaseService {
         thumbnail: byte.thumbnail,
         publishDate: byte.publishDate,
         slug: byte.slug,
-      })
+      }),
     );
   }
 
@@ -151,29 +165,39 @@ export default class FirebaseService {
         slug: nibble.slug,
         publishDate: nibble.publishDate,
         timeTakenMinutes: nibble.timeTakenMinutes,
-      })
+      }),
     );
   }
 
   public getByte(slug: string): Byte | undefined {
-    return this.bytes.find((byte: Byte) => byte.slug === slug);
+    return this.findContentBySlug(this.bytes, slug);
   }
 
   public getNibble(slug: string): Nibble | undefined {
-    return this.nibbles.find((nibble: Nibble) => nibble.slug === slug);
+    return this.findContentBySlug(this.nibbles, slug);
+  }
+
+  private findContentBySlug<T extends BaseContent>(
+    items: T[],
+    slug: string,
+  ): T | undefined {
+    return items.find((item) => item.slug === slug);
   }
 
   public getByteSlugs(): string[] {
-    return this.bytes.map((byte: Byte) => byte.slug);
+    return this.getContentSlugs(this.bytes);
   }
 
   public getNibbleSlugs(): string[] {
-    return this.nibbles.map((nibble: Nibble) => nibble.slug);
+    return this.getContentSlugs(this.nibbles);
+  }
+
+  private getContentSlugs<T extends BaseContent>(items: T[]): string[] {
+    return items.map((item) => item.slug);
   }
 
   private getImage(path: string): Promise<string> {
     const storageRef: StorageReference = ref(this.storage, path);
-
     return getDownloadURL(storageRef);
   }
 }

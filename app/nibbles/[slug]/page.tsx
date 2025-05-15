@@ -1,12 +1,7 @@
 import React from "react";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
+import { theme } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 import { Ingredient, Nibble } from "@/common/Nibble";
@@ -26,7 +21,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
         .getNibbleSlugs()
-        .map((slug: string): RouteParams => ({ slug }))
+        .map((slug: string): RouteParams => ({ slug })),
   );
 }
 
@@ -40,7 +35,7 @@ export async function generateMetadata({
       const nibble: Nibble | undefined = firebaseService.getNibble(slug);
 
       return nibble ? nibble.title : "Untitled nibble";
-    }
+    },
   );
 
   return {
@@ -54,7 +49,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
 
   const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): Nibble | undefined =>
-      firebaseService.getNibble(slug)
+      firebaseService.getNibble(slug),
   );
 
   if (!nibble) return <p>Nibble not found</p>;
@@ -68,20 +63,20 @@ export default async function NibblePage({ params }: NibblePageProps) {
 
   return (
     <div
-      className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
+      className={`grid justify-self-center pt-5 ${theme.layout.page.width} ${theme.layout.page.bottomMargin}`}
     >
       <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
+        className={`text-5xl font-bold ${headingSpacing} ${theme.colours.secondary.text}`}
       >
         {nibble.title}
       </p>
       <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        <span className={theme.colours.tertiary.text}>Published: </span>
         {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
         <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          <span className={theme.colours.tertiary.text}>Last modified: </span>
           {lastModifiedDateString}
         </p>
       )}
@@ -101,7 +96,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from:{" "}
-        <span className={SECONDARY_COLOUR_TEXT}>
+        <span className={theme.colours.secondary.text}>
           {isSourceUrl ? (
             <a href={nibble.source}>{nibble.source}</a>
           ) : (
@@ -110,20 +105,22 @@ export default async function NibblePage({ params }: NibblePageProps) {
         </span>
       </p>
       <div className="my-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Ingredients</p>
-        <ul className={SECONDARY_COLOUR_TEXT}>
+        <p className={`text-2xl mb-2 ${theme.colours.tertiary.text}`}>
+          Ingredients
+        </p>
+        <ul className={theme.colours.secondary.text}>
           {nibble.ingredients.map(renderIngredient)}
         </ul>
       </div>
       <div className="mt-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
-        <ol className={SECONDARY_COLOUR_TEXT}>
+        <p className={`text-2xl mb-2 ${theme.colours.tertiary.text}`}>Steps</p>
+        <ol className={theme.colours.secondary.text}>
           {nibble.steps.map(
             (step: string): JSX.Element => (
               <li className={`pb-2`} key={step}>
-                <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
+                <span className={theme.colours.tertiary.text}>{step}</span>
               </li>
-            )
+            ),
           )}
         </ol>
       </div>
@@ -146,7 +143,7 @@ const renderIngredient = (ingredient: Ingredient): JSX.Element => {
   }
 
   return (
-    <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+    <li className={theme.colours.tertiary.text} key={ingredient.name}>
       <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
       {ingredient.optional && <span className="text-white"> (optional)</span>}
     </li>

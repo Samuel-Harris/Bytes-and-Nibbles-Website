@@ -1,7 +1,7 @@
 import React from "react";
-import { SECONDARY_COLOUR_TEXT } from "./theme";
+import { theme } from "./theme";
 
 const HighlightedText: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => <span className={SECONDARY_COLOUR_TEXT}>{children}</span>;
+}) => <span className={theme.colours.secondary.text}>{children}</span>;
 export default HighlightedText;
