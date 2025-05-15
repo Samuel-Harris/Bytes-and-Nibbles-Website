@@ -61,7 +61,7 @@ export async function generateMetadata({
  * If the specified byte is not found, displays a "Byte not found" message.
  *
  * @param params - A promise resolving to an object containing the byte's slug.
- * @returns The rendered byte page as a React element.
+ * @returns The rendered byte page as a React element, or a "Byte not found" message if the specified byte is not found.
  */
 export default async function BytePage({ params }: BytePageProps) {
   const { slug }: RouteParams = await params;
