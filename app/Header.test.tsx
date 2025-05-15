@@ -69,7 +69,7 @@ describe("Header", () => {
       }
 
       for (const link of links) {
-        var oneOfExpectedLinks = false;
+        let oneOfExpectedLinks = false;
         for (let i = 0; i < expectedBannerLinks.length; i++) {
           const [text, url]: [string, string] = expectedBannerLinks[i];
           if (link.textContent?.includes(text)) {
