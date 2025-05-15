@@ -70,7 +70,7 @@ describe("Header", () => {
 
       for (const link of links) {
         var oneOfExpectedLinks = false;
-        for (var i = 0; i < expectedBannerLinks.length; i++) {
+        for (let i = 0; i < expectedBannerLinks.length; i++) {
           const [text, url]: [string, string] = expectedBannerLinks[i];
           if (link.textContent?.includes(text)) {
             expect(link).toHaveAttribute("href", url);
@@ -79,7 +79,7 @@ describe("Header", () => {
           }
         }
 
-        for (var i = 0; i < expectedSocialLinks.length; i++) {
+        for (let i = 0; i < expectedSocialLinks.length; i++) {
           const url: string = expectedSocialLinks[i];
           if (link.attributes.getNamedItem("href")?.value === url) {
             oneOfExpectedLinks = true;
