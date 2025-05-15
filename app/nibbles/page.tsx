@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   description: `The list of published recipes. ${METADATA_DESCRIPTION_CREDITS}`,
 };
 
+/**
+ * Renders a page displaying a grid of recipe summaries ("Nibbles") with their metadata.
+ *
+ * Fetches an array of {@link NibbleOverview} objects and displays each as a tile with title, thumbnail, publish date, and preparation time.
+ *
+ * @returns A React element containing the grid of nibble tiles.
+ */
 export default async function NibblesPage(): Promise<React.JSX.Element> {
   const nibbleOverviews: NibbleOverview[] =
     await FirebaseService.getInstance().then(

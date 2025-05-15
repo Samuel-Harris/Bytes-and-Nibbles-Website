@@ -15,6 +15,11 @@ type BytePageProps = {
   params: Promise<RouteParams>;
 };
 
+/**
+ * Retrieves all byte slugs from the backend and returns them as route parameters for static generation.
+ *
+ * @returns An array of route parameter objects, each containing a byte slug.
+ */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
@@ -24,6 +29,13 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   );
 }
 
+/**
+ * Generates metadata for a Byte page based on the provided slug.
+ *
+ * Retrieves the byte's title from the backend and constructs a metadata object with a formatted title and description.
+ *
+ * @returns A metadata object containing the page title and description.
+ */
 export async function generateMetadata({
   params,
 }: BytePageProps): Promise<Metadata> {
@@ -43,6 +55,14 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Renders a page displaying a single "Byte" article, including its title, subtitle, series, publication dates, cover photo, and content sections.
+ *
+ * If the specified byte is not found, displays a "Byte not found" message.
+ *
+ * @param params - A promise resolving to an object containing the byte's slug.
+ * @returns The rendered byte page as a React element, or a "Byte not found" message if the specified byte is not found.
+ */
 export default async function BytePage({ params }: BytePageProps) {
   const { slug }: RouteParams = await params;
 

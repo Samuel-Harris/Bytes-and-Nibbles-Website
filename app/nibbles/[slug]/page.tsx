@@ -16,6 +16,11 @@ type NibblePageProps = {
   params: Promise<RouteParams>;
 };
 
+/**
+ * Retrieves all nibble slugs from Firebase and returns them as route parameters for static page generation.
+ *
+ * @returns An array of objects each containing a nibble slug for use in static routing.
+ */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
@@ -25,6 +30,13 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   );
 }
 
+/**
+ * Generates metadata for a nibble recipe page based on the provided slug.
+ *
+ * Retrieves the nibble's title from the database and constructs a metadata object with a formatted title and description for SEO purposes.
+ *
+ * @returns Metadata object containing the page title and description.
+ */
 export async function generateMetadata({
   params,
 }: NibblePageProps): Promise<Metadata> {
@@ -44,6 +56,14 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Renders a detailed recipe page for a specific "Nibble" based on the provided slug.
+ *
+ * Displays the nibble's title, publication and modification dates, cover photo, servings, preparation time, source attribution, ingredients, and step-by-step instructions. If the nibble is not found, shows a "Nibble not found" message.
+ *
+ * @param params - An object containing the nibble's slug for lookup.
+ * @returns The rendered recipe page as a React component, or a not-found message if the nibble does not exist.
+ */
 export default async function NibblePage({ params }: NibblePageProps) {
   const { slug }: RouteParams = await params;
 
