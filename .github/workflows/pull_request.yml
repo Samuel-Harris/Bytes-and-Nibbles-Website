@@ -50,8 +50,7 @@ jobs:
         run: npm run lint
 
       - name: Lint code with Prettier
-        run: npm run prettier:check
-
+        run: npm run prettier:lint
   build_and_preview:
     name: Build and preview
     runs-on: ubuntu-latest
