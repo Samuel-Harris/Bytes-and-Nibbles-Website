@@ -38,8 +38,10 @@ export default class FirebaseService {
   private storage: FirebaseStorage;
   private bytes: Byte[] = [];
   private nibbles: Nibble[] = [];
-  private static instance: FirebaseService | null = null;
   private isInitialized = false;
+
+  private static instance: FirebaseService | null = null;
+  private static initPromise: Promise<void> | null = null;
 
   private constructor() {
     this.app = initializeApp(firebaseConfig);
@@ -53,7 +55,8 @@ export default class FirebaseService {
     }
 
     if (!FirebaseService.instance.isInitialized) {
-      await FirebaseService.instance.initialize();
+      FirebaseService.initPromise ??= FirebaseService.instance.initialize();
+      await FirebaseService.initPromise;
     }
 
     return FirebaseService.instance;
