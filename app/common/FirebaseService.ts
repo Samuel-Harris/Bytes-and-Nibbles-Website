@@ -125,14 +125,23 @@ export default class FirebaseService {
   private createPublishedContentQuery(
     collectionName: string,
   ): Query<DocumentData> {
+    const isByte: boolean = collectionName === bytesCollection.name;
+
     return query(
       collection(this.firestore, collectionName),
       where(
-        `${collectionName === bytesCollection.name ? bytesCollection.isPublishedField : nibblesCollection.isPublishedField}`,
+        isByte
+          ? bytesCollection.isPublishedField
+          : nibblesCollection.isPublishedField,
         "==",
         true,
       ),
-      orderBy(nibblesCollection.publishDateField, "desc"),
+      orderBy(
+        isByte
+          ? bytesCollection.publishDateField
+          : nibblesCollection.publishDateField,
+        "desc",
+      ),
     );
   }
 
