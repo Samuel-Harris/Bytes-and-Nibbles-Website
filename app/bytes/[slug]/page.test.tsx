@@ -55,7 +55,7 @@ describe("Individual byte page", () => {
     // set up firebaseService mock
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
-      Promise.resolve(FirebaseService.prototype)
+      Promise.resolve(FirebaseService.prototype),
     );
 
     getByteMock = mocked(FirebaseService.prototype.getByte);
@@ -75,7 +75,7 @@ describe("Individual byte page", () => {
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
     const getSlugsMock: MockedFunction<() => string[]> = mocked(
-      FirebaseService.prototype.getByteSlugs
+      FirebaseService.prototype.getByteSlugs,
     );
     getSlugsMock.mockReturnValue(mockSlugs);
 
@@ -102,9 +102,9 @@ describe("Individual byte page", () => {
       const expectedTitle = byte ? byte.title : "Untitled byte";
       expect(metadata.title).toEqual(`${expectedTitle} - ${WEBSITE_NAME}`);
       expect(metadata.description).toEqual(
-        `The coding blog: ${expectedTitle}. ${METADATA_DESCRIPTION_CREDITS}`
+        `The coding blog: ${expectedTitle}. ${METADATA_DESCRIPTION_CREDITS}`,
       );
-    }
+    },
   );
 
   it.each([
@@ -124,7 +124,7 @@ describe("Individual byte page", () => {
       getByteMock.mockReturnValue(byte);
 
       getDateStringMock.mockImplementation((date: Date): string =>
-        date.toDateString()
+        date.toDateString(),
       );
 
       const jsx = await BytePage({
@@ -147,19 +147,19 @@ describe("Individual byte page", () => {
       expect(screen.getByRole("img")).toHaveAttribute("src", byte.coverPhoto);
 
       expect(
-        screen.getByText(byte.publishDate.toDateString(), { exact: false })
+        screen.getByText(byte.publishDate.toDateString(), { exact: false }),
       ).toBeInTheDocument();
       if (byte.publishDate === byte.lastModifiedDate) {
         expect(
           screen.getAllByText(byte.lastModifiedDate.toDateString(), {
             exact: false,
-          }).length
+          }).length,
         ).toEqual(1);
       } else {
         expect(
           screen.getByText(byte.lastModifiedDate.toDateString(), {
             exact: false,
-          })
+          }),
         ).toBeInTheDocument();
       }
 
@@ -171,7 +171,7 @@ describe("Individual byte page", () => {
       expect(screen.getByText(byte.series.title)).toHaveStyle({
         "background-color": byte.series.accentColour,
       });
-    }
+    },
   );
 
   it("should render an error message if no byte is found", async () => {

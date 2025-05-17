@@ -4,7 +4,7 @@
 
 body {
   color: rgb(255, 255, 255);
-  background: rgb(0, 0, 0)
+  background: rgb(0, 0, 0);
 }
 
 @layer base {
@@ -62,7 +62,9 @@ body {
     text-decoration-color: inherit;
   }
 
-  table, th, td {
+  table,
+  th,
+  td {
     border: 1px solid rgb(163 163 163 / var(--tw-text-opacity, 1));
     padding: 10px;
   }

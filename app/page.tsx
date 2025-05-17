@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "./common/constants";
 import Header, { Tab } from "./Header";
-import { TERTIARY_COLOUR_TEXT } from "./common/theme";
+import { theme } from "./common/theme";
 import { default as HT } from "./common/HighlightedText";
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ const Home = (): JSX.Element => (
           src="homepage_photomosaic.jpg"
           alt="A photomosaic of the author of this website, Sam Harris."
         />
-        <p className={TERTIARY_COLOUR_TEXT}>
+        <p className={theme.colours.tertiary.text}>
           A <HT>photomosaic</HT> of the author of this website,{" "}
           <HT>Sam Harris</HT>, that was made using an{" "}
           <HT>AI photomosaic generator</HT> that he made. This photomosaic was
@@ -45,7 +45,9 @@ const Home = (): JSX.Element => (
       </div>
       <div className="md:col-span-2">
         <div className="mb-8 space-y-2">
-          <p className={`text-2xl ${TERTIARY_COLOUR_TEXT}`}>What is this?</p>
+          <p className={`text-2xl ${theme.colours.tertiary.text}`}>
+            What is this?
+          </p>
           <p>
             In <HT>October 2023</HT>, I decided that I wanted to do more{" "}
             <HT>AI</HT> projects in my spare time. I thought that a great way to
@@ -70,11 +72,12 @@ const Home = (): JSX.Element => (
           <p>
             This website was finally completed in <HT>April 2024</HT>, and
             whether you came for the <HL href="/bytes">bytes</HL> (tech blogs)
-            or the <HL href="/nibbles">nibbles</HL> (recipes), I hope you like it.
+            or the <HL href="/nibbles">nibbles</HL> (recipes), I hope you like
+            it.
           </p>
         </div>
         <div className="space-y-2">
-          <p className={`text-2xl ${TERTIARY_COLOUR_TEXT}`}>Who am I?</p>
+          <p className={`text-2xl ${theme.colours.tertiary.text}`}>Who am I?</p>
           <p>
             As you might have guessed from the header at the top of this page,
             my name is <HT>Sam</HT>! I am a professional{" "}

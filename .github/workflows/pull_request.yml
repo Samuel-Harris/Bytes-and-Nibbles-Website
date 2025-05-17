@@ -11,7 +11,6 @@ permissions:
 env:
   PROJECT_ID: bytes-and-nibbles
   NODE_VERSION: 24
-  
 
 jobs:
   test:
@@ -49,7 +48,7 @@ jobs:
 
       - name: Lint code
         run: npm run lint
-  
+
   build_and_preview:
     name: Build and preview
     runs-on: ubuntu-latest
