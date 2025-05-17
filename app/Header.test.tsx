@@ -65,7 +65,7 @@ describe("Header", () => {
         expectedBannerLinks.length + expectedSocialLinks.length
       );
       for (const link of expectedBannerLinks) {
-        expect(screen.getByText(link[0]));
+        expect(screen.getByText(link[0])).toBeInTheDocument();
       }
 
       for (const link of links) {
