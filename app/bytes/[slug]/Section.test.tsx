@@ -83,7 +83,7 @@ describe("Byte section", () => {
       <Section
         title={sectionTitle}
         body={[paragraph1, captionedImage1, subsection]}
-      />,
+      />
     );
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();

@@ -42,7 +42,7 @@ describe("Header", () => {
       render(
         <Header tab={tab}>
           <></>
-        </Header>,
+        </Header>
       );
 
       // check that logo is rendered
@@ -62,7 +62,7 @@ describe("Header", () => {
 
       const links = screen.getAllByRole("link");
       expect(links).toHaveLength(
-        expectedBannerLinks.length + expectedSocialLinks.length,
+        expectedBannerLinks.length + expectedSocialLinks.length
       );
       for (const link of expectedBannerLinks) {
         expect(screen.getByText(link[0]));
@@ -89,6 +89,6 @@ describe("Header", () => {
 
         expect(oneOfExpectedLinks).toBe(true);
       }
-    },
+    }
   );
 });

@@ -24,7 +24,7 @@ describe("Bytes page", () => {
   beforeAll(() => {
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
-      Promise.resolve(FirebaseService.prototype),
+      Promise.resolve(FirebaseService.prototype)
     );
 
     byteOverviewsMock = [
@@ -62,7 +62,7 @@ describe("Bytes page", () => {
     byteTilecardSubheadingMock.mockImplementation(
       ({ subtitle }: TilecardSubheadingProps) => {
         return <p>{subtitle}</p>;
-      },
+      }
     );
   });
 

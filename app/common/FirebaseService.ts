@@ -82,7 +82,7 @@ export default class FirebaseService {
 
         await this.processByteImages(byte);
         return byte;
-      }),
+      })
     );
   }
 
@@ -93,7 +93,7 @@ export default class FirebaseService {
           for (const subComponent of component.value.body) {
             if (subComponent.type === "captionedImage") {
               subComponent.value.image = await this.getImage(
-                subComponent.value.image,
+                subComponent.value.image
               );
             }
           }
@@ -117,13 +117,13 @@ export default class FirebaseService {
             lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
             thumbnail: await this.getImage(nibbleResponse.thumbnail),
             coverPhoto: await this.getImage(nibbleResponse.coverPhoto),
-          }) as Nibble,
-      ),
+          }) as Nibble
+      )
     );
   }
 
   private createPublishedContentQuery(
-    collectionName: string,
+    collectionName: string
   ): Query<DocumentData> {
     const isByte: boolean = collectionName === bytesCollection.name;
 
@@ -134,21 +134,21 @@ export default class FirebaseService {
           ? bytesCollection.isPublishedField
           : nibblesCollection.isPublishedField,
         "==",
-        true,
+        true
       ),
       orderBy(
         isByte
           ? bytesCollection.publishDateField
           : nibblesCollection.publishDateField,
-        "desc",
-      ),
+        "desc"
+      )
     );
   }
 
   private async executeQuery(q: Query<DocumentData>): Promise<DocumentData[]> {
     const snapshot = await getDocs(q);
     return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
-      doc.data(),
+      doc.data()
     );
   }
 
@@ -161,7 +161,7 @@ export default class FirebaseService {
         thumbnail: byte.thumbnail,
         publishDate: byte.publishDate,
         slug: byte.slug,
-      }),
+      })
     );
   }
 
@@ -174,7 +174,7 @@ export default class FirebaseService {
         slug: nibble.slug,
         publishDate: nibble.publishDate,
         timeTakenMinutes: nibble.timeTakenMinutes,
-      }),
+      })
     );
   }
 
@@ -188,7 +188,7 @@ export default class FirebaseService {
 
   private findContentBySlug<T extends BaseContent>(
     items: T[],
-    slug: string,
+    slug: string
   ): T | undefined {
     return items.find((item) => item.slug === slug);
   }

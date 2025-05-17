@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "prettier . --check",
     "test": "jest",
-    "format": "prettier . --write"
+    "lint": "next lint",
+    "prettier:lint": "prettier . --check",
+    "prettier:format": "prettier . --write"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.1",
@@ -50,5 +51,36 @@
     "postcss": "^8.4.35",
     "prettier": "^3.5.3",
     "ts-jest": "^29.1.2"
+  },
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Resources": {
+    "Function": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Description": {
+          "Fn::Sub": [
+            "Stack ${AWS::StackName} Function ${ResourceName}",
+            {
+              "ResourceName": "Function"
+            }
+          ]
+        },
+        "CodeUri": "src/Function",
+        "Handler": "index.handler",
+        "Runtime": "nodejs22.x",
+        "MemorySize": 3008,
+        "Timeout": 30,
+        "Tracing": "Active"
+      }
+    },
+    "FunctionLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Sub": "/aws/lambda/${Function}"
+        }
+      }
+    }
   }
 }

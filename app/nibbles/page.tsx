@@ -22,7 +22,7 @@ export default async function NibblesPage(): Promise<React.JSX.Element> {
   const nibbleOverviews: NibbleOverview[] =
     await FirebaseService.getInstance().then(
       (firebaseService: FirebaseService): NibbleOverview[] =>
-        firebaseService.listNibbles(),
+        firebaseService.listNibbles()
     );
 
   return (

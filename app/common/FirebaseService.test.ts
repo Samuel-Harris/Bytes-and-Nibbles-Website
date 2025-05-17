@@ -142,7 +142,7 @@ describe("Firebase service", () => {
       publishDate: new Timestamp(nibble.publishDate.getUTCSeconds(), 0),
       lastModifiedDate: new Timestamp(
         nibble.lastModifiedDate.getUTCSeconds(),
-        0,
+        0
       ),
     }));
 
@@ -228,7 +228,7 @@ describe("Firebase service", () => {
           }
 
           resolve("Invalid ref");
-        }),
+        })
     );
 
     const bytesResponseMock = {
@@ -259,13 +259,13 @@ describe("Firebase service", () => {
 
     const getDocsMock = mocked(getDocs);
     getDocsMock.mockResolvedValueOnce(
-      bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>,
+      bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>
     );
     getDocsMock.mockResolvedValueOnce(
       nibblesResponseMock as unknown as QuerySnapshot<
         DocumentData,
         DocumentData
-      >,
+      >
     );
 
     const firebaseService: FirebaseService =
@@ -286,14 +286,14 @@ describe("Firebase service", () => {
     expect(getDocsMock).toHaveBeenCalledWith(
       query(
         collection(firebaseService["firestore"], bytesCollection.name),
-        where(bytesCollection.isPublishedField, "==", true),
-      ),
+        where(bytesCollection.isPublishedField, "==", true)
+      )
     );
     expect(getDocsMock).toHaveBeenCalledWith(
       query(
         collection(firebaseService["firestore"], nibblesCollection.name),
-        where(nibblesCollection.isPublishedField, "==", true),
-      ),
+        where(nibblesCollection.isPublishedField, "==", true)
+      )
     );
 
     expect(refMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
@@ -302,11 +302,11 @@ describe("Firebase service", () => {
     for (const byte of bytes) {
       expect(refMock).toHaveBeenCalledWith(
         firebaseService["storage"],
-        byte.thumbnail,
+        byte.thumbnail
       );
       expect(refMock).toHaveBeenCalledWith(
         firebaseService["storage"],
-        byte.coverPhoto,
+        byte.coverPhoto
       );
 
       expect(getDocMock).toHaveBeenCalledWith(byte.series);
@@ -315,16 +315,16 @@ describe("Firebase service", () => {
     for (const nibble of nibbles) {
       expect(refMock).toHaveBeenCalledWith(
         firebaseService["storage"],
-        nibble.thumbnail,
+        nibble.thumbnail
       );
       expect(refMock).toHaveBeenCalledWith(
         firebaseService["storage"],
-        nibble.coverPhoto,
+        nibble.coverPhoto
       );
     }
 
     expect(getDownloadURLMock).toHaveBeenCalledTimes(
-      2 * (bytes.length + nibbles.length),
+      2 * (bytes.length + nibbles.length)
     );
     for (const storageMock of byteStorageMocks) {
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.thumbnail);
@@ -356,8 +356,8 @@ describe("Firebase service", () => {
           thumbnail: byte.thumbnail,
           publishDate: byte.publishDate,
           slug: byte.slug,
-        }),
-      ),
+        })
+      )
     );
   });
 
@@ -377,8 +377,8 @@ describe("Firebase service", () => {
           slug: nibble.slug,
           publishDate: nibble.publishDate,
           timeTakenMinutes: nibble.timeTakenMinutes,
-        }),
-      ),
+        })
+      )
     );
   });
 
@@ -396,7 +396,7 @@ describe("Firebase service", () => {
     firebaseService["nibbles"] = nibbles;
 
     const nibble: Nibble | undefined = firebaseService.getNibble(
-      nibbles[1].slug,
+      nibbles[1].slug
     );
 
     expect(nibble).toEqual(nibbles[1]);

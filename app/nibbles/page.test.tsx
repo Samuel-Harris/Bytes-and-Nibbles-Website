@@ -25,7 +25,7 @@ describe("Bytes page", () => {
     jest.clearAllMocks();
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
-      Promise.resolve(FirebaseService.prototype),
+      Promise.resolve(FirebaseService.prototype)
     );
 
     nibbleOverviewsMock = [
@@ -64,7 +64,7 @@ describe("Bytes page", () => {
     tilecardSubheadingMock.mockImplementation(
       ({ timeTakenMinutes }: TilecardSubheadingProps) => {
         return <p>{timeTakenMinutes}</p>;
-      },
+      }
     );
   });
 
@@ -82,7 +82,7 @@ describe("Bytes page", () => {
     nibbleOverviewsMock.forEach((nibbleOverview: NibbleOverview): void => {
       expect(screen.getByText(nibbleOverview.title)).toBeInTheDocument();
       expect(
-        screen.getByText(nibbleOverview.timeTakenMinutes),
+        screen.getByText(nibbleOverview.timeTakenMinutes)
       ).toBeInTheDocument();
     });
   });

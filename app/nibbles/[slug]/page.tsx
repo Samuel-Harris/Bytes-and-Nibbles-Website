@@ -27,7 +27,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
         .getNibbleSlugs()
-        .map((slug: string): RouteParams => ({ slug })),
+        .map((slug: string): RouteParams => ({ slug }))
   );
 }
 
@@ -48,7 +48,7 @@ export async function generateMetadata({
       const nibble: Nibble | undefined = firebaseService.getNibble(slug);
 
       return nibble ? nibble.title : "Untitled nibble";
-    },
+    }
   );
 
   return {
@@ -70,7 +70,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
 
   const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): Nibble | undefined =>
-      firebaseService.getNibble(slug),
+      firebaseService.getNibble(slug)
   );
 
   if (!nibble) return <p>Nibble not found</p>;
@@ -141,7 +141,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
               <li className={`pb-2`} key={step}>
                 <span className={theme.colours.tertiary.text}>{step}</span>
               </li>
-            ),
+            )
           )}
         </ol>
       </div>

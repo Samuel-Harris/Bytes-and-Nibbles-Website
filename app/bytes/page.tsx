@@ -22,7 +22,7 @@ export default async function BytesPage(): Promise<React.JSX.Element> {
   const byteOverviews: ByteOverview[] =
     await FirebaseService.getInstance().then(
       (firebaseService: FirebaseService): ByteOverview[] =>
-        firebaseService.listBytes(),
+        firebaseService.listBytes()
     );
 
   return (

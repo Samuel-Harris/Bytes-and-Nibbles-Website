@@ -47,7 +47,7 @@ describe("Byte section", () => {
 
   it("should render the subsection title and body", () => {
     render(
-      <Subsection title={sectionTitle} body={[paragraph, captionedImage]} />,
+      <Subsection title={sectionTitle} body={[paragraph, captionedImage]} />
     );
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
