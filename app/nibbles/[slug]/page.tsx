@@ -4,6 +4,7 @@ import { getDateString } from "@/common/timeUtils";
 import { theme } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
+import Link from "next/link";
 import { Ingredient, Nibble } from "@/common/Nibble";
 import HighlightedText from "@/common/HighlightedText";
 import { getDisplayTime } from "../timeUtils";
@@ -118,7 +119,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
         Adapted from:{" "}
         <span className={theme.colours.secondary.text}>
           {isSourceUrl ? (
-            <a href={nibble.source}>{nibble.source}</a>
+            <Link href={nibble.source}>{nibble.source}</Link>
           ) : (
             nibble.source
           )}

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { theme } from "../common/theme";
 import { getDateString } from "../common/timeUtils";
 
@@ -34,7 +35,7 @@ const Tilecard: React.FC<TilecardProps> = ({
   const dateClassName: string = `text-sm md:text-base text-white ${theme.layout.tilecard.textPadding}`;
 
   return (
-    <a
+    <Link
       href={linkPath}
       title={title}
       className={`${baseClassName} ${className}`}
@@ -45,7 +46,7 @@ const Tilecard: React.FC<TilecardProps> = ({
         {children}
         <p className={dateClassName}>{getDateString(publishDate)}</p>
       </div>
-    </a>
+    </Link>
   );
 };
 

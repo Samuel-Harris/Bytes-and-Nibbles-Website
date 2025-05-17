@@ -69,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => (
       className="grid grid-cols-3 text-center mb-2 sm:mb-0"
       aria-label="Main Navigation"
     >
-      <a
+      <Link
         href="/"
         className={headerOptionStyle}
         aria-current={tab === Tab.Home ? "page" : undefined}
@@ -78,8 +78,8 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => (
         <p className={tab === Tab.Home ? selectedTabStyle : defaultTabStyle}>
           Home
         </p>
-      </a>
-      <a
+      </Link>
+      <Link
         href="/bytes"
         className={headerOptionStyle}
         aria-current={tab === Tab.Bytes ? "page" : undefined}
@@ -88,8 +88,8 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => (
         <p className={tab === Tab.Bytes ? selectedTabStyle : defaultTabStyle}>
           Bytes
         </p>
-      </a>
-      <a
+      </Link>
+      <Link
         href="/nibbles"
         className={headerOptionStyle}
         aria-current={tab === Tab.Nibbles ? "page" : undefined}
@@ -98,7 +98,7 @@ const Header: React.FC<HeaderProps> = ({ tab, children }) => (
         <p className={tab === Tab.Nibbles ? selectedTabStyle : defaultTabStyle}>
           Nibbles
         </p>
-      </a>
+      </Link>
     </nav>
     {children}
   </div>

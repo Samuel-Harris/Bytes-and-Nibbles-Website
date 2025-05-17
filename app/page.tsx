@@ -1,5 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
+import Link from "next/link";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "./common/constants";
 import Header, { Tab } from "./Header";
 import { theme } from "./common/theme";
@@ -15,9 +16,9 @@ const HL: React.FC<{ href: string; children: string }> = ({
   href,
   children,
 }) => (
-  <a href={href} title={children}>
+  <Link href={href} title={children}>
     <HT>{children}</HT>
-  </a>
+  </Link>
 );
 
 const Home = (): JSX.Element => (
