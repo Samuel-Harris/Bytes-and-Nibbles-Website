@@ -119,7 +119,9 @@ export default async function NibblePage({ params }: NibblePageProps) {
         Adapted from:{" "}
         <span className={theme.colours.secondary.text}>
           {isSourceUrl ? (
-            <Link href={nibble.source}>{nibble.source}</Link>
+            <a href={nibble.source} target="_blank" rel="noopener noreferrer">
+              {nibble.source}
+            </a>
           ) : (
             nibble.source
           )}
