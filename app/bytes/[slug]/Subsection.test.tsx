@@ -10,42 +10,26 @@ import Subsection from "./Subsection";
 jest.mock("./Paragraph");
 jest.mock("./CaptionedImage");
 
-let paragraphMock: MockedFunction<React.FC<ParagraphProps>>;
-let paragraphMockText: string;
-
-let captionedImageMock: MockedFunction<React.FC<CaptionedImageProps>>;
-let captionedImageMockCaption: string;
-
-let sectionTitle: string;
-let paragraph: ParagraphType;
-let captionedImage: CaptionedImageType;
-
 describe("Byte section", () => {
-  beforeAll(() => {
-    paragraphMockText = "This is a mock paragraph";
-    paragraphMock = mocked(Paragraph);
+  it("should render the subsection title and body", () => {
+    const paragraphMockText = "This is a mock paragraph";
+    const paragraphMock = mocked(Paragraph);
     paragraphMock.mockReturnValue(<p>{paragraphMockText}</p>);
 
-    captionedImageMockCaption = "This is a mock image caption";
-    captionedImageMock = mocked(CaptionedImage);
+    const captionedImageMockCaption = "This is a mock image caption";
+    const captionedImageMock = mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);
 
-    sectionTitle = "Byte";
-    paragraph = {
+    const sectionTitle = "Byte";
+    const paragraph: ParagraphType = {
       type: "paragraph",
       value: "This is a paragraph",
     };
-    captionedImage = {
+    const captionedImage: CaptionedImageType = {
       type: "captionedImage",
       value: { image: "This is an image", caption: "This is a caption" },
     };
-  });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("should render the subsection title and body", () => {
     render(
       <Subsection title={sectionTitle} body={[paragraph, captionedImage]} />
     );
