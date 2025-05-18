@@ -68,43 +68,62 @@ export default class FirebaseService {
   }
 
   private async fetchBytes(): Promise<void> {
-    const q: Query<DocumentData, DocumentData> =
-      this.createPublishedContentQuery(bytesCollection.name);
-    const queryResults: DocumentData[] = await this.executeQuery(q);
+    const q = this.createPublishedContentQuery(bytesCollection.name);
+    const queryResults = await this.executeQuery(q);
+    const promises: Promise<void>[] = [];
 
-    this.bytes = await Promise.all(
-      queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
-        const byte = {
-          ...byteResponse,
-          series: (await getDoc(byteResponse.series)).data() as Series,
-          publishDate: byteResponse.publishDate.toDate(),
-          lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
-          thumbnail: await this.getImage(byteResponse.thumbnail),
-          coverPhoto: await this.getImage(byteResponse.coverPhoto),
-        } as Byte;
+    this.bytes = queryResults.map((byteResponse): Byte => {
+      const byte = {
+        ...byteResponse,
+        publishDate: byteResponse.publishDate.toDate(),
+        lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
+      } as Byte;
 
-        await this.processByteImages(byte);
-        return byte;
-      })
-    );
-  }
+      // Add main metadata promises
+      promises.push(
+        getDoc(byteResponse.series).then((doc) => {
+          byte.series = doc.data() as Series;
+          return undefined;
+        }),
+        this.getImage(byteResponse.thumbnail).then((url) => {
+          byte.thumbnail = url;
+          return undefined;
+        }),
+        this.getImage(byteResponse.coverPhoto).then((url) => {
+          byte.coverPhoto = url;
+          return undefined;
+        })
+      );
 
-  private async processByteImages(byte: Byte): Promise<void> {
-    for (const section of byte.sections) {
-      for (const component of section.body) {
-        if (component.type === "subsection") {
-          for (const subComponent of component.value.body) {
-            if (subComponent.type === "captionedImage") {
-              subComponent.value.image = await this.getImage(
-                subComponent.value.image
-              );
+      // Process section images
+      for (const section of byte.sections) {
+        for (const component of section.body) {
+          if (component.type === "captionedImage") {
+            promises.push(
+              this.getImage(component.value.image).then((url) => {
+                component.value.image = url;
+                return undefined;
+              })
+            );
+          } else if (component.type === "subsection") {
+            for (const subComp of component.value.body) {
+              if (subComp.type === "captionedImage") {
+                promises.push(
+                  this.getImage(subComp.value.image).then((url) => {
+                    subComp.value.image = url;
+                    return undefined;
+                  })
+                );
+              }
             }
           }
-        } else if (component.type === "captionedImage") {
-          component.value.image = await this.getImage(component.value.image);
         }
       }
-    }
+
+      return byte;
+    });
+
+    await Promise.all(promises);
   }
 
   private async fetchNibbles(): Promise<void> {
