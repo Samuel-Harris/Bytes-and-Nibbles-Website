@@ -69,7 +69,7 @@ export default class FirebaseService {
 
   private async fetchBytes(): Promise<void[]> {
     const q = this.createPublishedContentQuery(bytesCollection.name);
-    
+
     return this.executeQuery(q).then((queryResults) => {
       const promises: Promise<void>[] = [];
 
@@ -130,22 +130,33 @@ export default class FirebaseService {
     return promiseArr;
   }
 
-  private async fetchNibbles(): Promise<void> {
+  private async fetchNibbles(): Promise<void[]> {
     const q = this.createPublishedContentQuery(nibblesCollection.name);
-    const queryResults = await this.executeQuery(q);
 
-    this.nibbles = await Promise.all(
-      queryResults.map(
-        async (nibbleResponse): Promise<Nibble> =>
-          ({
-            ...nibbleResponse,
-            publishDate: nibbleResponse.publishDate.toDate(),
-            lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
-            thumbnail: await this.getImage(nibbleResponse.thumbnail),
-            coverPhoto: await this.getImage(nibbleResponse.coverPhoto),
-          }) as Nibble
-      )
-    );
+    return this.executeQuery(q).then((queryResults) => {
+      const promises: Promise<void>[] = [];
+
+      this.nibbles = queryResults.map((nibbleResponse): Nibble => {
+        const nibble = {
+          ...nibbleResponse,
+          publishDate: nibbleResponse.publishDate.toDate(),
+          lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
+        } as Nibble;
+
+        promises.push(
+          this.getImage(nibbleResponse.thumbnail).then((url) => {
+            nibbleResponse.thumbnail = url;
+          }),
+          this.getImage(nibbleResponse.coverPhoto).then((url) => {
+            nibbleResponse.coverPhoto = url;
+          })
+        );
+
+        return nibble;
+      });
+
+      return Promise.all(promises);
+    });
   }
 
   private createPublishedContentQuery(
