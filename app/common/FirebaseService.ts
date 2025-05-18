@@ -62,9 +62,10 @@ export default class FirebaseService {
     return FirebaseService.instance;
   }
 
-  private async initialize(): Promise<void> {
-    await Promise.all([this.fetchBytes(), this.fetchNibbles()]);
-    this.isInitialized = true;
+  private initialize(): Promise<void> {
+    return Promise.all([this.fetchBytes(), this.fetchNibbles()]).then(() => {
+      this.isInitialized = true;
+    });
   }
 
   private async fetchBytes(): Promise<void[]> {
@@ -184,9 +185,7 @@ export default class FirebaseService {
 
   private executeQuery<T>(q: Query<T>): Promise<T[]> {
     return getDocs(q).then((snapshot) =>
-      snapshot.docs.map((doc: QueryDocumentSnapshot<T>) =>
-        doc.data()
-      )
+      snapshot.docs.map((doc: QueryDocumentSnapshot<T>) => doc.data())
     );
   }
 
