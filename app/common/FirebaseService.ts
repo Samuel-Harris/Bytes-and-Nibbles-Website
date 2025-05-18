@@ -67,9 +67,10 @@ export default class FirebaseService {
     this.isInitialized = true;
   }
 
-  private async fetchBytes(): Promise<void> {
+  private async fetchBytes(): Promise<void[]> {
     const q = this.createPublishedContentQuery(bytesCollection.name);
     const queryResults = await this.executeQuery(q);
+
     const promises: Promise<void>[] = [];
 
     this.bytes = queryResults.map((byteResponse): Byte => {
@@ -79,51 +80,53 @@ export default class FirebaseService {
         lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
       } as Byte;
 
-      // Add main metadata promises
       promises.push(
         getDoc(byteResponse.series).then((doc) => {
           byte.series = doc.data() as Series;
-          return undefined;
         }),
         this.getImage(byteResponse.thumbnail).then((url) => {
           byte.thumbnail = url;
-          return undefined;
         }),
         this.getImage(byteResponse.coverPhoto).then((url) => {
           byte.coverPhoto = url;
-          return undefined;
         })
       );
 
-      // Process section images
-      for (const section of byte.sections) {
-        for (const component of section.body) {
-          if (component.type === "captionedImage") {
-            promises.push(
-              this.getImage(component.value.image).then((url) => {
-                component.value.image = url;
-                return undefined;
-              })
-            );
-          } else if (component.type === "subsection") {
-            for (const subComp of component.value.body) {
-              if (subComp.type === "captionedImage") {
-                promises.push(
-                  this.getImage(subComp.value.image).then((url) => {
-                    subComp.value.image = url;
-                    return undefined;
-                  })
-                );
-              }
-            }
-          }
-        }
-      }
+      promises.push(...this.processByteSectionImages(byte));
 
       return byte;
     });
 
-    await Promise.all(promises);
+    return Promise.all(promises);
+  }
+
+  private processByteSectionImages(byte: Byte): Promise<void>[] {
+    const promiseArr: Promise<void>[] = [];
+
+    // Add section image promises
+    byte.sections.forEach((section) => {
+      section.body.forEach((component) => {
+        if (component.type === "subsection") {
+          component.value.body.forEach((subComponent) => {
+            if (subComponent.type === "captionedImage") {
+              promiseArr.push(
+                this.getImage(subComponent.value.image).then((url) => {
+                  subComponent.value.image = url;
+                })
+              );
+            }
+          });
+        } else if (component.type === "captionedImage") {
+          promiseArr.push(
+            this.getImage(component.value.image).then((url) => {
+              component.value.image = url;
+            })
+          );
+        }
+      });
+    });
+
+    return promiseArr;
   }
 
   private async fetchNibbles(): Promise<void> {
