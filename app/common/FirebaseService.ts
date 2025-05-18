@@ -69,35 +69,36 @@ export default class FirebaseService {
 
   private async fetchBytes(): Promise<void[]> {
     const q = this.createPublishedContentQuery(bytesCollection.name);
-    const queryResults = await this.executeQuery(q);
+    
+    return this.executeQuery(q).then((queryResults) => {
+      const promises: Promise<void>[] = [];
 
-    const promises: Promise<void>[] = [];
+      this.bytes = queryResults.map((byteResponse): Byte => {
+        const byte = {
+          ...byteResponse,
+          publishDate: byteResponse.publishDate.toDate(),
+          lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
+        } as Byte;
 
-    this.bytes = queryResults.map((byteResponse): Byte => {
-      const byte = {
-        ...byteResponse,
-        publishDate: byteResponse.publishDate.toDate(),
-        lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
-      } as Byte;
+        promises.push(
+          getDoc(byteResponse.series).then((doc) => {
+            byte.series = doc.data() as Series;
+          }),
+          this.getImage(byteResponse.thumbnail).then((url) => {
+            byte.thumbnail = url;
+          }),
+          this.getImage(byteResponse.coverPhoto).then((url) => {
+            byte.coverPhoto = url;
+          })
+        );
 
-      promises.push(
-        getDoc(byteResponse.series).then((doc) => {
-          byte.series = doc.data() as Series;
-        }),
-        this.getImage(byteResponse.thumbnail).then((url) => {
-          byte.thumbnail = url;
-        }),
-        this.getImage(byteResponse.coverPhoto).then((url) => {
-          byte.coverPhoto = url;
-        })
-      );
+        promises.push(...this.processByteSectionImages(byte));
 
-      promises.push(...this.processByteSectionImages(byte));
+        return byte;
+      });
 
-      return byte;
+      return Promise.all(promises);
     });
-
-    return Promise.all(promises);
   }
 
   private processByteSectionImages(byte: Byte): Promise<void>[] {
