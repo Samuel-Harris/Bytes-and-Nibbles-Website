@@ -182,10 +182,11 @@ export default class FirebaseService {
     );
   }
 
-  private async executeQuery(q: Query<DocumentData>): Promise<DocumentData[]> {
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) =>
-      doc.data()
+  private executeQuery<T>(q: Query<T>): Promise<T[]> {
+    return getDocs(q).then((snapshot) =>
+      snapshot.docs.map((doc: QueryDocumentSnapshot<T>) =>
+        doc.data()
+      )
     );
   }
 
