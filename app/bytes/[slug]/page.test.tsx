@@ -74,7 +74,7 @@ describe("Individual byte page", () => {
 
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
-    const getSlugsMock: MockedFunction<() => string[]> = mocked(
+    const getSlugsMock: MockedFunction<() => ReadonlyArray<string>> = mocked(
       FirebaseService.prototype.getByteSlugs
     );
     getSlugsMock.mockReturnValue(mockSlugs);

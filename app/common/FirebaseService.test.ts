@@ -421,7 +421,7 @@ describe("Firebase service", () => {
     const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
-    const slugs: string[] = firebaseService.getByteSlugs();
+    const slugs: ReadonlyArray<string> = firebaseService.getByteSlugs();
 
     expect(slugs.length).toEqual(bytes.length);
     for (const slug of slugs) {
@@ -433,7 +433,7 @@ describe("Firebase service", () => {
     const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["nibbles"] = nibbles;
 
-    const slugs: string[] = firebaseService.getNibbleSlugs();
+    const slugs: ReadonlyArray<string> = firebaseService.getNibbleSlugs();
 
     expect(slugs.length).toEqual(nibbles.length);
     for (const slug of slugs) {

@@ -230,15 +230,17 @@ export default class FirebaseService {
     return items.find((item) => item.slug === slug);
   }
 
-  public getByteSlugs(): string[] {
+  public getByteSlugs(): ReadonlyArray<string> {
     return this.getContentSlugs(this.bytes);
   }
 
-  public getNibbleSlugs(): string[] {
+  public getNibbleSlugs(): ReadonlyArray<string> {
     return this.getContentSlugs(this.nibbles);
   }
 
-  private getContentSlugs<T extends BaseContent>(items: T[]): string[] {
+  private getContentSlugs<T extends BaseContent>(
+    items: T[]
+  ): ReadonlyArray<string> {
     return items.map((item) => item.slug);
   }
 
