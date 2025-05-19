@@ -23,7 +23,7 @@ import FirebaseService from "./FirebaseService";
 import { firebaseConfig } from "./firebaseConstants";
 import { Byte, ByteOverview, Series } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
-import _, { get } from "lodash";
+import _ from "lodash";
 import { Nibble, NibbleOverview } from "./Nibble";
 
 jest.mock("firebase/app");
@@ -313,6 +313,7 @@ describe("Firebase service", () => {
 
     expect(refMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
     expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
+      expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
 
     for (const byte of bytes) {
       expect(refMock).toHaveBeenCalledWith(
