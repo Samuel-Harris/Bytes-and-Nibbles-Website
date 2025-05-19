@@ -7,7 +7,7 @@
     "build": "next build",
     "test": "jest",
     "lint": "next lint",
-    "prettier:lint": "prettier . --check",
+    "prettier:check": "prettier . --check",
     "prettier:format": "prettier . --write"
   },
   "dependencies": {
