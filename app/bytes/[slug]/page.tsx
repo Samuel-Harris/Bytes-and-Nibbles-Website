@@ -3,12 +3,7 @@ import { Byte } from "@/common/Byte";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
+import { theme } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 
@@ -20,6 +15,11 @@ type BytePageProps = {
   params: Promise<RouteParams>;
 };
 
+/**
+ * Retrieves all byte slugs from the backend and returns them as route parameters for static generation.
+ *
+ * @returns An array of route parameter objects, each containing a byte slug.
+ */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
@@ -29,6 +29,13 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   );
 }
 
+/**
+ * Generates metadata for a Byte page based on the provided slug.
+ *
+ * Retrieves the byte's title from the backend and constructs a metadata object with a formatted title and description.
+ *
+ * @returns A metadata object containing the page title and description.
+ */
 export async function generateMetadata({
   params,
 }: BytePageProps): Promise<Metadata> {
@@ -48,6 +55,14 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Renders a page displaying a single "Byte" article, including its title, subtitle, series, publication dates, cover photo, and content sections.
+ *
+ * If the specified byte is not found, displays a "Byte not found" message.
+ *
+ * @param params - A promise resolving to an object containing the byte's slug.
+ * @returns The rendered byte page as a React element, or a "Byte not found" message if the specified byte is not found.
+ */
 export default async function BytePage({ params }: BytePageProps) {
   const { slug }: RouteParams = await params;
 
@@ -65,14 +80,16 @@ export default async function BytePage({ params }: BytePageProps) {
 
   return (
     <div
-      className={`grid grid-cols-1 justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
+      className={`grid grid-cols-1 justify-self-center pt-5 ${theme.layout.page.width} ${theme.layout.page.bottomMargin}`}
     >
       <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
+        className={`text-5xl font-bold ${headingSpacing} ${theme.colours.secondary.text}`}
       >
         {byte.title}
       </p>
-      <p className={`text-2xl ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
+      <p
+        className={`text-2xl ${headingSpacing} ${theme.colours.tertiary.text}`}
+      >
         {byte.subtitle}
       </p>
       <p
@@ -82,12 +99,12 @@ export default async function BytePage({ params }: BytePageProps) {
         {byte.series.title}
       </p>
       <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        <span className={theme.colours.tertiary.text}>Published: </span>
         {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
         <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          <span className={theme.colours.tertiary.text}>Last modified: </span>
           {lastModifiedDateString}
         </p>
       )}

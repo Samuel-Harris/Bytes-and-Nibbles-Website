@@ -1,15 +1,32 @@
-export const PRIMARY_COLOUR_BG = "bg-black";
+/**
+ * Website theme configuration
+ * Contains all color and layout classes used throughout the application
+ */
 
-export const SECONDARY_COLOUR_FILL = "fill-green-500";
-
-export const SECONDARY_COLOUR_TEXT = "text-green-500";
-
-export const TERTIARY_COLOUR_TEXT = "text-neutral-400";
-
-export const HOVER_BACKGROUND_COLOUR = "hover:bg-zinc-900";
-
-export const PAGE_WIDTH = "w-10/12 md:w-5/12";
-
-export const PAGE_BOTTOM_MARGIN = "mb-6 md:mb-10";
-
-export const TILECARD_TEXT_PADDING = "pl-5";
+// Theme object for cohesive design system
+export const theme = {
+  colours: {
+    primary: {
+      bg: "bg-black",
+    },
+    secondary: {
+      fill: "fill-green-500",
+      text: "text-green-500",
+    },
+    tertiary: {
+      text: "text-neutral-400",
+    },
+    hover: {
+      bg: "hover:bg-zinc-900",
+    },
+  },
+  layout: {
+    page: {
+      width: "w-10/12 md:w-5/12",
+      bottomMargin: "mb-6 md:mb-10",
+    },
+    tilecard: {
+      textPadding: "pl-5",
+    },
+  },
+};

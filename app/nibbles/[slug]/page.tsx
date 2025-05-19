@@ -1,14 +1,10 @@
 import React from "react";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
+import { theme } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
+import Link from "next/link";
 import { Ingredient, Nibble } from "@/common/Nibble";
 import HighlightedText from "@/common/HighlightedText";
 import { getDisplayTime } from "../timeUtils";
@@ -21,6 +17,11 @@ type NibblePageProps = {
   params: Promise<RouteParams>;
 };
 
+/**
+ * Retrieves all nibble slugs from Firebase and returns them as route parameters for static page generation.
+ *
+ * @returns An array of objects each containing a nibble slug for use in static routing.
+ */
 export async function generateStaticParams(): Promise<RouteParams[]> {
   return await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): RouteParams[] =>
@@ -30,6 +31,13 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
   );
 }
 
+/**
+ * Generates metadata for a nibble recipe page based on the provided slug.
+ *
+ * Retrieves the nibble's title from the database and constructs a metadata object with a formatted title and description for SEO purposes.
+ *
+ * @returns Metadata object containing the page title and description.
+ */
 export async function generateMetadata({
   params,
 }: NibblePageProps): Promise<Metadata> {
@@ -49,6 +57,14 @@ export async function generateMetadata({
   };
 }
 
+/**
+ * Renders a detailed recipe page for a specific "Nibble" based on the provided slug.
+ *
+ * Displays the nibble's title, publication and modification dates, cover photo, servings, preparation time, source attribution, ingredients, and step-by-step instructions. If the nibble is not found, shows a "Nibble not found" message.
+ *
+ * @param params - An object containing the nibble's slug for lookup.
+ * @returns The rendered recipe page as a React component, or a not-found message if the nibble does not exist.
+ */
 export default async function NibblePage({ params }: NibblePageProps) {
   const { slug }: RouteParams = await params;
 
@@ -68,20 +84,20 @@ export default async function NibblePage({ params }: NibblePageProps) {
 
   return (
     <div
-      className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
+      className={`grid justify-self-center pt-5 ${theme.layout.page.width} ${theme.layout.page.bottomMargin}`}
     >
       <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
+        className={`text-5xl font-bold ${headingSpacing} ${theme.colours.secondary.text}`}
       >
         {nibble.title}
       </p>
       <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
+        <span className={theme.colours.tertiary.text}>Published: </span>
         {publishDateString}
       </p>
       {publishDateString !== lastModifiedDateString && (
         <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
+          <span className={theme.colours.tertiary.text}>Last modified: </span>
           {lastModifiedDateString}
         </p>
       )}
@@ -101,27 +117,31 @@ export default async function NibblePage({ params }: NibblePageProps) {
       </p>
       <p className={`text-l ${headingSpacing}`}>
         Adapted from:{" "}
-        <span className={SECONDARY_COLOUR_TEXT}>
+        <span className={theme.colours.secondary.text}>
           {isSourceUrl ? (
-            <a href={nibble.source}>{nibble.source}</a>
+            <a href={nibble.source} target="_blank" rel="noopener noreferrer">
+              {nibble.source}
+            </a>
           ) : (
             nibble.source
           )}
         </span>
       </p>
       <div className="my-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Ingredients</p>
-        <ul className={SECONDARY_COLOUR_TEXT}>
+        <p className={`text-2xl mb-2 ${theme.colours.tertiary.text}`}>
+          Ingredients
+        </p>
+        <ul className={theme.colours.secondary.text}>
           {nibble.ingredients.map(renderIngredient)}
         </ul>
       </div>
       <div className="mt-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
-        <ol className={SECONDARY_COLOUR_TEXT}>
+        <p className={`text-2xl mb-2 ${theme.colours.tertiary.text}`}>Steps</p>
+        <ol className={theme.colours.secondary.text}>
           {nibble.steps.map(
             (step: string): JSX.Element => (
               <li className={`pb-2`} key={step}>
-                <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
+                <span className={theme.colours.tertiary.text}>{step}</span>
               </li>
             )
           )}
@@ -146,7 +166,7 @@ const renderIngredient = (ingredient: Ingredient): JSX.Element => {
   }
 
   return (
-    <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
+    <li className={theme.colours.tertiary.text} key={ingredient.name}>
       <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
       {ingredient.optional && <span className="text-white"> (optional)</span>}
     </li>

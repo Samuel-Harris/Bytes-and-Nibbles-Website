@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   description: `The list of published coding blogs. ${METADATA_DESCRIPTION_CREDITS}`,
 };
 
+/**
+ * Renders a page displaying a grid of coding blog entries ("bytes") with their metadata.
+ *
+ * Fetches an array of byte overviews from the backend and displays each as a tile card with title, thumbnail, publish date, subtitle, and series information.
+ *
+ * @returns A JSX element containing the grid of byte overview cards.
+ */
 export default async function BytesPage(): Promise<React.JSX.Element> {
   const byteOverviews: ByteOverview[] =
     await FirebaseService.getInstance().then(

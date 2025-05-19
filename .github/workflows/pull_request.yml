@@ -11,7 +11,6 @@ permissions:
 env:
   PROJECT_ID: bytes-and-nibbles
   NODE_VERSION: 24
-  
 
 jobs:
   test:
@@ -47,9 +46,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint code
+      - name: Lint code with ESLint
         run: npm run lint
-  
+
+      - name: Lint code with Prettier
+        run: npm run prettier:check
   build_and_preview:
     name: Build and preview
     runs-on: ubuntu-latest

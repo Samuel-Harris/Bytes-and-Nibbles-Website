@@ -3,6 +3,7 @@ import { mock } from "jest-mock-extended";
 import { mocked } from "jest-mock";
 import {
   DocumentData,
+  DocumentSnapshot,
   QuerySnapshot,
   Timestamp,
   collection,
@@ -20,7 +21,7 @@ import {
 } from "firebase/storage";
 import FirebaseService from "./FirebaseService";
 import { firebaseConfig } from "./firebaseConstants";
-import { Byte, ByteOverview } from "./Byte";
+import { Byte, ByteOverview, Series } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";
 import { Nibble, NibbleOverview } from "./Nibble";
@@ -123,18 +124,16 @@ describe("Firebase service", () => {
   });
 
   it("should initialise a connection to firebase and fetch all bytes on instantiation", async () => {
+    // Given
     const appMock: FirebaseApp = mock<FirebaseApp>();
     const initializeAppMock = mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
-
-    const getDocMock = mocked(getDoc);
-    // @ts-ignore
-    getDocMock.mockImplementation((series) => ({ data: () => series }));
 
     const rawBytes = bytes.map((byte: Byte) => ({
       ...byte,
       publishDate: new Timestamp(byte.publishDate.getUTCSeconds(), 0),
       lastModifiedDate: new Timestamp(byte.lastModifiedDate.getUTCSeconds(), 0),
+      series: byte.series.title,
     }));
 
     const rawNibbles = nibbles.map((nibble: Nibble) => ({
@@ -257,6 +256,18 @@ describe("Firebase service", () => {
       }),
     };
 
+    const series: Series = {
+      title: "My series 1",
+      accentColour: "#ac3Ef",
+    };
+
+    const getDocMock = mocked(getDoc);
+    const documentSnapshotMock = mock<DocumentSnapshot<DocumentData>>();
+    documentSnapshotMock.data.mockReturnValue(series);
+    getDocMock.mockImplementation((_): any => {
+      return Promise.resolve(documentSnapshotMock);
+    });
+
     const getDocsMock = mocked(getDocs);
     getDocsMock.mockResolvedValueOnce(
       bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>
@@ -268,9 +279,13 @@ describe("Firebase service", () => {
       >
     );
 
+    // When
     const firebaseService: FirebaseService =
       await FirebaseService.getInstance();
 
+
+    // Then
+    expect(firebaseService).toBeDefined();
     expect(firebaseService).toBeInstanceOf(FirebaseService);
 
     expect(initializeAppMock).toHaveBeenCalledTimes(1);
@@ -298,6 +313,7 @@ describe("Firebase service", () => {
 
     expect(refMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
     expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
+      expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
 
     for (const byte of bytes) {
       expect(refMock).toHaveBeenCalledWith(
@@ -309,7 +325,7 @@ describe("Firebase service", () => {
         byte.coverPhoto
       );
 
-      expect(getDocMock).toHaveBeenCalledWith(byte.series);
+      expect(getDocMock).toHaveBeenCalledWith(byte.series.title);
     }
 
     for (const nibble of nibbles) {
@@ -406,7 +422,7 @@ describe("Firebase service", () => {
     const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["bytes"] = bytes;
 
-    const slugs: string[] = firebaseService.getByteSlugs();
+    const slugs: ReadonlyArray<string> = firebaseService.getByteSlugs();
 
     expect(slugs.length).toEqual(bytes.length);
     for (const slug of slugs) {
@@ -418,7 +434,7 @@ describe("Firebase service", () => {
     const firebaseService: FirebaseService = new (FirebaseService as any)();
     firebaseService["nibbles"] = nibbles;
 
-    const slugs: string[] = firebaseService.getNibbleSlugs();
+    const slugs: ReadonlyArray<string> = firebaseService.getNibbleSlugs();
 
     expect(slugs.length).toEqual(nibbles.length);
     for (const slug of slugs) {
