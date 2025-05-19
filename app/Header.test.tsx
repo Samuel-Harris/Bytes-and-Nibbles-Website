@@ -14,6 +14,8 @@ jest.mock("./globals.css");
 jest.mock("@heroicons/react/24/outline");
 jest.mock("next/navigation");
 
+const navTabNames: Record<Tab, string> = {[Tab.Home]: "Home", [Tab.Bytes]: "Bytes", [Tab.Nibbles]: "Nibbles"};
+
 describe("Header", () => {
   beforeAll(() => {
     // disable warning about rendering html within a div
@@ -51,6 +53,10 @@ describe("Header", () => {
       // check that expected text is present
       expect(screen.getByText("Bytes and nibbles")).toBeInTheDocument();
       expect(screen.getByText("By Samuel Matsuo Harris")).toBeInTheDocument();
+
+      // check that accessibility attributes are present
+      expect(screen.getByRole("navigation", { name: /main navigation/i })).toHaveAttribute("aria-label", "Main Navigation");
+      expect(screen.getByRole('link', { name: navTabNames[tab] })).toHaveAttribute("aria-current", "page");
 
       // check that expected links are present
       const expectedBannerLinks: [string, string][] = [
