@@ -72,6 +72,7 @@ jobs:
         run: npm run build
 
       - name: Preview
+        if: github.actor != 'dependabot[bot]'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
