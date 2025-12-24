@@ -1,0 +1,3 @@
+# build files
+.pnpm-store/
+node_modules/
