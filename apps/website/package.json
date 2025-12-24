@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "next build && firebase deploy --only hosting:website --project bytes-and-nibbles"
   },
   "dependencies": {
     "@bytes-and-nibbles/shared": "workspace:*",
