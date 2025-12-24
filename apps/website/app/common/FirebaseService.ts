@@ -24,9 +24,9 @@ import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import {
   ByteOverviewType,
   ByteSeriesType,
-  ByteType,
+  ByteSchema,
   NibbleOverviewType,
-  NibbleType,
+  NibbleSchema,
   firebaseConfig,
 } from "@bytes-and-nibbles/shared";
 
@@ -34,8 +34,8 @@ export default class FirebaseService {
   private app: FirebaseApp;
   private firestore: Firestore;
   private storage: FirebaseStorage;
-  private bytes: ByteType[];
-  private nibbles: NibbleType[];
+  private bytes: ByteSchema[];
+  private nibbles: NibbleSchema[];
 
   private constructor() {
     this.app = initializeApp(firebaseConfig);
@@ -69,8 +69,8 @@ export default class FirebaseService {
 
     this.bytes = await Promise.all(
       queryResults.map(
-        async (byteResponse: DocumentData): Promise<ByteType> => {
-          const byte: ByteType = {
+        async (byteResponse: DocumentData): Promise<ByteSchema> => {
+          const byte: ByteSchema = {
             ...byteResponse,
             series: (
               await getDoc(byteResponse.series)
@@ -79,7 +79,7 @@ export default class FirebaseService {
             lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
             thumbnail: await this.getImage(byteResponse.thumbnail),
             coverPhoto: await this.getImage(byteResponse.coverPhoto),
-          } as ByteType;
+          } as ByteSchema;
 
           for (const section of byte.sections) {
             for (const sectionBodyComponent of section.body) {
@@ -122,15 +122,15 @@ export default class FirebaseService {
 
     this.nibbles = await Promise.all(
       queryResults.map(
-        async (nibbleResponse: DocumentData): Promise<NibbleType> => {
+        async (nibbleResponse: DocumentData): Promise<NibbleSchema> => {
           // convert received nibble into nibble object
-          const nibble: NibbleType = {
+          const nibble: NibbleSchema = {
             ...nibbleResponse,
             publishDate: nibbleResponse.publishDate.toDate(),
             lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
             thumbnail: await this.getImage(nibbleResponse.thumbnail),
             coverPhoto: await this.getImage(nibbleResponse.coverPhoto),
-          } as NibbleType;
+          } as NibbleSchema;
 
           return nibble;
         }
@@ -140,7 +140,7 @@ export default class FirebaseService {
 
   public listBytes(): ByteOverviewType[] {
     return this.bytes.map(
-      (byte: ByteType): ByteOverviewType => ({
+      (byte: ByteSchema): ByteOverviewType => ({
         title: byte.title,
         subtitle: byte.subtitle,
         series: byte.series,
@@ -153,7 +153,7 @@ export default class FirebaseService {
 
   public listNibbles(): NibbleOverviewType[] {
     return this.nibbles.map(
-      (nibble: NibbleType): NibbleOverviewType => ({
+      (nibble: NibbleSchema): NibbleOverviewType => ({
         title: nibble.title,
         thumbnail: nibble.thumbnail,
         coverPhoto: nibble.coverPhoto,
@@ -164,20 +164,20 @@ export default class FirebaseService {
     );
   }
 
-  public getByte(slug: string): ByteType | undefined {
-    return this.bytes.find((byte: ByteType) => byte.slug === slug);
+  public getByte(slug: string): ByteSchema | undefined {
+    return this.bytes.find((byte: ByteSchema) => byte.slug === slug);
   }
 
-  public getNibble(slug: string): NibbleType | undefined {
-    return this.nibbles.find((nibble: NibbleType) => nibble.slug === slug);
+  public getNibble(slug: string): NibbleSchema | undefined {
+    return this.nibbles.find((nibble: NibbleSchema) => nibble.slug === slug);
   }
 
   public getByteSlugs(): string[] {
-    return this.bytes.map((byte: ByteType) => byte.slug);
+    return this.bytes.map((byte: ByteSchema) => byte.slug);
   }
 
   public getNibbleSlugs(): string[] {
-    return this.nibbles.map((nibble: NibbleType) => nibble.slug);
+    return this.nibbles.map((nibble: NibbleSchema) => nibble.slug);
   }
 
   private getImage(path: string): Promise<string> {

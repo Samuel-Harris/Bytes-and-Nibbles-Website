@@ -1,5 +1,5 @@
 import React from "react";
-import { ByteType } from "@bytes-and-nibbles/shared";
+import { ByteSchema } from "@bytes-and-nibbles/shared";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
@@ -36,7 +36,7 @@ export async function generateMetadata({
 
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
-      const byte: ByteType | undefined = firebaseService.getByte(slug);
+      const byte: ByteSchema | undefined = firebaseService.getByte(slug);
 
       return byte ? byte.title : "Untitled byte";
     }
@@ -51,8 +51,8 @@ export async function generateMetadata({
 export default async function BytePage({ params }: BytePageProps) {
   const { slug }: RouteParams = await params;
 
-  const byte: ByteType | undefined = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): ByteType | undefined =>
+  const byte: ByteSchema | undefined = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): ByteSchema | undefined =>
       firebaseService.getByte(slug)
   );
 

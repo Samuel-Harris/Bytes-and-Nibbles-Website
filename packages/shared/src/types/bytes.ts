@@ -19,6 +19,8 @@ export type SubsectionBodyElementType =
   | LatexParagraphType
   | CaptionedImageType;
 
+export type SectionBodyElementType = SubsectionType | SubsectionBodyElementType;
+
 export interface SubsectionType {
   title: string;
   body: SubsectionBodyElementType[];
@@ -27,32 +29,24 @@ export interface SubsectionType {
 
 export interface SectionType {
   title: string;
-  body: (SubsectionType | SubsectionBodyElementType)[];
+  body: SectionBodyElementType[];
   isCollapsible?: boolean;
 }
 
-// Byte type matching CMS schema
-export interface ByteType {
-  title: string;
-  subtitle: string;
-  series: ByteSeriesType;
-  slug: string;
-  thumbnail: string;
-  coverPhoto: string;
-  isPublished: boolean; // Required in CMS
-  publishDate: Date;
-  lastModifiedDate: Date;
-  sections: SectionType[];
-}
 // Website consumption types (transformed from CMS data)
 export type ByteOverviewType = {
   title: string;
   subtitle: string;
-  series: {
-    title: string;
-    accentColour: string;
-  };
+  series: ByteSeriesType;
   thumbnail: string;
   publishDate: Date;
   slug: string;
 };
+
+// Byte type matching CMS schema
+export interface ByteType extends ByteOverviewType {
+  coverPhoto: string;
+  isPublished: boolean; // Required in CMS
+  lastModifiedDate: Date;
+  sections: SectionType[];
+}

@@ -1,12 +1,12 @@
 import React from "react";
-import { SubsectionType } from "@bytes-and-nibbles/shared";
+import { SubsectionSchema } from "@bytes-and-nibbles/shared";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 import Body from "./Body";
 
-const Subsection: React.FC<SubsectionType> = ({
+const Subsection: React.FC<SubsectionSchema> = ({
   title,
   body,
-}: SubsectionType) => (
+}: SubsectionSchema) => (
   <div className="my-4">
     <p className={`text-xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>{title}</p>
     <Body body={body} />

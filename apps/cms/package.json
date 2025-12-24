@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "tsc && vite build",
+    "lint": "eslint . --max-warnings 0",
     "preview": "vite build && vite preview",
     "deploy": "vite build && firebase deploy --only hosting:cms --project bytes-and-nibbles"
   },
@@ -33,14 +34,17 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "catalog:",
     "@tailwindcss/typography": "^0.5.15",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@typescript-eslint/eslint-plugin": "^8.21.0",
-    "@typescript-eslint/parser": "^8.21.0",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "typescript-eslint": "catalog:",
+    "globals": "catalog:",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
-    "eslint": "^9.12.0",
+    "eslint": "catalog:",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^17.11.1",
     "eslint-plugin-promise": "^7.1.0",

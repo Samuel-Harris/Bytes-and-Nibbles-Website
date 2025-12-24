@@ -7,7 +7,11 @@ import {
 } from "@firecms/core";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
-import { ByteType as SharedByteType } from "@bytes-and-nibbles/shared";
+import {
+  ByteType as SharedByteType,
+  SUBSECTION_BODY_ELEMENT_TYPES,
+  SECTION_BODY_ELEMENT_TYPES,
+} from "@bytes-and-nibbles/shared";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
 interface ByteType extends Omit<SharedByteType, "series"> {
@@ -84,9 +88,11 @@ const subsectionProperty = buildProperty({
         typeField: "type",
         valueField: "value",
         properties: {
-          paragraph: paragraphProperty,
-          latexParagraph: latexParagraphProperty,
-          captionedImage: captionedImageProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+            latexParagraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+            captionedImageProperty,
         },
       },
     }),
@@ -220,10 +226,12 @@ export const byteCollection = buildCollection<ByteType>({
               typeField: "type",
               valueField: "value",
               properties: {
-                subsection: subsectionProperty,
-                paragraph: paragraphProperty,
-                latexParagraph: latexParagraphProperty,
-                captionedImage: captionedImageProperty,
+                [SECTION_BODY_ELEMENT_TYPES.SUBSECTION]: subsectionProperty,
+                [SECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+                [SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+                  latexParagraphProperty,
+                [SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+                  captionedImageProperty,
               },
             },
           }),

@@ -1,6 +1,7 @@
 {
   "name": "@bytes-and-nibbles/shared",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "exports": {
@@ -9,10 +10,19 @@
       "default": "./src/index.ts"
     }
   },
+  "scripts": {
+    "lint": "eslint . --max-warnings 0"
+  },
   "dependencies": {
     "firebase": "^12.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@typescript-eslint/eslint-plugin": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
+    "typescript-eslint": "catalog:",
+    "eslint": "catalog:",
+    "globals": "catalog:",
     "typescript": "^5.7.3"
   }
 }

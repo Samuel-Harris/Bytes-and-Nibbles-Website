@@ -3,7 +3,7 @@ import FirebaseService from "@/common/FirebaseService";
 import { Matcher, render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import { getDateString } from "@/common/timeUtils";
-import { NibbleType } from "@bytes-and-nibbles/shared";
+import { NibbleSchema } from "@bytes-and-nibbles/shared";
 import NibblePage, { generateMetadata, generateStaticParams } from "./page";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
@@ -13,7 +13,7 @@ jest.mock("@/common/timeUtils");
 jest.mock("@/tilecard/Tilecard");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-const nibbleExample: NibbleType = {
+const nibbleExample: NibbleSchema = {
   title: "My title",
   thumbnail: "Thumbnail src",
   coverPhoto: "Cover photo src",
@@ -39,7 +39,7 @@ const nibbleExample: NibbleType = {
   lastModifiedDate: new Date("04/09/27"),
   timeTakenMinutes: 80,
 };
-let getNibbleMock: MockedFunction<(slug: string) => NibbleType | undefined>;
+let getNibbleMock: MockedFunction<(slug: string) => NibbleSchema | undefined>;
 let getDateStringMock: MockedFunction<(date: Date) => string>;
 
 describe("Individual nibbles page", () => {
@@ -76,7 +76,7 @@ describe("Individual nibbles page", () => {
 
   it.each([nibbleExample, undefined])(
     "should use apply the appropriate metadata",
-    async (nibble: NibbleType | undefined) => {
+    async (nibble: NibbleSchema | undefined) => {
       getNibbleMock.mockReturnValue(nibble);
 
       const metadata: Metadata = await generateMetadata({
@@ -109,7 +109,7 @@ describe("Individual nibbles page", () => {
       ...nibbleExample,
       source: "My non-URL source",
     },
-  ])("should render pages correctly", async (nibble: NibbleType) => {
+  ])("should render pages correctly", async (nibble: NibbleSchema) => {
     getNibbleMock.mockReturnValue(nibble);
 
     getDateStringMock.mockImplementation((date: Date): string =>

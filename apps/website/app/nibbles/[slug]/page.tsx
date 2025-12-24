@@ -9,7 +9,7 @@ import {
 } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
-import { IngredientType, NibbleType } from "@bytes-and-nibbles/shared";
+import { IngredientType, NibbleSchema } from "@bytes-and-nibbles/shared";
 import HighlightedText from "@/common/HighlightedText";
 import { getDisplayTime } from "../timeUtils";
 
@@ -37,7 +37,7 @@ export async function generateMetadata({
 
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
-      const nibble: NibbleType | undefined = firebaseService.getNibble(slug);
+      const nibble: NibbleSchema | undefined = firebaseService.getNibble(slug);
 
       return nibble ? nibble.title : "Untitled nibble";
     }
@@ -52,8 +52,8 @@ export async function generateMetadata({
 export default async function NibblePage({ params }: NibblePageProps) {
   const { slug }: RouteParams = await params;
 
-  const nibble: NibbleType | undefined = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): NibbleType | undefined =>
+  const nibble: NibbleSchema | undefined = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): NibbleSchema | undefined =>
       firebaseService.getNibble(slug)
   );
 
@@ -119,7 +119,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
         <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
           {nibble.steps.map(
-            (step: string): JSX.Element => (
+            (step: string): React.JSX.Element => (
               <li className={`pb-2`} key={step}>
                 <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
               </li>
@@ -131,7 +131,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
   );
 }
 
-const renderIngredient = (ingredient: IngredientType): JSX.Element => {
+const renderIngredient = (ingredient: IngredientType): React.JSX.Element => {
   let suffix: string = "";
   if (ingredient.quantity || ingredient.measurement) {
     suffix = "-";

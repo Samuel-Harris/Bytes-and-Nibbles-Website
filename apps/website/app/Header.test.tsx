@@ -27,63 +27,68 @@ describe("Header", () => {
     };
   });
 
-  it.each([Tab.Home, Tab.Bytes, Tab.Nibbles])("should render the header", (tab: Tab) => {
-    const pathname: string = "/";
-    const usePathnameMock: MockedFunction<() => string> = mocked(usePathname);
-    usePathnameMock.mockReturnValue(pathname);
+  it.each([Tab.Home, Tab.Bytes, Tab.Nibbles])(
+    "should render the header",
+    (tab: Tab) => {
+      const pathname: string = "/";
+      const usePathnameMock: MockedFunction<() => string> = mocked(usePathname);
+      usePathnameMock.mockReturnValue(pathname);
 
-    const logoText: string = "This is a logo";
-    const logo: JSX.Element = <p>{logoText}</p>;
-    const logoMock: MockedFunction<FC<LogoProps>> = mocked(Logo);
-    logoMock.mockReturnValue(logo);
+      const logoText: string = "This is a logo";
+      const logo: React.JSX.Element = <p>{logoText}</p>;
+      const logoMock: MockedFunction<FC<LogoProps>> = mocked(Logo);
+      logoMock.mockReturnValue(logo);
 
-    render(
-      <Header tab={tab}>
-        <></>
-      </Header>
-    );
+      render(
+        <Header tab={tab}>
+          <></>
+        </Header>
+      );
 
-    // check that logo is rendered
-    expect(screen.getByText(logoText)).toBeInTheDocument();
+      // check that logo is rendered
+      expect(screen.getByText(logoText)).toBeInTheDocument();
 
-    // check that expected text is present
-    expect(screen.getByText("Bytes and nibbles")).toBeInTheDocument();
-    expect(screen.getByText("By Samuel Matsuo Harris")).toBeInTheDocument();
+      // check that expected text is present
+      expect(screen.getByText("Bytes and nibbles")).toBeInTheDocument();
+      expect(screen.getByText("By Samuel Matsuo Harris")).toBeInTheDocument();
 
-    // check that expected links are present
-    const expectedBannerLinks: [string, string][] = [
-      ["Home", "/"],
-      ["Bytes", "/bytes"],
-      ["Nibbles", "/nibbles"],
-    ];
-    const expectedSocialLinks: string[] =  [LINKEDIN_URL, GITHUB_URL]
+      // check that expected links are present
+      const expectedBannerLinks: [string, string][] = [
+        ["Home", "/"],
+        ["Bytes", "/bytes"],
+        ["Nibbles", "/nibbles"],
+      ];
+      const expectedSocialLinks: string[] = [LINKEDIN_URL, GITHUB_URL];
 
-    const links = screen.getAllByRole("link");
-    expect(links).toHaveLength(expectedBannerLinks.length + expectedSocialLinks.length);
-    for (const link of expectedBannerLinks) {
-      expect(screen.getByText(link[0]))
-    }
-
-    for (const link of links) {
-      var oneOfExpectedLinks = false;
-      for (var i = 0; i < expectedBannerLinks.length; i++) {
-        const [text, url]: [string, string] = expectedBannerLinks[i];
-        if (link.textContent?.includes(text)) {
-          expect(link).toHaveAttribute("href", url);
-          oneOfExpectedLinks = true;
-          expectedBannerLinks.splice(i, 1);
-        }
+      const links = screen.getAllByRole("link");
+      expect(links).toHaveLength(
+        expectedBannerLinks.length + expectedSocialLinks.length
+      );
+      for (const link of expectedBannerLinks) {
+        expect(screen.getByText(link[0]));
       }
 
-      for (var i = 0; i < expectedSocialLinks.length; i++) {
-        const url: string = expectedSocialLinks[i];
-        if (link.attributes.getNamedItem("href")?.value === url) {
-          oneOfExpectedLinks = true;
-          expectedSocialLinks.splice(i, 1);
+      for (const link of links) {
+        let oneOfExpectedLinks = false;
+        for (let i = 0; i < expectedBannerLinks.length; i++) {
+          const [text, url]: [string, string] = expectedBannerLinks[i];
+          if (link.textContent?.includes(text)) {
+            expect(link).toHaveAttribute("href", url);
+            oneOfExpectedLinks = true;
+            expectedBannerLinks.splice(i, 1);
+          }
         }
-      }
 
-      expect(oneOfExpectedLinks).toBe(true);
+        for (let i = 0; i < expectedSocialLinks.length; i++) {
+          const url: string = expectedSocialLinks[i];
+          if (link.attributes.getNamedItem("href")?.value === url) {
+            oneOfExpectedLinks = true;
+            expectedSocialLinks.splice(i, 1);
+          }
+        }
+
+        expect(oneOfExpectedLinks).toBe(true);
+      }
     }
-  });
+  );
 });

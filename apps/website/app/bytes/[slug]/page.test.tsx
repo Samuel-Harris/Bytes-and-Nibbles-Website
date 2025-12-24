@@ -4,7 +4,7 @@ import FirebaseService from "@/common/FirebaseService";
 import { render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateMetadata, generateStaticParams } from "./page";
-import { ByteType, SectionType } from "@bytes-and-nibbles/shared";
+import { ByteSchema, SectionSchema } from "@bytes-and-nibbles/shared";
 import Section from "./Section";
 import { getDateString } from "@/common/timeUtils";
 import { Metadata } from "next";
@@ -16,7 +16,7 @@ jest.mock("@/tilecard/Tilecard");
 jest.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-const byteExample: ByteType = {
+const byteExample: ByteSchema = {
   title: "Blog title",
   subtitle: "Blog subtitle",
   series: { title: "My series", accentColour: "#ac3Ef" },
@@ -25,13 +25,14 @@ const byteExample: ByteType = {
   coverPhoto: "Cover photo src",
   publishDate: new Date(2024, 2, 20),
   lastModifiedDate: new Date(2024, 2, 20),
+  isPublished: true,
   sections: [
     {
       title: "Section 1",
       body: [
         {
           type: "paragraph",
-          value: "string",
+          value: { paragraph: "string" },
         },
       ],
     },
@@ -46,9 +47,9 @@ const byteExample: ByteType = {
     },
   ],
 };
-let getByteMock: MockedFunction<(slug: string) => ByteType | undefined>;
+let getByteMock: MockedFunction<(slug: string) => ByteSchema | undefined>;
 let getDateStringMock: MockedFunction<(date: Date) => string>;
-let sectionMock: MockedFunction<React.FC<SectionType>>;
+let sectionMock: MockedFunction<React.FC<SectionSchema>>;
 
 describe("Individual byte page", () => {
   beforeAll(() => {
@@ -68,7 +69,7 @@ describe("Individual byte page", () => {
   });
 
   sectionMock = mocked(Section);
-  sectionMock.mockImplementation(({ title }: SectionType) => {
+  sectionMock.mockImplementation(({ title }: SectionSchema) => {
     return <p>{title}</p>;
   });
 
@@ -89,7 +90,7 @@ describe("Individual byte page", () => {
 
   it.each([byteExample, undefined])(
     "should use apply the appropriate metadata",
-    async (byte: ByteType | undefined) => {
+    async (byte: ByteSchema | undefined) => {
       getByteMock.mockReturnValue(byte);
 
       const metadata: Metadata = await generateMetadata({
@@ -120,7 +121,7 @@ describe("Individual byte page", () => {
     },
   ])(
     "should render pages with differing publish and last modified dates correctly",
-    async (byte: ByteType) => {
+    async (byte: ByteSchema) => {
       getByteMock.mockReturnValue(byte);
 
       getDateStringMock.mockImplementation((date: Date): string =>

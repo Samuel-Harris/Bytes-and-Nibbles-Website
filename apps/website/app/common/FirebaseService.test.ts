@@ -19,17 +19,20 @@ import {
   ref,
 } from "firebase/storage";
 import FirebaseService from "./FirebaseService";
-import { firebaseConfig } from "@bytes-and-nibbles/shared";
-import { Byte, ByteOverview } from "./Byte";
+import {
+  ByteOverviewType,
+  firebaseConfig,
+  NibbleOverviewType,
+} from "@bytes-and-nibbles/shared";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";
-import { Nibble, NibbleOverview } from "./Nibble";
+import { ByteSchema, NibbleSchema } from "@bytes-and-nibbles/shared";
 
 jest.mock("firebase/app");
 jest.mock("firebase/firestore");
 jest.mock("firebase/storage");
 
-const bytes: Byte[] = [
+const bytes: ByteSchema[] = [
   {
     title: "My title 1",
     subtitle: "My subtitle 1",
@@ -37,6 +40,7 @@ const bytes: Byte[] = [
     slug: "my-slug-1",
     thumbnail: "My thumbnail 1",
     coverPhoto: "My cover photo 1",
+    isPublished: true,
     publishDate: new Date("03/12/03"),
     lastModifiedDate: new Date("04/12/03"),
     sections: [
@@ -53,6 +57,7 @@ const bytes: Byte[] = [
     slug: "my-slug-2",
     thumbnail: "My thumbnail 2",
     coverPhoto: "My cover photo 2",
+    isPublished: true,
     publishDate: new Date("11/05/24"),
     lastModifiedDate: new Date("12/06/24"),
     sections: [
@@ -71,7 +76,7 @@ const bytes: Byte[] = [
   },
 ];
 
-const nibbles: Nibble[] = [
+const nibbles: NibbleSchema[] = [
   {
     title: "My nibble 1",
     thumbnail: "My thumbnail 3",
@@ -116,7 +121,7 @@ const nibbles: Nibble[] = [
 
 describe("Firebase service", () => {
   afterEach(() => {
-    // @ts-ignore
+    // @ts-expect-error - accessing private static property for testing
     FirebaseService["instance"] = undefined;
 
     jest.clearAllMocks();
@@ -128,16 +133,16 @@ describe("Firebase service", () => {
     initializeAppMock.mockReturnValue(appMock);
 
     const getDocMock = mocked(getDoc);
-    // @ts-ignore
+    // @ts-expect-error - mocking implementation with different signature
     getDocMock.mockImplementation((series) => ({ data: () => series }));
 
-    const rawBytes = bytes.map((byte: Byte) => ({
+    const rawBytes = bytes.map((byte: ByteSchema) => ({
       ...byte,
       publishDate: new Timestamp(byte.publishDate.getUTCSeconds(), 0),
       lastModifiedDate: new Timestamp(byte.lastModifiedDate.getUTCSeconds(), 0),
     }));
 
-    const rawNibbles = nibbles.map((nibble: Nibble) => ({
+    const rawNibbles = nibbles.map((nibble: NibbleSchema) => ({
       ...nibble,
       publishDate: new Timestamp(nibble.publishDate.getUTCSeconds(), 0),
       lastModifiedDate: new Timestamp(
@@ -342,14 +347,15 @@ describe("Firebase service", () => {
   });
 
   it("should list bytes", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["bytes"] = bytes;
 
-    const bytesOverviews: ByteOverview[] = await firebaseService.listBytes();
+    const bytesOverviews: ByteOverviewType[] =
+      await firebaseService.listBytes();
 
     expect(bytesOverviews).toEqual(
       bytes.map(
-        (byte): ByteOverview => ({
+        (byte): ByteOverviewType => ({
           title: byte.title,
           subtitle: byte.subtitle,
           series: byte.series,
@@ -362,15 +368,15 @@ describe("Firebase service", () => {
   });
 
   it("should list nibbles", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["nibbles"] = nibbles;
 
-    const nibbleOverviews: NibbleOverview[] =
+    const nibbleOverviews: NibbleOverviewType[] =
       await firebaseService.listNibbles();
 
     expect(nibbleOverviews).toEqual(
       nibbles.map(
-        (nibble): NibbleOverview => ({
+        (nibble): NibbleOverviewType => ({
           title: nibble.title,
           thumbnail: nibble.thumbnail,
           coverPhoto: nibble.coverPhoto,
@@ -383,19 +389,19 @@ describe("Firebase service", () => {
   });
 
   it("should get bytes", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["bytes"] = bytes;
 
-    const byte: Byte | undefined = firebaseService.getByte(bytes[1].slug);
+    const byte: ByteSchema | undefined = firebaseService.getByte(bytes[1].slug);
 
     expect(byte).toEqual(bytes[1]);
   });
 
   it("should get nibbles", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["nibbles"] = nibbles;
 
-    const nibble: Nibble | undefined = firebaseService.getNibble(
+    const nibble: NibbleSchema | undefined = firebaseService.getNibble(
       nibbles[1].slug
     );
 
@@ -403,7 +409,7 @@ describe("Firebase service", () => {
   });
 
   it("should get byte slugs", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["bytes"] = bytes;
 
     const slugs: string[] = firebaseService.getByteSlugs();
@@ -415,7 +421,7 @@ describe("Firebase service", () => {
   });
 
   it("should get nibble slugs", async () => {
-    const firebaseService: FirebaseService = new (FirebaseService as any)();
+    const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["nibbles"] = nibbles;
 
     const slugs: string[] = firebaseService.getNibbleSlugs();

@@ -1,16 +1,14 @@
 import React from "react";
-import {
-  SubsectionBodyElementType,
-} from "@bytes-and-nibbles/shared";
+import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 
-const Body: React.FC<{ body: SubsectionBodyElementType[] }> = ({
+const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
   body,
 }: {
-  body: SubsectionBodyElementType[];
+  body: SubsectionBodyElementSchema[];
 }) =>
-  body.map((bodyElement: SubsectionBodyElementType) => {
+  body.map((bodyElement: SubsectionBodyElementSchema) => {
     switch (bodyElement.type) {
       case "paragraph":
         return <Paragraph value={bodyElement.value} key={bodyElement.value} />;

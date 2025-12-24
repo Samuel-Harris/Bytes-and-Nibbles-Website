@@ -1,11 +1,11 @@
 import React from "react";
-import { SectionType } from "@bytes-and-nibbles/shared";
+import { SectionSchema } from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 import Subsection from "./Subsection";
 
-const Section: React.FC<SectionType> = ({ title, body }: SectionType) => (
+const Section: React.FC<SectionSchema> = ({ title, body }: SectionSchema) => (
   <div className="my-4">
     <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>{title}</p>
     {body.map((bodyComponent) => {
