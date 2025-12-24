@@ -9,6 +9,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@bytes-and-nibbles/shared": "workspace:*",
     "@heroicons/react": "^2.1.1",
     "@next/third-parties": "^15.3.2",
     "@types/node": "^20.11.16",

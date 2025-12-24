@@ -4,7 +4,7 @@ import FirebaseService from "@/common/FirebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
-import { NibbleOverview } from "@/common/Nibble";
+import { NibbleOverviewType } from "@bytes-and-nibbles/shared";
 import TilecardSubheading, {
   TilecardSubheadingProps,
 } from "./TilecardSubheading";
@@ -15,8 +15,8 @@ jest.mock("@/tilecard/Tilecard");
 jest.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-let listNibblesMock: MockedFunction<() => NibbleOverview[]>;
-let nibbleOverviewsMock: NibbleOverview[];
+let listNibblesMock: MockedFunction<() => NibbleOverviewType[]>;
+let nibbleOverviewsMock: NibbleOverviewType[];
 let tilecardSubheadingMock: MockedFunction<FC<TilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
@@ -79,7 +79,7 @@ describe("Bytes page", () => {
       expect(listNibblesMock).toHaveBeenCalledTimes(1);
     });
 
-    nibbleOverviewsMock.forEach((nibbleOverview: NibbleOverview): void => {
+    nibbleOverviewsMock.forEach((nibbleOverview: NibbleOverviewType): void => {
       expect(screen.getByText(nibbleOverview.title)).toBeInTheDocument();
       expect(
         screen.getByText(nibbleOverview.timeTakenMinutes)

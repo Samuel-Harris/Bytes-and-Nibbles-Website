@@ -9,7 +9,7 @@ import {
 } from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
-import { Ingredient, Nibble } from "@/common/Nibble";
+import { IngredientType, NibbleType } from "@bytes-and-nibbles/shared";
 import HighlightedText from "@/common/HighlightedText";
 import { getDisplayTime } from "../timeUtils";
 
@@ -37,7 +37,7 @@ export async function generateMetadata({
 
   const title: string = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): string => {
-      const nibble: Nibble | undefined = firebaseService.getNibble(slug);
+      const nibble: NibbleType | undefined = firebaseService.getNibble(slug);
 
       return nibble ? nibble.title : "Untitled nibble";
     }
@@ -52,8 +52,8 @@ export async function generateMetadata({
 export default async function NibblePage({ params }: NibblePageProps) {
   const { slug }: RouteParams = await params;
 
-  const nibble: Nibble | undefined = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): Nibble | undefined =>
+  const nibble: NibbleType | undefined = await FirebaseService.getInstance().then(
+    (firebaseService: FirebaseService): NibbleType | undefined =>
       firebaseService.getNibble(slug)
   );
 
@@ -131,7 +131,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
   );
 }
 
-const renderIngredient = (ingredient: Ingredient): JSX.Element => {
+const renderIngredient = (ingredient: IngredientType): JSX.Element => {
   let suffix: string = "";
   if (ingredient.quantity || ingredient.measurement) {
     suffix = "-";

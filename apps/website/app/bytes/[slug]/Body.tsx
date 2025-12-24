@@ -1,5 +1,5 @@
 import React from "react";
-import { BodyType, CaptionedImageType, ParagraphType } from "@/common/Byte";
+import { BodyType, CaptionedImageType, ParagraphType } from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 

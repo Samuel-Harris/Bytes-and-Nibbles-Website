@@ -1,51 +1,56 @@
 // Generic entity reference (framework-agnostic)
-export interface GenericEntityReference {
+export interface GenericEntityReferenceType {
   id: string;
   path: string;
 }
 
 // CMS-specific content structure types (FireCMS internal format)
-export interface Paragraph {
+export interface ParagraphType {
   paragraph: string; // Markdown content
 }
 
-export interface LatexParagraph {
+export interface LatexParagraphType {
   latexContent: string; // LaTeX content
 }
 
-export interface CaptionedImage {
+export interface CaptionedImageType {
   image: string;
   caption: string;
 }
 
-export interface Subsection {
+export type SubsectionBodyElementType =
+  | ParagraphType
+  | LatexParagraphType
+  | CaptionedImageType;
+
+export interface SubsectionType {
   title: string;
-  body: (Paragraph | LatexParagraph | CaptionedImage)[];
+  body: SubsectionBodyElementType[];
   isCollapsible?: boolean;
 }
 
-export interface Section {
+export interface SectionType {
   title: string;
-  body: (Subsection | Paragraph | LatexParagraph | CaptionedImage)[];
+  body: (SubsectionType | SubsectionBodyElementType)[];
   isCollapsible?: boolean;
 }
 
 // Byte type matching CMS schema
-export interface Byte {
+export interface ByteType {
   title: string;
   subtitle: string;
-  series: GenericEntityReference; // Generic entity reference
+  series: GenericEntityReferenceType; // Generic entity reference
   slug: string;
   thumbnail: string;
   coverPhoto: string;
   isPublished: boolean; // Required in CMS
   publishDate: Date;
   lastModifiedDate: Date;
-  sections: Section[];
+  sections: SectionType[];
 }
 
 // Website consumption types (transformed from CMS data)
-export type ByteOverview = {
+export type ByteOverviewType = {
   title: string;
   subtitle: string;
   series: {

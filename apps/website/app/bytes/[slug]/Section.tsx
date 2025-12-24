@@ -1,5 +1,5 @@
 import React from "react";
-import { SectionType } from "@/common/Byte";
+import { SectionType } from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";

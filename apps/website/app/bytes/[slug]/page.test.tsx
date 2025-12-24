@@ -4,7 +4,7 @@ import FirebaseService from "@/common/FirebaseService";
 import { render, screen } from "@testing-library/react";
 import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateMetadata, generateStaticParams } from "./page";
-import { Byte, SectionType } from "@/common/Byte";
+import { ByteType, SectionType } from "@bytes-and-nibbles/shared";
 import Section from "./Section";
 import { getDateString } from "@/common/timeUtils";
 import { Metadata } from "next";
@@ -16,7 +16,7 @@ jest.mock("@/tilecard/Tilecard");
 jest.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-const byteExample: Byte = {
+const byteExample: ByteType = {
   title: "Blog title",
   subtitle: "Blog subtitle",
   series: { title: "My series", accentColour: "#ac3Ef" },
@@ -46,7 +46,7 @@ const byteExample: Byte = {
     },
   ],
 };
-let getByteMock: MockedFunction<(slug: string) => Byte | undefined>;
+let getByteMock: MockedFunction<(slug: string) => ByteType | undefined>;
 let getDateStringMock: MockedFunction<(date: Date) => string>;
 let sectionMock: MockedFunction<React.FC<SectionType>>;
 
@@ -89,7 +89,7 @@ describe("Individual byte page", () => {
 
   it.each([byteExample, undefined])(
     "should use apply the appropriate metadata",
-    async (byte: Byte | undefined) => {
+    async (byte: ByteType | undefined) => {
       getByteMock.mockReturnValue(byte);
 
       const metadata: Metadata = await generateMetadata({
@@ -120,7 +120,7 @@ describe("Individual byte page", () => {
     },
   ])(
     "should render pages with differing publish and last modified dates correctly",
-    async (byte: Byte) => {
+    async (byte: ByteType) => {
       getByteMock.mockReturnValue(byte);
 
       getDateStringMock.mockImplementation((date: Date): string =>

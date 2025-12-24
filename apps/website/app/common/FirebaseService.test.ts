@@ -19,7 +19,7 @@ import {
   ref,
 } from "firebase/storage";
 import FirebaseService from "./FirebaseService";
-import { firebaseConfig } from "./firebaseConstants";
+import { firebaseConfig } from "@bytes-and-nibbles/shared";
 import { Byte, ByteOverview } from "./Byte";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";

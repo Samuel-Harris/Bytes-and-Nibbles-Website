@@ -21,7 +21,7 @@ import {
   ref,
 } from "firebase/storage";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
-import { firebaseConfig } from "./firebaseConstants";
+import { firebaseConfig } from "@bytes-and-nibbles/shared";
 import { Byte, ByteOverview, Series } from "./Byte";
 import { Nibble, NibbleOverview } from "./Nibble";
 

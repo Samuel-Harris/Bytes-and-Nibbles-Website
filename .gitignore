@@ -6,5 +6,8 @@ node_modules/
 firestore.rules
 storage.rules
 
+# IDE
+.idea/
+
 # misc
 .DS_Store

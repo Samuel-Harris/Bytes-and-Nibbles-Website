@@ -1,5 +1,5 @@
 // Series-related types
-export interface ByteSeries {
+export interface ByteSeriesType {
   title: string;
   accentColour: string;
 }

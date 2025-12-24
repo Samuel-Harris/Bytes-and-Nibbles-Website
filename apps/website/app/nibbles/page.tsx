@@ -1,6 +1,6 @@
 import React from "react";
 import FirebaseService from "@/common/FirebaseService";
-import { NibbleOverview } from "@/common/Nibble";
+import { NibbleOverviewType } from "@bytes-and-nibbles/shared";
 import Tilecard from "@/tilecard/Tilecard";
 import TilecardSubheading from "./TilecardSubheading";
 import { Metadata } from "next";
@@ -12,15 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default async function NibblesPage(): Promise<React.JSX.Element> {
-  const nibbleOverviews: NibbleOverview[] =
+  const nibbleOverviews: NibbleOverviewType[] =
     await FirebaseService.getInstance().then(
-      (firebaseService: FirebaseService): NibbleOverview[] =>
+      (firebaseService: FirebaseService): NibbleOverviewType[] =>
         firebaseService.listNibbles()
     );
 
   return (
     <div className="grid grid-rows-auto justify-items-center ">
-      {nibbleOverviews.map((nibbleOverview: NibbleOverview) => (
+      {nibbleOverviews.map((nibbleOverview: NibbleOverviewType) => (
         <Tilecard
           key={nibbleOverview.slug}
           title={nibbleOverview.title}

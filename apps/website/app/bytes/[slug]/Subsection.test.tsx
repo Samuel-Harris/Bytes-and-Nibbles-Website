@@ -2,7 +2,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import { CaptionedImageType, ParagraphType } from "@/common/Byte";
+import { CaptionedImageType, ParagraphType } from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import { mocked, MockedFunction } from "jest-mock";
 import Subsection from "./Subsection";
@@ -18,7 +18,7 @@ let captionedImageMockCaption: string;
 
 let sectionTitle: string;
 let paragraph: ParagraphType;
-let captionedImage: CaptionedImageType
+let captionedImage: CaptionedImageType;
 
 describe("Byte section", () => {
   beforeAll(() => {
@@ -46,7 +46,9 @@ describe("Byte section", () => {
   });
 
   it("should render the subsection title and body", () => {
-    render(<Subsection title={sectionTitle} body={[paragraph, captionedImage]} />);
+    render(
+      <Subsection title={sectionTitle} body={[paragraph, captionedImage]} />
+    );
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
 

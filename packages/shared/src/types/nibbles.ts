@@ -1,5 +1,5 @@
 // Nibble-related types
-export interface Ingredient {
+export interface IngredientType {
   name: string;
   quantity: number;
   measurement: string;
@@ -7,7 +7,7 @@ export interface Ingredient {
 }
 
 // Base content types (website consumption)
-export type NibbleOverview = {
+export type NibbleOverviewType = {
   title: string;
   thumbnail: string;
   coverPhoto: string;
@@ -17,10 +17,10 @@ export type NibbleOverview = {
 };
 
 // Full content types (CMS editing with publishing flags)
-export interface Nibble extends NibbleOverview {
+export interface NibbleType extends NibbleOverviewType {
   source: string;
   nServings: number;
-  ingredients: Ingredient[];
+  ingredients: IngredientType[];
   steps: string[];
   lastModifiedDate: Date;
   isPublished?: boolean;

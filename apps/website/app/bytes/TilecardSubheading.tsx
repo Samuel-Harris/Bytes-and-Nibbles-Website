@@ -1,5 +1,5 @@
 import React from "react";
-import { Series } from "@/common/Byte";
+import { ByteSeriesType as Series } from "@bytes-and-nibbles/shared";
 import { TERTIARY_COLOUR_TEXT, TILECARD_TEXT_PADDING } from "@/common/theme";
 
 export type TilecardSubheadingProps = {

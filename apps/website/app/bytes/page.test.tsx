@@ -4,7 +4,7 @@ import BytesPage from "./page";
 import FirebaseService from "@/common/FirebaseService";
 import { mocked, MockedFunction } from "jest-mock";
 import "@testing-library/jest-dom";
-import { ByteOverview } from "@/common/Byte";
+import { ByteOverviewType } from "@bytes-and-nibbles/shared";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 import TilecardSubheading, {
   TilecardSubheadingProps,
@@ -15,8 +15,8 @@ jest.mock("@/tilecard/Tilecard");
 jest.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
-let listBytesMock: MockedFunction<() => ByteOverview[]>;
-let byteOverviewsMock: ByteOverview[];
+let listBytesMock: MockedFunction<() => ByteOverviewType[]>;
+let byteOverviewsMock: ByteOverviewType[];
 let byteTilecardSubheadingMock: MockedFunction<FC<TilecardSubheadingProps>>;
 let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
@@ -77,7 +77,7 @@ describe("Bytes page", () => {
       expect(listBytesMock).toHaveBeenCalledTimes(1);
     });
 
-    byteOverviewsMock.forEach((byteOverview: ByteOverview): void => {
+    byteOverviewsMock.forEach((byteOverview: ByteOverviewType): void => {
       expect(screen.getByText(byteOverview.title)).toBeInTheDocument();
       expect(screen.getByText(byteOverview.subtitle)).toBeInTheDocument();
     });
