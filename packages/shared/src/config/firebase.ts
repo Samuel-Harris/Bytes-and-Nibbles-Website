@@ -1,6 +1,4 @@
-import { FirebaseOptions } from "firebase/app";
-
-export const firebaseConfig: FirebaseOptions = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAf0UoF9IQj93P4ioHPtEbt94VJFSPf7sE",
   authDomain: "bytes-and-nibbles.firebaseapp.com",
   projectId: "bytes-and-nibbles",
