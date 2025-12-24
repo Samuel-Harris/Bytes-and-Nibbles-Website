@@ -28,7 +28,7 @@ import {
 } from "@firecms/firebase";
 import { CenteredView } from "@firecms/ui";
 
-import { firebaseConfig } from "./firebase_config";
+import { firebaseConfig } from "@bytes-and-nibbles/shared";
 import { byteCollection as v1ByteCollection } from "./collections/v1_bytes";
 import { v1ByteSeriesCollection } from "./collections/v1_byteSeries";
 import { v1NibbleCollection } from "./collections/v1_nibbles";

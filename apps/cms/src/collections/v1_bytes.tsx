@@ -7,43 +7,11 @@ import {
 } from "@firecms/core";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
+import { Byte as SharedByte } from "@bytes-and-nibbles/shared";
 
-interface Paragraph {
-  paragraph: string; // Markdown content
-}
-
-interface LatexParagraph {
-  latexContent: string; // LaTeX content
-}
-
-interface CaptionedImage {
-  image: string;
-  caption: string;
-}
-
-interface Subsection {
-  title: string;
-  body: (Paragraph | LatexParagraph | CaptionedImage)[];
-  isCollapsible?: boolean;
-}
-
-interface Section {
-  title: string;
-  body: (Subsection | Paragraph | LatexParagraph | CaptionedImage)[];
-  isCollapsible?: boolean;
-}
-
-export interface Byte {
-  title: string;
-  subtitle: string;
-  series: EntityReference;
-  slug: string;
-  thumbnail: string;
-  coverPhoto: string;
-  isPublished: boolean;
-  publishDate: Date;
-  lastModifiedDate: Date;
-  sections: Section[];
+// FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
+interface Byte extends Omit<SharedByte, "series"> {
+  series: EntityReference; // FireCMS-specific entity reference
 }
 
 // Markdown paragraph (object with paragraph field)

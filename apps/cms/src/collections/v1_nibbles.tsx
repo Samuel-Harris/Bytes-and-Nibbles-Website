@@ -4,28 +4,7 @@ import {
   buildCollection,
   buildProperty,
 } from "@firecms/core";
-
-interface Ingredient {
-  name: string;
-  quantity: number;
-  measurement: string;
-  optional: boolean;
-}
-
-export interface Nibble {
-  title: string;
-  thumbnail: string;
-  coverPhoto: string;
-  slug: string;
-  source: string;
-  nServings: number;
-  ingredients: Ingredient[];
-  steps: string[];
-  isPublished: boolean;
-  publishDate: Date;
-  lastModifiedDate: Date;
-  timeTakenMinutes: number;
-}
+import { Nibble } from "@bytes-and-nibbles/shared";
 
 export const v1NibbleCollection = buildCollection<Nibble>({
   id: "v1_nibbles",

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@bytes-and-nibbles/shared": "workspace:*",
     "@firecms/core": "^3.0.0",
     "@firecms/firebase": "^3.0.0",
     "@firecms/ui": "^3.0.0",

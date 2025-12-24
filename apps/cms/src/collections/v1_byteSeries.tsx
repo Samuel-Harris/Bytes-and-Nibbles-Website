@@ -4,11 +4,7 @@ import {
   AdditionalFieldDelegate,
 } from "@firecms/core";
 import { ColorField } from "../components/ColorField";
-
-export interface ByteSeries {
-  title: string;
-  accentColour: string;
-}
+import { ByteSeries } from "@bytes-and-nibbles/shared";
 
 export const colorPreviewField: AdditionalFieldDelegate<ByteSeries> = {
   key: "accent_colour_preview",

@@ -14,6 +14,9 @@ importers:
 
   apps/cms:
     dependencies:
+      '@bytes-and-nibbles/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@firecms/core':
         specifier: ^3.0.0
         version: 3.0.0(@tiptap/extension-list@3.14.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@tiptap/extensions@3.14.0(@tiptap/core@3.11.0(@tiptap/pm@3.11.0))(@tiptap/pm@3.11.0))(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(csstype@3.2.3)(react-dom@19.2.3(react@19.2.3))(react-router-dom@6.30.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(react-router@6.30.2(react@19.2.3))(react@19.2.3)(vite@5.4.21(@types/node@20.19.27))
