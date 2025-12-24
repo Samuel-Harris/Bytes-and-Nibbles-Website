@@ -32,7 +32,7 @@ const byteExample: ByteSchema = {
       body: [
         {
           type: "paragraph",
-          value: { paragraph: "string" },
+          value: "Paragraph",
         },
       ],
     },
