@@ -4,9 +4,9 @@ import {
   buildCollection,
   buildProperty,
 } from "@firecms/core";
-import { Nibble } from "@bytes-and-nibbles/shared";
+import { NibbleType } from "@bytes-and-nibbles/shared";
 
-export const v1NibbleCollection = buildCollection<Nibble>({
+export const v1NibbleCollection = buildCollection<NibbleType>({
   id: "v1_nibbles",
   name: "Nibbles",
   singularName: "Nibble",

@@ -61,7 +61,7 @@ function App() {
 
   const { firebaseApp, firebaseConfigLoading, configError } =
     useInitialiseFirebase({
-      firebaseConfig,
+      firebaseConfig: firebaseConfig as Record<string, unknown>,
     });
 
   // Controller used to manage the dark or light color mode

@@ -2,15 +2,18 @@
   "name": "bytes-and-nibbles-monorepo",
   "private": true,
   "scripts": {
+    "dev": "pnpm --parallel --filter \"*\" dev",
     "dev:cms": "pnpm --filter cms dev",
     "dev:website": "pnpm --filter website dev",
+    "build": "pnpm --filter shared build && pnpm --filter \"*\" --parallel build",
     "build:cms": "pnpm --filter cms build",
     "build:website": "pnpm --filter website build",
     "deploy:cms": "pnpm --filter cms deploy",
     "deploy:website": "pnpm --filter website deploy",
+    "deploy:all": "pnpm build && pnpm deploy:cms && pnpm deploy:website",
     "test": "pnpm --filter \"*\" --parallel test",
     "lint": "pnpm --filter \"*\" --parallel lint",
-    "clean": "pnpm --filter \"*\" clean"
+    "clean": "pnpm --filter \"*\" clean && rm -rf node_modules"
   },
   "devDependencies": {
     "typescript": "^5.7.3"

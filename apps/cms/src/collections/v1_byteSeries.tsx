@@ -4,9 +4,9 @@ import {
   AdditionalFieldDelegate,
 } from "@firecms/core";
 import { ColorField } from "../components/ColorField";
-import { ByteSeries } from "@bytes-and-nibbles/shared";
+import { ByteSeriesType } from "@bytes-and-nibbles/shared";
 
-export const colorPreviewField: AdditionalFieldDelegate<ByteSeries> = {
+export const colorPreviewField: AdditionalFieldDelegate<ByteSeriesType> = {
   key: "accent_colour_preview",
   name: "Accent colour",
   Builder: ({ entity }) => {
@@ -22,7 +22,7 @@ export const colorPreviewField: AdditionalFieldDelegate<ByteSeries> = {
   dependencies: ["accentColour"],
 };
 
-export const v1ByteSeriesCollection = buildCollection<ByteSeries>({
+export const v1ByteSeriesCollection = buildCollection<ByteSeriesType>({
   id: "v1_byte_series",
   name: "Byte series",
   singularName: "Byte series",

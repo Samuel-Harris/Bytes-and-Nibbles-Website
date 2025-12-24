@@ -1,8 +1,4 @@
-// Generic entity reference (framework-agnostic)
-export interface GenericEntityReferenceType {
-  id: string;
-  path: string;
-}
+import { ByteSeriesType } from "./byteSeries";
 
 // CMS-specific content structure types (FireCMS internal format)
 export interface ParagraphType {
@@ -39,7 +35,7 @@ export interface SectionType {
 export interface ByteType {
   title: string;
   subtitle: string;
-  series: GenericEntityReferenceType; // Generic entity reference
+  series: ByteSeriesType;
   slug: string;
   thumbnail: string;
   coverPhoto: string;
@@ -48,7 +44,6 @@ export interface ByteType {
   lastModifiedDate: Date;
   sections: SectionType[];
 }
-
 // Website consumption types (transformed from CMS data)
 export type ByteOverviewType = {
   title: string;

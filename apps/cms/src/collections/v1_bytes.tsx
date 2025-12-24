@@ -7,10 +7,10 @@ import {
 } from "@firecms/core";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
-import { Byte as SharedByte } from "@bytes-and-nibbles/shared";
+import { ByteType as SharedByteType } from "@bytes-and-nibbles/shared";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
-interface Byte extends Omit<SharedByte, "series"> {
+interface ByteType extends Omit<SharedByteType, "series"> {
   series: EntityReference; // FireCMS-specific entity reference
 }
 
@@ -98,7 +98,7 @@ const subsectionProperty = buildProperty({
   },
 });
 
-export const byteCollection = buildCollection<Byte>({
+export const byteCollection = buildCollection<ByteType>({
   id: "v1_bytes",
   name: "Bytes",
   singularName: "Byte",

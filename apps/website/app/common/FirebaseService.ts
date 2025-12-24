@@ -21,16 +21,21 @@ import {
   ref,
 } from "firebase/storage";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
-import { firebaseConfig } from "@bytes-and-nibbles/shared";
-import { Byte, ByteOverview, Series } from "./Byte";
-import { Nibble, NibbleOverview } from "./Nibble";
+import {
+  ByteOverviewType,
+  ByteSeriesType,
+  ByteType,
+  NibbleOverviewType,
+  NibbleType,
+  firebaseConfig,
+} from "@bytes-and-nibbles/shared";
 
 export default class FirebaseService {
   private app: FirebaseApp;
   private firestore: Firestore;
   private storage: FirebaseStorage;
-  private bytes: Byte[];
-  private nibbles: Nibble[];
+  private bytes: ByteType[];
+  private nibbles: NibbleType[];
 
   private constructor() {
     this.app = initializeApp(firebaseConfig);
@@ -63,37 +68,41 @@ export default class FirebaseService {
     );
 
     this.bytes = await Promise.all(
-      queryResults.map(async (byteResponse: DocumentData): Promise<Byte> => {
-        const byte: Byte = {
-          ...byteResponse,
-          series: (await getDoc(byteResponse.series)).data() as Series,
-          publishDate: byteResponse.publishDate.toDate(),
-          lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
-          thumbnail: await this.getImage(byteResponse.thumbnail),
-          coverPhoto: await this.getImage(byteResponse.coverPhoto),
-        } as Byte;
+      queryResults.map(
+        async (byteResponse: DocumentData): Promise<ByteType> => {
+          const byte: ByteType = {
+            ...byteResponse,
+            series: (
+              await getDoc(byteResponse.series)
+            ).data() as ByteSeriesType,
+            publishDate: byteResponse.publishDate.toDate(),
+            lastModifiedDate: byteResponse.lastModifiedDate.toDate(),
+            thumbnail: await this.getImage(byteResponse.thumbnail),
+            coverPhoto: await this.getImage(byteResponse.coverPhoto),
+          } as ByteType;
 
-        for (const section of byte.sections) {
-          for (const sectionBodyComponent of section.body) {
-            if (sectionBodyComponent.type === "subsection") {
-              for (const subsectionBodyComponent of sectionBodyComponent.value
-                .body) {
-                if (subsectionBodyComponent.type === "captionedImage") {
-                  subsectionBodyComponent.value.image = await this.getImage(
-                    subsectionBodyComponent.value.image
-                  );
+          for (const section of byte.sections) {
+            for (const sectionBodyComponent of section.body) {
+              if (sectionBodyComponent.type === "subsection") {
+                for (const subsectionBodyComponent of sectionBodyComponent.value
+                  .body) {
+                  if (subsectionBodyComponent.type === "captionedImage") {
+                    subsectionBodyComponent.value.image = await this.getImage(
+                      subsectionBodyComponent.value.image
+                    );
+                  }
                 }
+              } else if (sectionBodyComponent.type === "captionedImage") {
+                sectionBodyComponent.value.image = await this.getImage(
+                  sectionBodyComponent.value.image
+                );
               }
-            } else if (sectionBodyComponent.type === "captionedImage") {
-              sectionBodyComponent.value.image = await this.getImage(
-                sectionBodyComponent.value.image
-              );
             }
           }
-        }
 
-        return byte;
-      })
+          return byte;
+        }
+      )
     );
   }
 
@@ -113,15 +122,15 @@ export default class FirebaseService {
 
     this.nibbles = await Promise.all(
       queryResults.map(
-        async (nibbleResponse: DocumentData): Promise<Nibble> => {
+        async (nibbleResponse: DocumentData): Promise<NibbleType> => {
           // convert received nibble into nibble object
-          const nibble: Nibble = {
+          const nibble: NibbleType = {
             ...nibbleResponse,
             publishDate: nibbleResponse.publishDate.toDate(),
             lastModifiedDate: nibbleResponse.lastModifiedDate.toDate(),
             thumbnail: await this.getImage(nibbleResponse.thumbnail),
             coverPhoto: await this.getImage(nibbleResponse.coverPhoto),
-          } as Nibble;
+          } as NibbleType;
 
           return nibble;
         }
@@ -129,9 +138,9 @@ export default class FirebaseService {
     );
   }
 
-  public listBytes(): ByteOverview[] {
+  public listBytes(): ByteOverviewType[] {
     return this.bytes.map(
-      (byte: Byte): ByteOverview => ({
+      (byte: ByteType): ByteOverviewType => ({
         title: byte.title,
         subtitle: byte.subtitle,
         series: byte.series,
@@ -142,9 +151,9 @@ export default class FirebaseService {
     );
   }
 
-  public listNibbles(): NibbleOverview[] {
+  public listNibbles(): NibbleOverviewType[] {
     return this.nibbles.map(
-      (nibble: Nibble): NibbleOverview => ({
+      (nibble: NibbleType): NibbleOverviewType => ({
         title: nibble.title,
         thumbnail: nibble.thumbnail,
         coverPhoto: nibble.coverPhoto,
@@ -155,20 +164,20 @@ export default class FirebaseService {
     );
   }
 
-  public getByte(slug: string): Byte | undefined {
-    return this.bytes.find((byte: Byte) => byte.slug === slug);
+  public getByte(slug: string): ByteType | undefined {
+    return this.bytes.find((byte: ByteType) => byte.slug === slug);
   }
 
-  public getNibble(slug: string): Nibble | undefined {
-    return this.nibbles.find((nibble: Nibble) => nibble.slug === slug);
+  public getNibble(slug: string): NibbleType | undefined {
+    return this.nibbles.find((nibble: NibbleType) => nibble.slug === slug);
   }
 
   public getByteSlugs(): string[] {
-    return this.bytes.map((byte: Byte) => byte.slug);
+    return this.bytes.map((byte: ByteType) => byte.slug);
   }
 
   public getNibbleSlugs(): string[] {
-    return this.nibbles.map((nibble: Nibble) => nibble.slug);
+    return this.nibbles.map((nibble: NibbleType) => nibble.slug);
   }
 
   private getImage(path: string): Promise<string> {

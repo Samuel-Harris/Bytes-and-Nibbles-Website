@@ -1,21 +1,25 @@
 import React from "react";
-import { BodyType, CaptionedImageType, ParagraphType } from "@bytes-and-nibbles/shared";
+import {
+  SubsectionBodyElementType,
+} from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 
-const Body: React.FC<{ body: BodyType }> = ({ body }: { body: BodyType }) =>
-  body.map((bodyComponent: ParagraphType | CaptionedImageType) => {
-    switch (bodyComponent.type) {
+const Body: React.FC<{ body: SubsectionBodyElementType[] }> = ({
+  body,
+}: {
+  body: SubsectionBodyElementType[];
+}) =>
+  body.map((bodyElement: SubsectionBodyElementType) => {
+    switch (bodyElement.type) {
       case "paragraph":
-        return (
-          <Paragraph value={bodyComponent.value} key={bodyComponent.value} />
-        );
+        return <Paragraph value={bodyElement.value} key={bodyElement.value} />;
       case "captionedImage":
         return (
           <CaptionedImage
-            image={bodyComponent.value.image}
-            caption={bodyComponent.value.caption}
-            key={bodyComponent.value.caption}
+            image={bodyElement.value.image}
+            caption={bodyElement.value.caption}
+            key={bodyElement.value.caption}
           />
         );
     }
