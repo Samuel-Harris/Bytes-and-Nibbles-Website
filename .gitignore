@@ -1,3 +1,7 @@
 # build files
 .pnpm-store/
 node_modules/
+
+# firebase config
+firestore.rules
+storage.rules
