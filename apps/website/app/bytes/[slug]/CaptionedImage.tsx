@@ -14,9 +14,11 @@ const CaptionedImage: React.FC<CaptionedImageProps> = ({
 }: CaptionedImageProps) => (
   <div className="my-7">
     <img src={image} alt={caption} className={`justify-self-center w-fit`} />
-    <ReactMarkdown className={TERTIARY_COLOUR_TEXT} remarkPlugins={[gfm]}>
-      {caption}
-    </ReactMarkdown>
+    <div className={TERTIARY_COLOUR_TEXT}>
+      <ReactMarkdown remarkPlugins={[gfm]}>
+        {caption}
+      </ReactMarkdown>
+    </div>
   </div>
 );
 export default CaptionedImage;

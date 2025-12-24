@@ -20,7 +20,7 @@ const HL: React.FC<{ href: string; children: string }> = ({
   </a>
 );
 
-const Home = (): JSX.Element => (
+const Home = (): React.JSX.Element => (
   <Header tab={Tab.Home}>
     <div className="grid md:grid-cols-3 justify-self-center my-2 sm:my-4 md:my-7 w-10/12">
       <div className="mr-4 mb-8">
