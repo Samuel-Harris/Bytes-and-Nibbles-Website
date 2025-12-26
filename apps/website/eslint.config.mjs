@@ -36,8 +36,6 @@ export default tseslint.config(
       "@next/next/no-before-interactive-script-outside-document": "warn",
       "@next/next/no-css-tags": "warn",
       "@next/next/no-head-element": "warn",
-      "@next/next/no-html-link-for-pages": "warn",
-      "@next/next/no-img-element": "warn",
       "@next/next/no-page-custom-font": "warn",
       "@next/next/no-styled-jsx-in-document": "warn",
       "@next/next/no-sync-scripts": "warn",
@@ -62,6 +60,7 @@ export default tseslint.config(
 
       // Custom overrides
       "@next/next/no-img-element": "off",
+      "@next/next/no-html-link-for-pages": "off",
     },
   },
   {
