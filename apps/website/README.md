@@ -1,22 +1,72 @@
 # Bytes and Nibbles Website
-[![Deploy workflow](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml)
-![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Samuel-Harris/Bytes-and-Nibbles-Website?utm_source=oss&utm_medium=github&utm_campaign=Samuel-Harris%2FBytes-and-Nibbles-Website&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
-## Introduction
-My tech blog and recipe website.
+A Next.js website that displays content managed by the CMS, featuring "Bytes" (articles/blog posts) and "Nibbles" (recipes) in a beautiful, user-friendly interface.
 
-See my website hosted  at https://bytes-and-nibbles.web.app.
+## 🌐 Live Site
 
-![A screenshot of the 1.0.0 version of the website](website_screenshot.png)
+The website is hosted at https://bytes-and-nibbles.web.app.
 
-## Usage instructions
+![A screenshot of the website](website_screenshot.png)
 
-To install dependencies, run ```npm install```.
+## ✨ Features
 
-To run this locally, use ```npm run dev```.
+- **Content Display**: Consumes and displays structured content from the CMS
+- **Responsive Design**: Mobile-first design with Tailwind CSS
+- **SEO Optimized**: Server-side rendering with Next.js for optimal search performance
+- **Rich Media**: Support for images, thumbnails, and structured content blocks
+- **Series Organization**: Thematic grouping of articles with custom accent colors
 
-To build it to ```out/```, use ```npm run build```.
+## 🛠 Technology Stack
 
-To run the built website, use ```npx serve out```.
+- **Framework**: Next.js 15 with TypeScript
+- **Frontend**: React 18
+- **Styling**: Tailwind CSS
+- **Database**: Firebase Firestore (content sourced from CMS)
+- **Hosting**: Firebase Hosting
 
-Configure the ```.firebaserc``` and ```./app/common/firebaseConstants.ts``` files to use your own firebase backend.
+## 🚀 Development
+
+### Prerequisites
+
+- Node.js v18 or higher
+- pnpm package manager
+
+### Running Locally
+
+From the monorepo root directory:
+
+```bash
+# Install dependencies (from monorepo root)
+pnpm install
+
+# Start website in development mode
+pnpm dev:website
+```
+
+The website will be available at `http://localhost:3000` (or your configured Next.js port).
+
+### Building
+
+```bash
+# Build website for production
+pnpm build:website
+
+# Deploy to Firebase Hosting
+pnpm deploy:website
+```
+
+## 📁 Project Structure
+
+```
+apps/website/
+├── app/                    # Next.js app router pages
+├── components/             # Reusable React components
+├── lib/                    # Utility functions and configurations
+├── styles/                 # Global styles and Tailwind config
+├── public/                 # Static assets
+└── package.json            # Dependencies and scripts
+```
+
+## 🔗 Integration
+
+This website automatically consumes content from the CMS via Firebase Firestore. Content is managed in the CMS application and displayed here with optimized layouts and user experiences.

@@ -196,13 +196,6 @@ Edit the `myAuthenticator` function in `App.tsx` to customize access control log
 
 Create custom field components in `src/components/` and reference them in your collection schemas.
 
-## Contributing
-
-1. Follow the existing code structure and TypeScript patterns
-2. Test content creation workflows thoroughly
-3. Ensure proper validation is in place for required fields
-4. Update this README when adding new features
-
 ## Support
 
 For FireCMS-specific documentation, visit [firecms.co](https://firecms.co/).

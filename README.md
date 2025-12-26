@@ -237,14 +237,6 @@ bytes-and-nibbles-monorepo/
 - Current setup allows access to users with specific email domains
 - Admin privileges granted via custom claims
 
-## 🤝 Contributing
-
-1. Follow the existing code structure and TypeScript patterns
-2. Test content creation workflows thoroughly
-3. Ensure proper validation is in place for required fields
-4. Update documentation when adding new features
-5. Use pnpm for package management
-
 ## 📚 Content Schema Details
 
 ### Byte Structure
