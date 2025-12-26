@@ -46,4 +46,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_BYTES_AND_NIBBLES }}"
           channelId: live
           projectId: ${{ env.PROJECT_ID }}
-          target: website

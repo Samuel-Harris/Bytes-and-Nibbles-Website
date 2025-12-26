@@ -1,26 +1,9 @@
 {
-  "projects": {
-    "default": "bytes-and-nibbles"
+  "hosting": {
+    "public": "apps/website/out",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "cleanUrls": true
   },
-  "hosting": [
-    {
-      "target": "cms",
-      "public": "apps/cms/dist",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "rewrites": [
-        {
-          "source": "**",
-          "destination": "/index.html"
-        }
-      ]
-    },
-    {
-      "target": "website",
-      "public": "apps/website/out",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "cleanUrls": true
-    }
-  ],
   "storage": {
     "rules": "storage.rules"
   },
