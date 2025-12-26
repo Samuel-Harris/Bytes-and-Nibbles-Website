@@ -73,7 +73,7 @@ A Next.js website that consumes content from the CMS and displays it in a beauti
 
 Before you begin, ensure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Node.js](https://nodejs.org/) (v24 or higher)
 - [pnpm](https://pnpm.io/) package manager
 - [Firebase CLI](https://firebase.google.com/docs/cli) (for deployment)
 
