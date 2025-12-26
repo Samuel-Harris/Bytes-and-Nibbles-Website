@@ -7,7 +7,7 @@ export type ParagraphProps = {
 };
 
 const Paragraph: React.FC<ParagraphProps> = ({ value }: ParagraphProps) => (
-  <div className="mb-8 overflow-scroll">
+  <div className="mb-8">
     <ReactMarkdown remarkPlugins={[gfm]}>{value}</ReactMarkdown>
   </div>
 );
