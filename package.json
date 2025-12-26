@@ -7,10 +7,7 @@
     "dev:website": "pnpm --filter bytes-and-nibbles-website dev",
     "build": "pnpm --filter shared build && pnpm --filter \"*\" --parallel build",
     "build:cms": "pnpm --filter bytes-and-nibbles-cms build",
-    "build:website": "pnpm --filter bytes-and-nibbles-website  build",
-    "deploy:cms": "pnpm --filter bytes-and-nibbles-cms deploy",
-    "deploy:website": "pnpm --filter bytes-and-nibbles-website deploy",
-    "deploy:all": "pnpm build && pnpm deploy:cms && pnpm deploy:website",
+    "build:website": "pnpm --filter bytes-and-nibbles-website build",
     "test": "pnpm --filter \"*\" --parallel test",
     "lint": "pnpm --filter \"*\" --parallel lint",
     "clean": "pnpm --filter \"*\" clean && rm -rf node_modules"

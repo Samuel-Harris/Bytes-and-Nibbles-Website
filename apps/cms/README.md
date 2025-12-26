@@ -135,12 +135,6 @@ pnpm run build
 pnpm run preview
 ```
 
-### Deploy to Firebase
-
-```bash
-pnpm run deploy
-```
-
 This command builds the project and deploys it to Firebase Hosting under the "bytes-and-nibbles" project.
 
 ## Project Structure
