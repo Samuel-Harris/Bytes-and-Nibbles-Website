@@ -8,7 +8,7 @@
     "@firecms/core": "^3.0.0",
     "@firecms/firebase": "^3.0.0",
     "@firecms/ui": "^3.0.0",
-    "firebase": "^12.2.1",
+    "firebase": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "^6.26.2",
