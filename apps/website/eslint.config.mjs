@@ -24,11 +24,11 @@ export default tseslint.config(
       // React recommended rules
       ...reactPlugin.configs.recommended.rules,
       ...reactPlugin.configs["jsx-runtime"].rules,
-      
+
       // React Hooks rules
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-      
+
       // Next.js core-web-vitals rules
       "@next/next/google-font-display": "warn",
       "@next/next/google-font-preconnect": "warn",
@@ -44,10 +44,10 @@ export default tseslint.config(
       "@next/next/no-title-in-document-head": "warn",
       "@next/next/no-typos": "warn",
       "@next/next/no-unwanted-polyfillio": "warn",
-      
+
       // TypeScript rules
       "@typescript-eslint/no-unused-vars": "off",
-      
+
       // Unused imports rules
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
@@ -59,7 +59,7 @@ export default tseslint.config(
           argsIgnorePattern: "^_",
         },
       ],
-      
+
       // Custom overrides
       "@next/next/no-img-element": "off",
     },
@@ -71,7 +71,8 @@ export default tseslint.config(
       "out/**",
       "build/**",
       "dist/**",
-      "next-env.d.ts"
+      "next-env.d.ts",
+      "coverage/**",
     ],
   }
 );
