@@ -1,4 +1,5 @@
-import React from "react";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const React = require("react");
 
 /* eslint-disable react/prop-types */
 const ReactMarkdown = ({
