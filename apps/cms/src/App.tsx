@@ -36,15 +36,11 @@ import { v1NibbleCollection } from "./collections/v1_nibbles";
 function App() {
   // Use your own authentication logic here
   const myAuthenticator: Authenticator<FirebaseUserWrapper> = useCallback(
-    async ({ user, authController }) => {
+    async ({ user }) => {
       if (user?.email?.includes("flanders")) {
         // You can throw an error to prevent access
         throw Error("Stupid Flanders!");
       }
-
-      const idTokenResult = await user?.firebaseUser?.getIdTokenResult();
-      const userIsAdmin =
-        idTokenResult?.claims.admin || user?.email?.endsWith("@firecms.co");
 
       console.log("Allowing access to", user);
 
@@ -125,7 +121,7 @@ function App() {
           dataSourceDelegate={firestoreDelegate}
           storageSource={storageSource}
         >
-          {({ context, loading }) => {
+          {({ loading }) => {
             if (loading || authLoading) {
               return <CircularProgressCenter size={"large"} />;
             }

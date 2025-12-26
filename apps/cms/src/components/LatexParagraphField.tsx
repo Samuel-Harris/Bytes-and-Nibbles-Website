@@ -18,7 +18,7 @@ export function LatexParagraphField({
   const [renderError, setRenderError] = useState<string | null>(null);
   const [lastRenderedContent, setLastRenderedContent] = useState<string>("");
   const [previewContent, setPreviewContent] = useState<string>("");
-  const { loaded: isMathJaxReady, error: mathJaxError } = useMathJax();
+  const { loaded: isMathJaxReady, error: mathJaxError, mathJax } = useMathJax();
 
   // Handle MathJax loading errors
   useEffect(() => {
@@ -51,8 +51,7 @@ export function LatexParagraphField({
     // Clear any previous timeout
     const timeoutId = setTimeout(() => {
       try {
-        const MathJax = (window as any).MathJax;
-        if (!MathJax) {
+        if (!mathJax) {
           setRenderError("MathJax not loaded");
           return;
         }
@@ -60,26 +59,27 @@ export function LatexParagraphField({
         // Try to typeset with MathJax - use typesetPromise since it returns a Promise
         try {
           if (
-            MathJax.typesetPromise &&
-            typeof MathJax.typesetPromise === "function"
+            mathJax.typesetPromise &&
+            typeof mathJax.typesetPromise === "function"
           ) {
             // Clear any previous MathJax processing for this element (before updating content)
-            if (MathJax.typesetClear) {
-              MathJax.typesetClear([previewRef.current!]);
+            if (mathJax.typesetClear) {
+              mathJax.typesetClear([previewRef.current!]);
             }
 
             // Reset TeX state (labels, equation numbers, macros)
-            if (MathJax.texReset) {
-              MathJax.texReset();
+            if (mathJax.texReset) {
+              mathJax.texReset();
             }
 
             // Typeset the content (previewContent is already set by React state)
-            MathJax.typesetPromise([previewRef.current!])
+            mathJax
+              .typesetPromise([previewRef.current!])
               .then(() => {
                 setRenderError(null);
                 setLastRenderedContent(value);
               })
-              .catch((err: any) => {
+              .catch((err: Error) => {
                 console.warn("MathJax render error", err);
                 setRenderError(
                   `LaTeX rendering failed: ${err.message || "Unknown error"}`
