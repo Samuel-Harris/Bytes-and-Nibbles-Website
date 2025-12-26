@@ -9,7 +9,6 @@ const config: Config = {
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  testSequencer: "@jest/test-sequencer",
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/app/$1",
     "^react-markdown$": "<rootDir>/__mocks__/react-markdown.js",

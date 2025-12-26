@@ -19,13 +19,13 @@ export type SubsectionBodyElementType =
   | LatexParagraphType
   | CaptionedImageType;
 
-export type SectionBodyElementType = SubsectionType | SubsectionBodyElementType;
-
 export interface SubsectionType {
   title: string;
   body: SubsectionBodyElementType[];
   isCollapsible?: boolean;
 }
+
+export type SectionBodyElementType = SubsectionType | SubsectionBodyElementType;
 
 export interface SectionType {
   title: string;
