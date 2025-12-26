@@ -1,11 +1,15 @@
 {
-  "firestore": {
-    "indexes": "firestore.indexes.json"
-  },
   "hosting": {
-    "public": "out",
+    "public": "apps/website/out",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "cleanUrls": true
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "apps/website/firestore.indexes.json"
   },
   "emulators": {
     "auth": {

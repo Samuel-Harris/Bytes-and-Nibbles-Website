@@ -1,0 +1,25 @@
+# dependencies
+/node_modules
+
+# IDE files
+.idea/
+
+# build files
+.next/
+out/
+
+# misc
+.DS_Store
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# testing files
+coverage/

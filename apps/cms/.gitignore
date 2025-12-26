@@ -1,0 +1,15 @@
+# build files
+node_modules/
+dist/
+.vite/
+build/
+
+# MacOS files
+.DS_Store
+
+# intellij files
+.idea/
+
+# firebase config
+firestore.rules
+storage.rules
