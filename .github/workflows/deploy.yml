@@ -47,6 +47,3 @@ jobs:
           channelId: live
           projectId: ${{ env.PROJECT_ID }}
           target: website
-
-      - name: Deploy CMS
-        run: pnpm deploy:cms
