@@ -99,6 +99,7 @@ jobs:
     if: needs.changes.outputs.all == 'true' || needs.changes.outputs.website == 'true'
     permissions:
       checks: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
