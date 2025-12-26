@@ -8,16 +8,21 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
 }: {
   body: SubsectionBodyElementSchema[];
 }) =>
-  body.map((bodyElement: SubsectionBodyElementSchema) => {
+  body.map((bodyElement: SubsectionBodyElementSchema, index: number) => {
     switch (bodyElement.type) {
       case "paragraph":
-        return <Paragraph value={bodyElement.value} key={bodyElement.value} />;
+        return (
+          <Paragraph
+            value={bodyElement.value}
+            key={`${bodyElement.type}-${index}`}
+          />
+        );
       case "captionedImage":
         return (
           <CaptionedImage
             image={bodyElement.value.image}
             caption={bodyElement.value.caption}
-            key={bodyElement.value.caption}
+            key={`${bodyElement.type}-${index}`}
           />
         );
     }
