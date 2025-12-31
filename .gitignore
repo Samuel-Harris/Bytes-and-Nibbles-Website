@@ -9,5 +9,11 @@ storage.rules
 # IDE
 .idea/
 
+# docs
+docs/
+
+# cursor
+.cursor
+
 # misc
 .DS_Store
