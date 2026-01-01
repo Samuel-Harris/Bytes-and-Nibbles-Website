@@ -1,13 +1,12 @@
 import {
-  EntityOnPreSaveProps,
+  EntityOnSaveProps,
   UploadedFileContext,
   buildCollection,
   buildProperty,
-} from "@firecms/core";
+} from "firecms";
 import { NibbleType } from "@bytes-and-nibbles/shared";
 
 export const v1NibbleCollection = buildCollection<NibbleType>({
-  id: "v1_nibbles",
   name: "Nibbles",
   singularName: "Nibble",
   path: "v1_nibbles",
@@ -160,15 +159,13 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
     }),
   },
   callbacks: {
-    onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+    onSaveSuccess: (props: EntityOnSaveProps<NibbleType>): void => {
       if (
-        values.isPublished === true &&
-        previousValues?.isPublished === false
+        props.values.isPublished === true &&
+        props.previousValues?.isPublished === false
       ) {
-        values.publishDate = new Date();
+        props.values.publishDate = new Date();
       }
-
-      return values;
     },
   },
 });
