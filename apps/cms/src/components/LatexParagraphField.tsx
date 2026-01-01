@@ -18,7 +18,7 @@ export function LatexParagraphField({
   const { loaded, mathJax: mathJaxFromHook } = useMathJax();
 
   const displayContent = useMemo(() => {
-    return value?.trim() ? `$$${value}$$` : "";
+    return value?.trim() ? value : "";
   }, [value]);
 
   useEffect(() => {
