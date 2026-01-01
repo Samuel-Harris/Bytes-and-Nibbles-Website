@@ -18,7 +18,7 @@ describe("useMathJax", () => {
     delete window._mathJaxLoading;
 
     // Mock document methods
-    document.head.appendChild = mockAppendChild as any;
+    document.head.appendChild = mockAppendChild as unknown;
     vi.useFakeTimers();
   });
 
