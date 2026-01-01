@@ -3,6 +3,13 @@ import type { Config } from "jest";
 const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: ["app/**/*.{ts,tsx}"],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { tsconfig: "jest.tsconfig.json" }],
     "^.+\\.css$": "jest-transform-css",
