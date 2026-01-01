@@ -1,144 +1,105 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FieldProps, FieldHelperText } from "@firecms/core";
-import { TextField } from "@firecms/ui";
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { FieldProps } from "firecms";
+import { TextField, Box, Typography, Paper } from "@mui/material";
 import { useMathJax } from "../hooks/useMathJax";
 
 export function LatexParagraphField({
   property,
   value,
   setValue,
-  includeDescription,
-  showError,
   error,
-  isSubmitting,
+  showError,
   disabled,
   autoFocus,
+  isSubmitting,
 }: FieldProps<string>) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
-  const [lastRenderedContent, setLastRenderedContent] = useState<string>("");
-  const [previewContent, setPreviewContent] = useState<string>("");
-  const { loaded: isMathJaxReady, error: mathJaxError, mathJax } = useMathJax();
+  const { loaded, mathJax: mathJaxFromHook } = useMathJax();
 
-  // Handle MathJax loading errors
-  useEffect(() => {
-    if (mathJaxError) {
-      setRenderError(`Failed to load MathJax: ${mathJaxError}`);
-    }
-  }, [mathJaxError]);
-
-  // Update preview content when LaTeX content changes
-  useEffect(() => {
-    if (value?.trim()) {
-      setPreviewContent(`$$${value}$$`);
-    } else {
-      setPreviewContent("");
-    }
+  const displayContent = useMemo(() => {
+    return value?.trim() ? `$$${value}$$` : "";
   }, [value]);
 
-  // Render LaTeX whenever preview content changes
   useEffect(() => {
-    if (!isMathJaxReady || !previewRef.current || !previewContent) {
-      setRenderError(null);
+    // Prioritize the window object directly to avoid stale state issues
+    const mj = mathJaxFromHook || window.MathJax;
+
+    // We need the DOM ref, the content, and the actual library methods
+    if (!loaded || !mj || !previewRef.current || !displayContent) {
       return;
     }
 
-    // Skip if content hasn't changed since last successful render
-    if (value === lastRenderedContent) {
-      return;
-    }
-
-    // Clear any previous timeout
-    const timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(async () => {
       try {
-        if (!mathJax) {
-          setRenderError("MathJax not loaded");
-          return;
+        // Double check existence before calling to prevent "is not a function" errors
+        if (typeof mj.typesetClear === "function") {
+          mj.typesetClear([previewRef.current!]);
+        }
+        if (typeof mj.texReset === "function") {
+          mj.texReset();
         }
 
-        // Try to typeset with MathJax - use typesetPromise since it returns a Promise
-        try {
-          if (
-            mathJax.typesetPromise &&
-            typeof mathJax.typesetPromise === "function"
-          ) {
-            // Clear any previous MathJax processing for this element (before updating content)
-            if (mathJax.typesetClear) {
-              mathJax.typesetClear([previewRef.current!]);
-            }
-
-            // Reset TeX state (labels, equation numbers, macros)
-            if (mathJax.texReset) {
-              mathJax.texReset();
-            }
-
-            // Typeset the content (previewContent is already set by React state)
-            mathJax
-              .typesetPromise([previewRef.current!])
-              .then(() => {
-                setRenderError(null);
-                setLastRenderedContent(value);
-              })
-              .catch((err: Error) => {
-                console.warn("MathJax render error", err);
-                setRenderError(
-                  `LaTeX rendering failed: ${err.message || "Unknown error"}`
-                );
-              });
-          } else {
-            setRenderError("MathJax typesetPromise not available");
-          }
-        } catch (err) {
-          console.warn("MathJax rendering error", err);
-          setRenderError("LaTeX rendering failed");
+        if (typeof mj.typesetPromise === "function") {
+          await mj.typesetPromise([previewRef.current!]);
+          setRenderError(null);
+        } else {
+          // Fallback if MathJax is present but typesetPromise isn't ready yet
+          console.warn("MathJax found but typesetPromise is missing");
         }
-      } catch (err) {
-        console.warn("LaTeX rendering error", err);
-        setRenderError("LaTeX rendering error");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setRenderError(`LaTeX syntax error ${message}`);
       }
-    }, 300); // Debounce for 300ms to avoid too many renders
+    }, 400);
 
     return () => clearTimeout(timeoutId);
-  }, [previewContent, isMathJaxReady, lastRenderedContent, value]);
+  }, [displayContent, loaded, mathJaxFromHook]);
 
   return (
-    <div className="space-y-3">
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, my: 1 }}>
       <TextField
+        label={property.name}
         value={value ?? ""}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Enter LaTeX (e.g. \int_0^\infty x^2 \, dx or \frac{a}{b})"
         disabled={isSubmitting || disabled}
-        error={!!error}
-        autoFocus={autoFocus}
+        error={showError && !!error}
+        helperText={showError ? error : property.description}
+        fullWidth
         multiline
+        rows={3}
+        variant="outlined"
+        autoFocus={autoFocus}
       />
 
-      {/* Preview */}
-      {value?.trim() && (
-        <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
-          <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-            LaTeX preview
-          </div>
+      {displayContent && (
+        <Paper
+          variant="outlined"
+          sx={{
+            p: 2,
+            bgcolor: (theme) =>
+              theme.palette.mode === "dark" ? "grey.900" : "grey.50",
+            borderColor: renderError ? "error.main" : "divider",
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{ mb: 1, fontWeight: "bold", display: "block" }}
+          >
+            LaTeX Preview
+          </Typography>
 
           {renderError ? (
-            <div className="text-sm text-red-500 italic">{renderError}</div>
+            <Typography variant="body2" color="error">
+              {renderError}
+            </Typography>
           ) : (
-            <div
-              ref={previewRef}
-              className="prose prose-sm max-w-none dark:prose-invert"
-            >
-              {previewContent}
-            </div>
+            <Box ref={previewRef} sx={{ overflowX: "auto", py: 1 }}>
+              {displayContent}
+            </Box>
           )}
-        </div>
+        </Paper>
       )}
-
-      <FieldHelperText
-        includeDescription={includeDescription}
-        showError={showError}
-        error={error}
-        property={property}
-      />
-    </div>
+    </Box>
   );
 }

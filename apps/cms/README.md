@@ -82,8 +82,6 @@ The CMS will be available at `http://localhost:5173` (or your configured Vite po
 ### Authentication
 
 - The CMS uses Firebase Authentication with Google and email/password sign-in
-- Current auth logic restricts access based on email domains
-- Admin access is granted to users with `admin` custom claim or `@firecms.co` emails
 
 ### Content Management
 
