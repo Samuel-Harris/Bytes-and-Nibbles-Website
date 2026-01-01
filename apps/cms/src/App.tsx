@@ -12,8 +12,7 @@ export default function App() {
     async ({ user, authController }) => {
       console.log("Allowing access to", user?.email);
 
-      const sampleUserRoles = await Promise.resolve(["admin"]);
-      authController.setExtra(sampleUserRoles);
+      authController.setExtra(["admin"]);
 
       return true;
     },
