@@ -10,6 +10,7 @@ export default mergeConfig(
       environment: "jsdom",
       setupFiles: "./src/setupTests.ts",
       coverage: {
+        enabled: true,
         provider: "istanbul",
         reporter: ["text", "json", "html"],
         include: ["src/**/*.{ts,tsx}"],
