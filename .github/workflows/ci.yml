@@ -31,14 +31,14 @@ jobs:
         with:
           filters: |
             all:
-              - 'packages/shared/**'
-              - 'package.json'
-              - 'pnpm-lock.yaml'
-              - 'pnpm-workspace.yaml'
+              - "packages/shared/**"
+              - "package.json"
+              - "pnpm-lock.yaml"
+              - "pnpm-workspace.yaml"
             cms:
-              - 'apps/cms/**'
+              - "apps/cms/**"
             website:
-              - 'apps/website/**'
+              - "apps/website/**"
 
   test:
     name: Test
@@ -63,8 +63,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Test code
-        run: pnpm test
+      - name: Test website
+        if: needs.changes.outputs.all == 'true' || needs.changes.outputs.website == 'true'
+        run: pnpm --filter bytes-and-nibbles-website test -- --coverage.lines 80 --coverage.branches 80 --coverage.statements 80
+
+      - name: Test cms
+        if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true'
+        run: pnpm --filter bytes-and-nibbles-cms test -- --coverage.lines 80 --coverage.branches 80 --coverage.statements 80
 
   lint:
     name: Lint
