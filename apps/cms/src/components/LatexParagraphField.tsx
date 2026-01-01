@@ -47,8 +47,9 @@ export function LatexParagraphField({
           // Fallback if MathJax is present but typesetPromise isn't ready yet
           console.warn("MathJax found but typesetPromise is missing");
         }
-      } catch (err: any) {
-        setRenderError("LaTeX syntax error");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setRenderError(`LaTeX syntax error ${message}`);
       }
     }, 400);
 
