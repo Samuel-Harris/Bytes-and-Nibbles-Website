@@ -1,6 +1,5 @@
 import {
   EntityReference,
-  EntityOnSaveProps,
   UploadedFileContext,
   buildCollection,
   buildProperty,
@@ -239,13 +238,17 @@ export const v1ByteCollection = buildCollection<ByteType>({
     }),
   },
   callbacks: {
-    onSaveSuccess: (props: EntityOnSaveProps<ByteType>): void => {
-      if (
-        props.values.isPublished === true &&
-        props.previousValues?.isPublished === false
-      ) {
-        props.values.publishDate = new Date();
+    onPreSave: ({ values, previousValues }) => {
+      const updatedValues = { ...values };
+
+      const isNowPublished = values.isPublished === true;
+      const wasPublishedInDb = previousValues?.isPublished === true;
+
+      if (isNowPublished && !wasPublishedInDb) {
+        updatedValues.publishDate = new Date();
       }
+
+      return updatedValues;
     },
   },
 });

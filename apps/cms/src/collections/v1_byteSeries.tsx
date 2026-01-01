@@ -10,11 +10,22 @@ export const colorPreviewField: AdditionalFieldDelegate<ByteSeriesType> = {
   id: "accent_colour_preview",
   name: "Accent colour",
   Builder: ({ entity }) => {
-    const color = entity.values.accentColour;
+    // Access the value safely
+    const color = entity?.values?.accentColour;
+
+    if (!color) {
+      return <div style={{ fontSize: "12px", color: "#888" }}>No color</div>;
+    }
+
     return (
       <div
-        className="w-6 h-6 rounded border border-gray-300 shadow-sm"
-        style={{ backgroundColor: color }}
+        style={{
+          backgroundColor: color,
+          width: "24px",
+          height: "24px",
+          borderRadius: "4px",
+          border: "1px solid #ddd",
+        }}
         title={`Accent color: ${color}`}
       />
     );
