@@ -10,8 +10,16 @@ export default mergeConfig(
       environment: "jsdom",
       setupFiles: "./src/setupTests.ts",
       coverage: {
-        provider: "v8",
+        provider: "istanbul",
         reporter: ["text", "json", "html"],
+        include: ["src/**/*.{ts,tsx}"],
+        exclude: [
+          "src/setupTests.ts",
+          "src/vite-env.d.ts",
+          "src/main.tsx",
+          "**/*.test.ts",
+          "**/*.test.tsx",
+        ],
         lines: 80,
         functions: 80,
         branches: 80,

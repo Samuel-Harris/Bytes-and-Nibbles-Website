@@ -65,11 +65,11 @@ jobs:
 
       - name: Test website
         if: needs.changes.outputs.all == 'true' || needs.changes.outputs.website == 'true'
-        run: pnpm --filter bytes-and-nibbles-website test -- --coverage
+        run: pnpm --filter bytes-and-nibbles-website test
 
       - name: Test cms
         if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true'
-        run: pnpm --filter bytes-and-nibbles-cms test -- --coverage
+        run: pnpm --filter bytes-and-nibbles-cms test
 
   lint:
     name: Lint
