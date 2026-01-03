@@ -34,7 +34,7 @@ export function MarkdownParagraphField({
         error={showError}
         autoFocus={autoFocus}
         multiline
-        minRows={3}
+        minRows={6}
         fullWidth
         variant="outlined"
       />
