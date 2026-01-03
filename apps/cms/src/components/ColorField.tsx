@@ -1,6 +1,6 @@
 import React from "react";
-import { FieldProps } from "firecms";
-import { TextField, Box, FormLabel, FormHelperText } from "@mui/material";
+import { FieldProps, FieldHelperText } from "@firecms/core";
+import { TextField } from "@firecms/ui";
 
 interface ColorFieldCustomProps {
   defaultColor?: string;
@@ -10,6 +10,7 @@ export function ColorField({
   property,
   value,
   setValue,
+  customProps,
   includeDescription,
   showError,
   error,
@@ -17,9 +18,6 @@ export function ColorField({
   disabled,
   autoFocus,
 }: FieldProps<string, ColorFieldCustomProps>) {
-  // Custom props are accessed via the property object in v2 if passed via the schema
-  const customProps = property.customProps as ColorFieldCustomProps;
-
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
@@ -38,10 +36,12 @@ export function ColorField({
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-      <FormLabel sx={{ fontSize: "0.875rem" }}>{property.name}</FormLabel>
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        {property.name}
+      </label>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <div className="flex items-center gap-3">
         {/* Color Picker Input */}
         <input
           type="color"
@@ -49,35 +49,26 @@ export function ColorField({
           onChange={handleColorChange}
           disabled={isSubmitting || disabled}
           autoFocus={autoFocus}
-          style={{
-            width: "48px",
-            height: "40px",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            cursor: disabled ? "not-allowed" : "pointer",
-            opacity: disabled ? 0.5 : 1,
-          }}
+          className="w-12 h-10 border border-gray-300 rounded cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         />
 
         {/* Hex Text Input */}
         <TextField
-          fullWidth
-          variant="outlined"
-          size="small"
           value={value || ""}
           onChange={handleTextChange}
           placeholder="#000000"
           disabled={isSubmitting || disabled}
-          error={showError}
+          error={!!error}
+          className="flex-1"
         />
-      </Box>
+      </div>
 
-      {/* Manual replacement for FieldHelperText */}
-      {(showError || (includeDescription && property.description)) && (
-        <FormHelperText error={showError}>
-          {showError ? error : property.description}
-        </FormHelperText>
-      )}
-    </Box>
+      <FieldHelperText
+        includeDescription={includeDescription}
+        showError={showError}
+        error={error}
+        property={property}
+      />
+    </div>
   );
 }

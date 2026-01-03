@@ -1,13 +1,6 @@
 import React from "react";
-import { FieldProps } from "firecms";
-import {
-  TextField,
-  Box,
-  Typography,
-  FormHelperText,
-  Paper,
-} from "@mui/material";
-import ReactMarkdown from "react-markdown";
+import { FieldProps, FieldHelperText } from "@firecms/core";
+import { TextField, Markdown } from "@firecms/ui";
 
 export function MarkdownParagraphField({
   property,
@@ -20,68 +13,39 @@ export function MarkdownParagraphField({
   disabled,
   autoFocus,
 }: FieldProps<string>) {
-  const actualValue = typeof value === "string" ? value : "";
-
+  // Handle both string and object formats for backward compatibility
+  const actualValue = typeof value === 'string' ? value : '';
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      {/* Label - MUI TextField handles labels better internally */}
+    <div className="space-y-3">
       <TextField
-        label={property.name}
         value={actualValue ?? ""}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Enter text content (supports Markdown)"
         disabled={isSubmitting || disabled}
-        error={showError}
+        error={!!error}
         autoFocus={autoFocus}
         multiline
         minRows={6}
-        fullWidth
-        variant="outlined"
       />
 
       {/* Markdown Preview */}
       {actualValue?.trim() && (
-        <Paper
-          variant="outlined"
-          sx={{
-            p: 2,
-            bgcolor: (theme) =>
-              theme.palette.mode === "dark" ? "grey.900" : "grey.50",
-          }}
-        >
-          <Typography
-            variant="caption"
-            sx={{
-              display: "block",
-              fontWeight: 500,
-              color: "text.secondary",
-              mb: 1,
-            }}
-          >
+        <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
+          <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
             Markdown preview
-          </Typography>
-
-          {/* Using a standard div for the preview. 
-              v2 doesn't provide the 'prose' Tailwind class by default.
-          */}
-          <Box
-            sx={{
-              fontSize: "0.875rem",
-              "& p": { my: 1 },
-              "& ul": { pl: 2 },
-            }}
-          >
-            <ReactMarkdown>{actualValue}</ReactMarkdown>
-          </Box>
-        </Paper>
+          </div>
+          <div className="prose prose-sm max-w-none dark:prose-invert">
+            <Markdown source={actualValue} />
+          </div>
+        </div>
       )}
 
-      {/* Manual replacement for FieldHelperText */}
-      {(showError || (includeDescription && property.description)) && (
-        <FormHelperText error={showError} sx={{ ml: 1.5 }}>
-          {showError ? error : property.description}
-        </FormHelperText>
-      )}
-    </Box>
+      <FieldHelperText
+        includeDescription={includeDescription}
+        showError={showError}
+        error={error}
+        property={property}
+      />
+    </div>
   );
 }

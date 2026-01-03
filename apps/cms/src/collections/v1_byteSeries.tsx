@@ -2,30 +2,19 @@ import {
   buildCollection,
   buildProperty,
   AdditionalFieldDelegate,
-} from "firecms";
+} from "@firecms/core";
 import { ColorField } from "../components/ColorField";
 import { ByteSeriesType } from "@bytes-and-nibbles/shared";
 
 export const colorPreviewField: AdditionalFieldDelegate<ByteSeriesType> = {
-  id: "accent_colour_preview",
+  key: "accent_colour_preview",
   name: "Accent colour",
   Builder: ({ entity }) => {
-    // Access the value safely
-    const color = entity?.values?.accentColour;
-
-    if (!color) {
-      return <div style={{ fontSize: "12px", color: "#888" }}>No color</div>;
-    }
-
+    const color = entity.values.accentColour;
     return (
       <div
-        style={{
-          backgroundColor: color,
-          width: "24px",
-          height: "24px",
-          borderRadius: "4px",
-          border: "1px solid #ddd",
-        }}
+        className="w-6 h-6 rounded border border-gray-300 shadow-sm"
+        style={{ backgroundColor: color }}
         title={`Accent color: ${color}`}
       />
     );
@@ -34,6 +23,7 @@ export const colorPreviewField: AdditionalFieldDelegate<ByteSeriesType> = {
 };
 
 export const v1ByteSeriesCollection = buildCollection<ByteSeriesType>({
+  id: "v1_byte_series",
   name: "Byte series",
   singularName: "Byte series",
   path: "v1_byte_series",
