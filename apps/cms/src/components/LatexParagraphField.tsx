@@ -67,7 +67,7 @@ export function LatexParagraphField({
         helperText={showError ? error : property.description}
         fullWidth
         multiline
-        minRows={6}
+        minRows={3}
         variant="outlined"
         autoFocus={autoFocus}
       />
