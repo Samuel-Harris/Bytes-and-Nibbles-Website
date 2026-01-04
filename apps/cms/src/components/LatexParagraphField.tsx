@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { FieldProps, FieldHelperText } from "@firecms/core";
 import { TextField } from "@firecms/ui";
 import { useMathJax } from "../hooks/useMathJax";
@@ -84,7 +84,7 @@ export function LatexParagraphField({
               ref={previewRef}
               className="prose prose-sm max-w-none dark:prose-invert"
             >
-              {previewContent}
+              {displayContent}
             </div>
           )}
         </div>
