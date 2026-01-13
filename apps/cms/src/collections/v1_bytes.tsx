@@ -1,9 +1,10 @@
 import {
   EntityReference,
+  EntityOnPreSaveProps,
   UploadedFileContext,
   buildCollection,
   buildProperty,
-} from "firecms";
+} from "@firecms/core";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
 import {
@@ -103,7 +104,8 @@ const subsectionProperty = buildProperty({
   },
 });
 
-export const v1ByteCollection = buildCollection<ByteType>({
+export const byteCollection = buildCollection<ByteType>({
+  id: "v1_bytes",
   name: "Bytes",
   singularName: "Byte",
   path: "v1_bytes",
@@ -238,17 +240,15 @@ export const v1ByteCollection = buildCollection<ByteType>({
     }),
   },
   callbacks: {
-    onPreSave: ({ values, previousValues }) => {
-      const updatedValues = { ...values };
-
-      const isNowPublished = values.isPublished === true;
-      const wasPublishedInDb = previousValues?.isPublished === true;
-
-      if (isNowPublished && !wasPublishedInDb) {
-        updatedValues.publishDate = new Date();
+    onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      if (
+        values.isPublished === true &&
+        previousValues?.isPublished === false
+      ) {
+        values.publishDate = new Date();
       }
 
-      return updatedValues;
+      return values;
     },
   },
 });

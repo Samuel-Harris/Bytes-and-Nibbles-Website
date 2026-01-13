@@ -1,36 +1,154 @@
-import { Authenticator, FirebaseCMSApp } from "firecms";
+import React, { useCallback, useMemo } from "react";
+
+import {
+  AppBar,
+  Authenticator,
+  CircularProgressCenter,
+  Drawer,
+  FireCMS,
+  ModeControllerProvider,
+  NavigationRoutes,
+  Scaffold,
+  SideDialogs,
+  SnackbarProvider,
+  useBuildLocalConfigurationPersistence,
+  useBuildModeController,
+  useBuildNavigationController,
+  useValidateAuthenticator,
+} from "@firecms/core";
+import {
+  FirebaseAuthController,
+  FirebaseLoginView,
+  FirebaseSignInProvider,
+  FirebaseUserWrapper,
+  useFirebaseAuthController,
+  useFirebaseStorageSource,
+  useFirestoreDelegate,
+  useInitialiseFirebase,
+} from "@firecms/firebase";
+import { CenteredView } from "@firecms/ui";
 
 import { firebaseConfig } from "@bytes-and-nibbles/shared";
-import { useCallback } from "react";
-import { User } from "firebase/auth";
-import { v1ByteCollection } from "./collections/v1_bytes";
+import { byteCollection as v1ByteCollection } from "./collections/v1_bytes";
 import { v1ByteSeriesCollection } from "./collections/v1_byteSeries";
 import { v1NibbleCollection } from "./collections/v1_nibbles";
 
-export default function App() {
-  const myAuthenticator: Authenticator<User> = useCallback(
-    async ({ user, authController }) => {
-      console.log("Allowing access to", user?.email);
+function App() {
+  // Use your own authentication logic here
+  const myAuthenticator: Authenticator<FirebaseUserWrapper> = useCallback(
+    async ({ user }) => {
+      if (user?.email?.includes("flanders")) {
+        // You can throw an error to prevent access
+        throw Error("Stupid Flanders!");
+      }
 
-      authController.setExtra(["admin"]);
+      console.log("Allowing access to", user);
 
+      // we allow access to every user in this case
       return true;
     },
     []
   );
 
+  const collections = useMemo(
+    () => [v1ByteCollection, v1ByteSeriesCollection, v1NibbleCollection],
+    []
+  );
+
+  const { firebaseApp, firebaseConfigLoading, configError } =
+    useInitialiseFirebase({
+      firebaseConfig: firebaseConfig as Record<string, unknown>,
+    });
+
+  // Controller used to manage the dark or light color mode
+  const modeController = useBuildModeController();
+
+  const signInOptions: FirebaseSignInProvider[] = ["google.com", "password"];
+
+  // Controller for managing authentication
+  const authController: FirebaseAuthController = useFirebaseAuthController({
+    firebaseApp,
+    signInOptions,
+  });
+
+  // Controller for saving some user preferences locally.
+  const userConfigPersistence = useBuildLocalConfigurationPersistence();
+
+  // Delegate used for fetching and saving data in Firestore
+  const firestoreDelegate = useFirestoreDelegate({
+    firebaseApp,
+  });
+
+  // Controller used for saving and fetching files in storage
+  const storageSource = useFirebaseStorageSource({
+    firebaseApp,
+  });
+
+  const { authLoading, canAccessMainView, notAllowedError } =
+    useValidateAuthenticator({
+      authController,
+      authenticator: myAuthenticator,
+      dataSourceDelegate: firestoreDelegate,
+      storageSource,
+    });
+
+  const navigationController = useBuildNavigationController({
+    collections,
+    authController,
+    dataSourceDelegate: firestoreDelegate,
+  });
+
+  if (firebaseConfigLoading || !firebaseApp) {
+    return (
+      <>
+        <CircularProgressCenter />
+      </>
+    );
+  }
+
+  if (configError) {
+    return <CenteredView>{configError}</CenteredView>;
+  }
+
   return (
-    <FirebaseCMSApp
-      name={"Bytes and Nibbles CMS"}
-      plugins={[]}
-      authentication={myAuthenticator}
-      collections={[
-        v1ByteCollection,
-        v1ByteSeriesCollection,
-        v1NibbleCollection,
-      ]}
-      firebaseConfig={firebaseConfig as Record<string, unknown>}
-      logo={"/logo.png"}
-    />
+    <SnackbarProvider>
+      <ModeControllerProvider value={modeController}>
+        <FireCMS
+          navigationController={navigationController}
+          authController={authController}
+          userConfigPersistence={userConfigPersistence}
+          dataSourceDelegate={firestoreDelegate}
+          storageSource={storageSource}
+        >
+          {({ loading }) => {
+            if (loading || authLoading) {
+              return <CircularProgressCenter size={"large"} />;
+            }
+
+            if (!canAccessMainView) {
+              return (
+                <FirebaseLoginView
+                  authController={authController}
+                  firebaseApp={firebaseApp}
+                  signInOptions={signInOptions}
+                  notAllowedError={notAllowedError}
+                />
+              );
+            }
+
+            return (
+              <Scaffold autoOpenDrawer={false}>
+                <AppBar title={"Bytes and Nibbles CMS"} />
+                <Drawer />
+                <NavigationRoutes />
+                <SideDialogs />
+              </Scaffold>
+            );
+          }}
+        </FireCMS>
+      </ModeControllerProvider>
+    </SnackbarProvider>
   );
 }
+
+export default App;
