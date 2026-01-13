@@ -16,3 +16,10 @@ body {
 a {
   @apply text-primary;
 }
+
+mjx-container {
+  display: inline-grid;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}

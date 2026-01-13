@@ -14,7 +14,8 @@ export function MarkdownParagraphField({
   autoFocus,
 }: FieldProps<string>) {
   // Handle both string and object formats for backward compatibility
-  const actualValue = typeof value === 'string' ? value : '';
+  const actualValue = typeof value === "string" ? value : "";
+
   return (
     <div className="space-y-3">
       <TextField
