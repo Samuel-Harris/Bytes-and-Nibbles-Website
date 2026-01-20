@@ -10,6 +10,7 @@ export const SUBSECTION_BODY_ELEMENT_TYPES = {
   PARAGRAPH: "paragraph",
   LATEX_PARAGRAPH: "latexParagraph",
   CAPTIONED_IMAGE: "captionedImage",
+  COLLAPSIBLE_GROUP: "collapsibleGroup",
 } as const;
 
 export const SECTION_BODY_ELEMENT_TYPES = {
@@ -17,10 +18,12 @@ export const SECTION_BODY_ELEMENT_TYPES = {
   PARAGRAPH: "paragraph",
   LATEX_PARAGRAPH: "latexParagraph",
   CAPTIONED_IMAGE: "captionedImage",
+  COLLAPSIBLE_GROUP: "collapsibleGroup",
 } as const;
 
 // Schema types for oneOf serialization
-export type SubsectionBodyElementSchema =
+// Base content schema types (non-collapsible, used inside collapsible groups)
+export type BaseContentSchema =
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
       value: string;
@@ -32,6 +35,19 @@ export type SubsectionBodyElementSchema =
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;
       value: CaptionedImageType;
+    };
+
+// Collapsible group schema
+export interface CollapsibleGroupSchema {
+  title?: string;
+  body: BaseContentSchema[];
+}
+
+export type SubsectionBodyElementSchema =
+  | BaseContentSchema
+  | {
+      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP;
+      value: CollapsibleGroupSchema;
     };
 
 export interface SubsectionSchema extends Omit<SubsectionType, "body"> {
@@ -51,6 +67,10 @@ export type SectionBodyElementSchema =
   | {
       type: typeof SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;
       value: CaptionedImageType;
+    }
+  | {
+      type: typeof SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP;
+      value: CollapsibleGroupSchema;
     };
 
 export interface SectionSchema extends Omit<SectionType, "body"> {

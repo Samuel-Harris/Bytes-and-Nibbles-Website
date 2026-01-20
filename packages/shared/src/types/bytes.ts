@@ -14,10 +14,19 @@ export interface CaptionedImageType {
   caption: string;
 }
 
-export type SubsectionBodyElementType =
+// Base content types that can appear in a subsection (non-collapsible)
+export type BaseContentType =
   | ParagraphType
   | LatexParagraphType
   | CaptionedImageType;
+
+// Collapsible group that can contain base content types
+export interface CollapsibleGroupType {
+  title?: string; // Optional heading for the collapsible section
+  body: BaseContentType[];
+}
+
+export type SubsectionBodyElementType = BaseContentType | CollapsibleGroupType;
 
 export interface SubsectionType {
   title: string;

@@ -71,6 +71,34 @@ const captionedImageProperty = buildProperty({
   },
 });
 
+// Collapsible group - contains base content types only (no nesting)
+const collapsibleGroupProperty = buildProperty({
+  dataType: "map",
+  name: "Collapsible group",
+  properties: {
+    title: buildProperty({
+      dataType: "string",
+      name: "Title (optional)",
+    }),
+    body: buildProperty({
+      dataType: "array",
+      name: "Content",
+      validation: { required: true, min: 1 },
+      oneOf: {
+        typeField: "type",
+        valueField: "value",
+        properties: {
+          [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+            latexParagraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+            captionedImageProperty,
+        },
+      },
+    }),
+  },
+});
+
 const subsectionProperty = buildProperty({
   dataType: "map",
   name: "Subsection",
@@ -93,6 +121,8 @@ const subsectionProperty = buildProperty({
             latexParagraphProperty,
           [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
             captionedImageProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
+            collapsibleGroupProperty,
         },
       },
     }),
@@ -232,6 +262,8 @@ export const byteCollection = buildCollection<ByteType>({
                   latexParagraphProperty,
                 [SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
                   captionedImageProperty,
+                [SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
+                  collapsibleGroupProperty,
               },
             },
           }),
