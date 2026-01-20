@@ -8,6 +8,7 @@
     "build": "pnpm --filter shared build && pnpm --filter \"*\" --parallel build",
     "build:cms": "pnpm --filter bytes-and-nibbles-cms build",
     "build:website": "pnpm --filter bytes-and-nibbles-website build",
+    "preview:cms": "pnpm --filter bytes-and-nibbles-cms preview",
     "test": "pnpm --filter \"*\" --parallel test",
     "lint": "pnpm --filter \"*\" --parallel lint",
     "clean": "pnpm --filter \"*\" clean && rm -rf node_modules"
