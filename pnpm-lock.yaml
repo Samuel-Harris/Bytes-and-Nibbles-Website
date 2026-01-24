@@ -27,6 +27,9 @@ catalogs:
     firebase:
       specifier: ^12.6.0
       version: 12.7.0
+    globals:
+      specifier: ^15.10.0
+      version: 15.15.0
     react:
       specifier: ^19.2.0
       version: 19.2.3
@@ -275,8 +278,8 @@ importers:
         specifier: ^6.0.2
         version: 6.0.3(postcss@8.5.6)(ts-node@10.9.2(@types/node@20.19.27)(typescript@5.9.3))
       lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
+        specifier: ^4.17.23
+        version: 4.17.23
       postcss:
         specifier: ^8.4.35
         version: 8.5.6
@@ -5382,6 +5385,7 @@ packages:
 
   json-ptr@3.1.1:
     resolution: {integrity: sha512-SiSJQ805W1sDUCD1+/t1/1BIrveq2Fe9HJqENxZmMCILmrPI7WhS/pePpIOx85v6/H2z1Vy7AI08GV2TzfXocg==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
@@ -5540,8 +5544,8 @@ packages:
   lodash.snakecase@4.1.1:
     resolution: {integrity: sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -7256,10 +7260,12 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   tar@7.5.2:
     resolution: {integrity: sha512-7NyxrTE4Anh8km8iEy7o0QYPs+0JKBTj5ZaqHg6B39erLg0qYXN3BijtShwbsNSvQ+LN75+KV+C4QR/f6Gwnpg==}
     engines: {node: '>=18'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   tcp-port-used@1.0.2:
     resolution: {integrity: sha512-l7ar8lLUD3XS1V2lfoJlCBaeoaWo/2xfYt81hM7VlvR4RrMVFqfmzfhLVk40hAb368uitje5gPtBRL1m/DGvLA==}
@@ -7723,6 +7729,7 @@ packages:
   whatwg-encoding@2.0.0:
     resolution: {integrity: sha512-p41ogyeMUrw3jWclHWTQg1k05DSVXPLcVxRTYsXUk+ZooOCZLcoYgPZ/HL/D/N+uQPOtcp1me1WhBEaX02mhWg==}
     engines: {node: '>=12'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-fetch@3.6.20:
     resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
@@ -10417,7 +10424,7 @@ snapshots:
       chalk: 3.0.0
       css.escape: 1.5.1
       dom-accessibility-api: 0.6.3
-      lodash: 4.17.21
+      lodash: 4.17.23
       redent: 3.0.0
     optionalDependencies:
       '@jest/globals': 29.7.0
@@ -11101,7 +11108,7 @@ snapshots:
       graceful-fs: 4.2.11
       is-stream: 2.0.1
       lazystream: 1.0.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       normalize-path: 3.0.0
       readable-stream: 4.7.0
 
@@ -12520,7 +12527,7 @@ snapshots:
       glob: 10.5.0
       json-ptr: 3.1.1
       json-schema-traverse: 1.0.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       openapi3-ts: 3.2.0
       promise-breaker: 6.0.0
       qs: 6.14.0
@@ -12767,7 +12774,7 @@ snapshots:
       jsonwebtoken: 9.0.3
       leven: 3.1.0
       libsodium-wrappers: 0.7.15
-      lodash: 4.17.21
+      lodash: 4.17.23
       lsofi: 1.0.0
       marked: 13.0.3
       marked-terminal: 7.3.0(marked@13.0.3)
@@ -14221,7 +14228,7 @@ snapshots:
 
   lodash.snakecase@4.1.1: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -16186,7 +16193,7 @@ snapshots:
 
   sort-any@2.0.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   source-map-js@1.2.1: {}
 
@@ -16394,7 +16401,7 @@ snapshots:
       glob-slasher: 1.0.1
       is-url: 1.2.4
       join-path: 1.1.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       mime-types: 2.1.35
       minimatch: 6.2.0
       morgan: 1.10.1
@@ -16566,7 +16573,7 @@ snapshots:
 
   toxic@1.0.1:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   tr46@0.0.3: {}
 
@@ -17165,7 +17172,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.4
       '@types/lodash': 4.17.21
-      lodash: 4.17.21
+      lodash: 4.17.23
       lodash-es: 4.17.22
       nanoclone: 0.2.1
       property-expr: 2.0.6
