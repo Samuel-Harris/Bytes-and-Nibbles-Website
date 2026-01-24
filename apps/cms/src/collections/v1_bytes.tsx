@@ -1,9 +1,10 @@
 import {
   EntityReference,
+  EntityOnPreSaveProps,
   UploadedFileContext,
   buildCollection,
   buildProperty,
-} from "firecms";
+} from "@firecms/core";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
 import {
@@ -70,6 +71,34 @@ const captionedImageProperty = buildProperty({
   },
 });
 
+// Collapsible group - contains base content types only (no nesting)
+const collapsibleGroupProperty = buildProperty({
+  dataType: "map",
+  name: "Collapsible group",
+  properties: {
+    title: buildProperty({
+      dataType: "string",
+      name: "Title (optional)",
+    }),
+    body: buildProperty({
+      dataType: "array",
+      name: "Content",
+      validation: { required: true, min: 1 },
+      oneOf: {
+        typeField: "type",
+        valueField: "value",
+        properties: {
+          [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+            latexParagraphProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+            captionedImageProperty,
+        },
+      },
+    }),
+  },
+});
+
 const subsectionProperty = buildProperty({
   dataType: "map",
   name: "Subsection",
@@ -92,6 +121,8 @@ const subsectionProperty = buildProperty({
             latexParagraphProperty,
           [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
             captionedImageProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
+            collapsibleGroupProperty,
         },
       },
     }),
@@ -103,7 +134,8 @@ const subsectionProperty = buildProperty({
   },
 });
 
-export const v1ByteCollection = buildCollection<ByteType>({
+export const byteCollection = buildCollection<ByteType>({
+  id: "v1_bytes",
   name: "Bytes",
   singularName: "Byte",
   path: "v1_bytes",
@@ -230,6 +262,8 @@ export const v1ByteCollection = buildCollection<ByteType>({
                   latexParagraphProperty,
                 [SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
                   captionedImageProperty,
+                [SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
+                  collapsibleGroupProperty,
               },
             },
           }),
@@ -238,17 +272,15 @@ export const v1ByteCollection = buildCollection<ByteType>({
     }),
   },
   callbacks: {
-    onPreSave: ({ values, previousValues }) => {
-      const updatedValues = { ...values };
-
-      const isNowPublished = values.isPublished === true;
-      const wasPublishedInDb = previousValues?.isPublished === true;
-
-      if (isNowPublished && !wasPublishedInDb) {
-        updatedValues.publishDate = new Date();
+    onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      if (
+        values.isPublished === true &&
+        previousValues?.isPublished === false
+      ) {
+        values.publishDate = new Date();
       }
 
-      return updatedValues;
+      return values;
     },
   },
 });
