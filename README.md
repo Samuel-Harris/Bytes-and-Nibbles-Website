@@ -1,7 +1,7 @@
 # Bytes and Nibbles Monorepo
 
-[![Deploy CMS workflow](https://github.com/Samuel-Harris/Bytes-and-Nibbles/actions/workflows/cms-deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles/actions/workflows/cms-deploy.yml)
-[![Deploy Website workflow](https://github.com/Samuel-Harris/Bytes-and-Nibbles/actions/workflows/website-deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles/actions/workflows/website-deploy.yml)
+[![Deploy (main)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/deploy.yml)
+[![CI (main)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/ci.yml/badge.svg)](https://github.com/Samuel-Harris/Bytes-and-Nibbles-Website/actions/workflows/ci.yml)
 
 A monorepo containing a headless content management system and public website for managing and displaying "Bytes" (articles/blog posts) and "Nibbles" (recipes).
 
