@@ -1,0 +1,47 @@
+<!-- Parent: ../AGENTS.md -->
+<!-- Generated: 2026-02-08 | Updated: 2026-02-08 -->
+
+# types
+
+## Purpose
+
+TypeScript type definitions for content types used across the monorepo.
+
+## Key Files
+
+| File            | Description                                                                  |
+| --------------- | ---------------------------------------------------------------------------- |
+| `bytes.ts`      | Types for Byte content (ByteType, ByteOverviewType, sections, body elements) |
+| `nibbles.ts`    | Types for Nibble content (NibbleType, NibbleOverviewType, ingredients)       |
+| `byteSeries.ts` | Types for Byte Series (ByteSeriesType)                                       |
+
+## For AI Agents
+
+### Working In This Directory
+
+- Types define the shape of Firestore documents
+- Changes require updates to corresponding schemas in `../schemas/`
+- Overview types are subsets used for listing pages
+- Full types are used for detail pages
+
+### Type Structure
+
+**Bytes**:
+
+- `ByteType` - Full article with sections and body content
+- `ByteOverviewType` - Summary for listing (title, thumbnail, series, slug)
+- `SectionType` - Article section with heading and body
+- `SubsectionType` - Nested section
+- Body elements: paragraph, latex, captioned image, collapsible group
+
+**Nibbles**:
+
+- `NibbleType` - Full recipe with ingredients and steps
+- `NibbleOverviewType` - Summary for listing
+- `IngredientType` - Ingredient with quantity and measurement
+
+**Byte Series**:
+
+- `ByteSeriesType` - Series with title and accent color
+
+<!-- MANUAL: -->
