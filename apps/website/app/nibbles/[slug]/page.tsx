@@ -26,7 +26,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
         .getNibbleSlugs()
-        .map((slug: string): RouteParams => ({ slug }))
+        .map((slug: string): RouteParams => ({ slug })),
   );
 }
 
@@ -40,7 +40,7 @@ export async function generateMetadata({
       const nibble: NibbleSchema | undefined = firebaseService.getNibble(slug);
 
       return nibble ? nibble.title : "Untitled nibble";
-    }
+    },
   );
 
   return {
@@ -52,10 +52,11 @@ export async function generateMetadata({
 export default async function NibblePage({ params }: NibblePageProps) {
   const { slug }: RouteParams = await params;
 
-  const nibble: NibbleSchema | undefined = await FirebaseService.getInstance().then(
-    (firebaseService: FirebaseService): NibbleSchema | undefined =>
-      firebaseService.getNibble(slug)
-  );
+  const nibble: NibbleSchema | undefined =
+    await FirebaseService.getInstance().then(
+      (firebaseService: FirebaseService): NibbleSchema | undefined =>
+        firebaseService.getNibble(slug),
+    );
 
   if (!nibble) return <p>Nibble not found</p>;
 
@@ -119,11 +120,11 @@ export default async function NibblePage({ params }: NibblePageProps) {
         <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
         <ol className={SECONDARY_COLOUR_TEXT}>
           {nibble.steps.map(
-            (step: string): React.JSX.Element => (
-              <li className={`pb-2`} key={step}>
+            (step: string, index: number): React.JSX.Element => (
+              <li className={`pb-2`} key={index}>
                 <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
               </li>
-            )
+            ),
           )}
         </ol>
       </div>
