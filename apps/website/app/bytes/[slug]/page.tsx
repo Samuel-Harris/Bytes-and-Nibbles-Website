@@ -3,12 +3,7 @@ import { ByteSchema } from "@bytes-and-nibbles/shared";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
 import Section from "./Section";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
+
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 
@@ -25,7 +20,7 @@ export async function generateStaticParams(): Promise<RouteParams[]> {
     (firebaseService: FirebaseService): RouteParams[] =>
       firebaseService
         .getByteSlugs()
-        .map((slug: string): RouteParams => ({ slug }))
+        .map((slug: string): RouteParams => ({ slug })),
   );
 }
 
@@ -39,7 +34,7 @@ export async function generateMetadata({
       const byte: ByteSchema | undefined = firebaseService.getByte(slug);
 
       return byte ? byte.title : "Untitled byte";
-    }
+    },
   );
 
   return {
@@ -53,52 +48,52 @@ export default async function BytePage({ params }: BytePageProps) {
 
   const byte: ByteSchema | undefined = await FirebaseService.getInstance().then(
     (firebaseService: FirebaseService): ByteSchema | undefined =>
-      firebaseService.getByte(slug)
+      firebaseService.getByte(slug),
   );
 
-  if (!byte) return <p>Byte not found</p>;
+  if (!byte) return <p className="text-center text-xl p-10">Byte not found</p>;
 
   const publishDateString: string = getDateString(byte.publishDate);
   const lastModifiedDateString: string = getDateString(byte.lastModifiedDate);
 
-  const headingSpacing = "mb-1";
-
   return (
-    <div
-      className={`grid grid-cols-1 justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
-    >
-      <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
-      >
-        {byte.title}
-      </p>
-      <p className={`text-2xl ${headingSpacing} ${TERTIARY_COLOUR_TEXT}`}>
-        {byte.subtitle}
-      </p>
-      <p
-        style={{ backgroundColor: byte.series.accentColour }} // cannot be set in tailwind as this is dynamically generated
-        className={`text-md inline-flex px-1 py-1 font-medium ring-1 ring-inset ring-slate-500 ${headingSpacing}`}
-      >
-        {byte.series.title}
-      </p>
-      <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
-        {publishDateString}
-      </p>
-      {publishDateString !== lastModifiedDateString && (
-        <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
-          {lastModifiedDateString}
+    <div className="container mx-auto max-w-3xl px-4 py-8 mb-10">
+      <h1 className="text-5xl font-bold mb-2 text-primary">{byte.title}</h1>
+      <h2 className="text-2xl mb-4 text-muted-foreground">{byte.subtitle}</h2>
+
+      <div className="mb-6">
+        <span
+          style={{ backgroundColor: byte.series.accentColour }}
+          className="inline-flex items-center rounded-md px-2 py-1 text-sm font-medium text-white ring-1 ring-inset ring-white/20"
+        >
+          {byte.series.title}
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-1 text-muted-foreground text-sm mb-6">
+        <p>
+          <span className="font-semibold">Published: </span>
+          {publishDateString}
         </p>
-      )}
+        {publishDateString !== lastModifiedDateString && (
+          <p>
+            <span className="font-semibold">Last modified: </span>
+            {lastModifiedDateString}
+          </p>
+        )}
+      </div>
+
       <img
         src={byte.coverPhoto}
         alt={byte.title}
-        className={`justify-self-center w-fit mt-2 sm:mt-6`}
+        className="w-full h-auto rounded-lg shadow-md mb-8 object-cover"
       />
-      {byte.sections.map((sectionProps, index) => (
-        <Section key={index} {...sectionProps} />
-      ))}
+
+      <div className="space-y-8">
+        {byte.sections.map((sectionProps, index) => (
+          <Section key={index} {...sectionProps} />
+        ))}
+      </div>
     </div>
   );
 }

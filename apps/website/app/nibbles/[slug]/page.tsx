@@ -1,17 +1,12 @@
 import React from "react";
 import FirebaseService from "@/common/FirebaseService";
 import { getDateString } from "@/common/timeUtils";
-import {
-  PAGE_BOTTOM_MARGIN,
-  PAGE_WIDTH,
-  SECONDARY_COLOUR_TEXT,
-  TERTIARY_COLOUR_TEXT,
-} from "@/common/theme";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 import { Metadata } from "next";
 import { IngredientType, NibbleSchema } from "@bytes-and-nibbles/shared";
 import HighlightedText from "@/common/HighlightedText";
-import { getDisplayTime } from "../timeUtils";
+import { getDisplayTime } from "@/common/timeUtils";
+import { Separator } from "@/components/ui/separator";
 
 type RouteParams = {
   slug: string;
@@ -58,74 +53,79 @@ export default async function NibblePage({ params }: NibblePageProps) {
         firebaseService.getNibble(slug),
     );
 
-  if (!nibble) return <p>Nibble not found</p>;
+  if (!nibble)
+    return <p className="text-center text-xl p-10">Nibble not found</p>;
 
   const publishDateString: string = getDateString(nibble.publishDate);
   const lastModifiedDateString: string = getDateString(nibble.lastModifiedDate);
 
-  const headingSpacing = "mb-1";
-
   const isSourceUrl = nibble.source.slice(0, 4) === "http";
 
   return (
-    <div
-      className={`grid justify-self-center pt-5 ${PAGE_WIDTH} ${PAGE_BOTTOM_MARGIN}`}
-    >
-      <p
-        className={`text-5xl font-bold ${headingSpacing} ${SECONDARY_COLOUR_TEXT}`}
-      >
-        {nibble.title}
-      </p>
-      <p className={`mb-1 text-md`}>
-        <span className={TERTIARY_COLOUR_TEXT}>Published: </span>
-        {publishDateString}
-      </p>
-      {publishDateString !== lastModifiedDateString && (
-        <p className={`text-md`}>
-          <span className={TERTIARY_COLOUR_TEXT}>Last modified: </span>
-          {lastModifiedDateString}
+    <div className="container mx-auto max-w-3xl px-4 py-8 mb-10">
+      <h1 className="text-5xl font-bold mb-2 text-primary">{nibble.title}</h1>
+      <div className="flex flex-col gap-1 text-muted-foreground text-sm mb-6">
+        <p>
+          <span className="font-semibold">Published: </span>
+          {publishDateString}
         </p>
-      )}
+        {publishDateString !== lastModifiedDateString && (
+          <p>
+            <span className="font-semibold">Last modified: </span>
+            {lastModifiedDateString}
+          </p>
+        )}
+      </div>
+
       <img
         src={nibble.coverPhoto}
         alt={nibble.title}
-        className={`justify-self-center w-fit mt-2 sm:mt-6 mb-3`}
+        className="w-full h-auto rounded-lg shadow-md mb-6 object-cover"
       />
-      <p className={`text-l ${headingSpacing}`}>
-        Serves: <HighlightedText>{nibble.nServings}</HighlightedText>
-      </p>
-      <p className={`text-l ${headingSpacing}`}>
-        This took me:{" "}
-        <HighlightedText>
-          {getDisplayTime(nibble.timeTakenMinutes)}
-        </HighlightedText>
-      </p>
-      <p className={`text-l ${headingSpacing}`}>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="p-4 bg-card rounded-lg border text-card-foreground">
+          <p className="text-lg font-semibold mb-1">Serves</p>
+          <HighlightedText>{nibble.nServings}</HighlightedText>
+        </div>
+        <div className="p-4 bg-card rounded-lg border text-card-foreground">
+          <p className="text-lg font-semibold mb-1">Time Taken</p>
+          <HighlightedText>
+            {getDisplayTime(nibble.timeTakenMinutes)}
+          </HighlightedText>
+        </div>
+      </div>
+
+      <p className="text-muted-foreground mb-8">
         Adapted from:{" "}
-        <span className={SECONDARY_COLOUR_TEXT}>
+        <span className="text-primary hover:underline">
           {isSourceUrl ? (
-            <a href={nibble.source}>{nibble.source}</a>
+            <a href={nibble.source} target="_blank" rel="noopener noreferrer">
+              {nibble.source}
+            </a>
           ) : (
             nibble.source
           )}
         </span>
       </p>
-      <div className="my-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Ingredients</p>
-        <ul className={SECONDARY_COLOUR_TEXT}>
+
+      <div className="my-8">
+        <h2 className="text-2xl font-bold mb-4 text-primary">Ingredients</h2>
+        <ul className="list-disc pl-5 space-y-2 text-foreground">
           {nibble.ingredients.map(renderIngredient)}
         </ul>
       </div>
-      <div className="mt-4">
-        <p className={`text-2xl mb-2 ${TERTIARY_COLOUR_TEXT}`}>Steps</p>
-        <ol className={SECONDARY_COLOUR_TEXT}>
-          {nibble.steps.map(
-            (step: string, index: number): React.JSX.Element => (
-              <li className={`pb-2`} key={index}>
-                <span className={TERTIARY_COLOUR_TEXT}>{step}</span>
-              </li>
-            ),
-          )}
+
+      <Separator className="my-8" />
+
+      <div className="my-8">
+        <h2 className="text-2xl font-bold mb-4 text-primary">Steps</h2>
+        <ol className="list-decimal pl-5 space-y-4 text-foreground">
+          {nibble.steps.map((step: string, index: number) => (
+            <li key={index} className="pl-2">
+              <span className="text-muted-foreground">{step}</span>
+            </li>
+          ))}
         </ol>
       </div>
     </div>
@@ -135,7 +135,7 @@ export default async function NibblePage({ params }: NibblePageProps) {
 const renderIngredient = (ingredient: IngredientType): React.JSX.Element => {
   let suffix: string = "";
   if (ingredient.quantity || ingredient.measurement) {
-    suffix = "-";
+    suffix = " -";
 
     if (ingredient.quantity) {
       suffix += ` ${ingredient.quantity}`;
@@ -147,9 +147,12 @@ const renderIngredient = (ingredient: IngredientType): React.JSX.Element => {
   }
 
   return (
-    <li className={TERTIARY_COLOUR_TEXT} key={ingredient.name}>
-      <HighlightedText>{ingredient.name}</HighlightedText> {suffix}
-      {ingredient.optional && <span className="text-white"> (optional)</span>}
+    <li className="text-muted-foreground" key={ingredient.name}>
+      <span className="font-medium text-foreground">{ingredient.name}</span>
+      {suffix}
+      {ingredient.optional && (
+        <span className="text-muted-foreground/70 italic"> (optional)</span>
+      )}
     </li>
   );
 };

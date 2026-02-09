@@ -1,7 +1,10 @@
 import React from "react";
-import { SECONDARY_COLOUR_TEXT } from "./theme";
 
 const HighlightedText: React.FC<{ children: React.ReactNode }> = ({
   children,
-}) => <span className={SECONDARY_COLOUR_TEXT}>{children}</span>;
+}) => (
+  // Using a span instead of Badge to avoid pill styling, but keeping the primary color
+  // and font weight to make it "highlighted"
+  <span className="font-bold text-primary">{children}</span>
+);
 export default HighlightedText;

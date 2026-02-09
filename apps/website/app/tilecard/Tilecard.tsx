@@ -1,11 +1,13 @@
-import React from "react";
-import { FC } from "react";
+import React, { FC } from "react";
 import {
-  HOVER_BACKGROUND_COLOUR,
-  SECONDARY_COLOUR_TEXT,
-  TILECARD_TEXT_PADDING,
-} from "../common/theme";
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getDateString } from "../common/timeUtils";
+import Link from "next/link";
 
 export type TilecardProps = {
   children: React.ReactNode;
@@ -22,24 +24,35 @@ const Tilecard: FC<TilecardProps> = ({
   publishDate,
   linkPath,
 }: TilecardProps) => (
-  <a
+  <Link
     href={linkPath}
-    title={title}
-    className={`grid grid-cols-4 justify-items-left w-11/12 sm:w-4/5 py-6 sm:py-7 md:py-12 px-5 my-0 sm:my-4 md:my-7 no-underline ${HOVER_BACKGROUND_COLOUR}`}
+    className="no-underline w-11/12 sm:w-4/5 my-4 block h-64"
   >
-    <img src={thumbnail} alt={title} />
-    <div className="col-span-3">
-      <p
-        className={`text-2xl sm:text-3xl md:text-5xl sm:mb-1 md:mb-3 ${TILECARD_TEXT_PADDING} ${SECONDARY_COLOUR_TEXT}`}
-      >
-        {title}
-      </p>
-      {children}
-      <p className={`text-sm md:text-base text-white ${TILECARD_TEXT_PADDING}`}>
-        {getDateString(publishDate)}
-      </p>
-    </div>
-  </a>
+    <Card className="hover:bg-accent hover:text-accent-foreground transition-colors border-none h-full flex flex-row overflow-hidden p-0">
+      <div className="w-1/4 sm:w-1/5 h-full p-3 flex items-center justify-center">
+        <img
+          src={thumbnail}
+          alt={title}
+          className="w-full h-full object-cover rounded-md"
+        />
+      </div>
+      <div className="w-3/4 sm:w-4/5 flex flex-col p-4 sm:p-5">
+        <CardHeader className="p-0 mb-2 space-y-0">
+          <CardTitle className="text-xl sm:text-2xl md:text-3xl text-primary font-bold break-normal line-clamp-2 leading-tight">
+            {title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 text-foreground text-sm sm:text-base line-clamp-3 mb-2">
+          {children}
+        </CardContent>
+        <CardFooter className="p-0 mt-auto">
+          <p className="text-xs sm:text-sm text-muted-foreground w-full text-right">
+            {getDateString(publishDate)}
+          </p>
+        </CardFooter>
+      </div>
+    </Card>
+  </Link>
 );
 
 export default Tilecard;

@@ -6,7 +6,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { firebaseConfig } from "@bytes-and-nibbles/shared";
 import { Figtree } from "next/font/google";
 
-const figtree = Figtree({subsets:['latin'],variable:'--font-sans'});
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: WEBSITE_NAME,
@@ -18,7 +18,7 @@ type RootLayoutProps = {
 };
 
 const RootLayout: React.FC<RootLayoutProps> = ({ children }) => (
-  <html lang="en" className={figtree.variable}>
+  <html lang="en" className={`dark ${figtree.variable}`}>
     <body>{children}</body>
     {firebaseConfig.measurementId && (
       <GoogleAnalytics gaId={firebaseConfig.measurementId} />
