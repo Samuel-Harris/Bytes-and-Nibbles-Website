@@ -1,23 +1,17 @@
-"use client";
-
 import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { CodeBracketIcon, HomeIcon } from "@heroicons/react/24/outline";
 import CookieIcon from "./assets/CookieIcon";
+import Link from "next/link";
 import Logo from "./assets/Logo";
+import {
+  HOVER_BACKGROUND_COLOUR,
+  PRIMARY_COLOUR_BG,
+  SECONDARY_COLOUR_FILL,
+  SECONDARY_COLOUR_TEXT,
+} from "./common/theme";
 import GithubLogo from "./assets/GithubLogo";
 import LinkedInLogo from "./assets/LinkedInLogo";
 import { GITHUB_URL, LINKEDIN_URL } from "./common/constants";
-import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
 
 export enum Tab {
   Home,
@@ -26,115 +20,78 @@ export enum Tab {
 }
 
 type HeaderProps = {
-  tab?: Tab; // Made optional as we can derive active state from path if needed, but keeping for compatibility
+  tab: Tab;
   children: React.ReactNode;
 };
 
-const Header: React.FC<HeaderProps> = ({ children }) => {
-  const pathname = usePathname();
+const Header: React.FC<HeaderProps> = ({ tab, children }) => {
+  const headerOptionStyle = `no-underline sm:py-2 md:py-3 ${HOVER_BACKGROUND_COLOUR}`;
+  const headerOptionIconStyle = `inline h-auto w-5 sm:w-8 ${SECONDARY_COLOUR_TEXT}`;
 
-  const isHome = pathname === "/";
-  const isBytes = pathname?.startsWith("/bytes");
-  const isNibbles = pathname?.startsWith("/nibbles");
+  const tabStyle = "inline align-middle pl-2 text-base sm:text-xl"
+  const defaultTabStyle = `text-white ${tabStyle}`;
+  const selectedTabStyle = `${SECONDARY_COLOUR_TEXT} ${tabStyle}`;
 
   return (
-    <div className="bg-background pb-6">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 py-4 md:py-8 gap-4 items-center">
-          <div className="flex justify-center md:justify-start">
-            <Logo className="h-auto w-20 sm:w-32 md:w-40 text-primary" />
-          </div>
-
-          <div className="col-span-1 md:col-span-2 text-center md:text-left">
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-2">
+      <div className={`grid inter.className pb-6 ${PRIMARY_COLOUR_BG}`}>
+        <div className="grid grid-cols-3 py-2 sm:py-4 md:py-7">
+          <Logo
+            className={`justify-self-center col-span-1 h-auto w-20 sm:w-40 ${SECONDARY_COLOUR_TEXT}`}
+          />
+          <div className="col-span-2">
+            <h1 className="text-2xl sm:text-5xl md:text-7xl font-bold">
               Bytes and nibbles
             </h1>
-            <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-2 md:gap-4">
-              <p className="text-lg font-bold text-primary">
+            <div className="flex flex-row items-center">
+              <p
+                className={`text-s sm:text-lg font-bold ${SECONDARY_COLOUR_TEXT}`}
+              >
                 By Samuel Matsuo Harris
               </p>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="icon" asChild>
-                  <Link
-                    href={LINKEDIN_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <LinkedInLogo svgClassName="size-6 fill-primary" />
-                    <span className="sr-only">LinkedIn</span>
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="icon" asChild>
-                  <Link
-                    href={GITHUB_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <GithubLogo
-                      svgClassName="size-6"
-                      pathClassName="fill-primary"
-                    />
-                    <span className="sr-only">GitHub</span>
-                  </Link>
-                </Button>
-              </div>
+              <Link href={LINKEDIN_URL}>
+                <LinkedInLogo
+                  svgClassName={`size-8 ${SECONDARY_COLOUR_FILL}`}
+                />
+              </Link>
+              <Link href={GITHUB_URL}>
+                <GithubLogo
+                  svgClassName="size-6"
+                  pathClassName={SECONDARY_COLOUR_FILL}
+                ></GithubLogo>
+              </Link>
             </div>
           </div>
         </div>
-
-        <div className="flex justify-center mb-6">
-          <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link href="/" legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "h-auto text-lg px-6 py-3",
-                      isHome && "bg-accent",
-                    )}
-                  >
-                    <HomeIcon className="w-12 h-12 mr-3" />
-                    Home
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/bytes" legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "h-auto text-lg px-6 py-3",
-                      isBytes && "bg-accent",
-                    )}
-                  >
-                    <CodeBracketIcon className="w-12 h-12 mr-3" />
-                    Bytes
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/nibbles" legacyBehavior passHref>
-                  <NavigationMenuLink
-                    className={cn(
-                      navigationMenuTriggerStyle(),
-                      "h-auto text-lg px-6 py-3",
-                      isNibbles && "bg-accent",
-                    )}
-                  >
-                    <CookieIcon className="w-12 h-12 mr-3" />
-                    Nibbles
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+        <div className="grid grid-cols-3 text-center mb-2 sm:mb-0">
+          <a href="/" className={headerOptionStyle}>
+            <HomeIcon className={headerOptionIconStyle} />
+            <p
+              className={tab === Tab.Home ? selectedTabStyle : defaultTabStyle}
+            >
+              Home
+            </p>
+          </a>
+          <a href="/bytes" className={headerOptionStyle}>
+            <CodeBracketIcon className={headerOptionIconStyle} />
+            <p
+              className={tab === Tab.Bytes ? selectedTabStyle : defaultTabStyle}
+            >
+              Bytes
+            </p>
+          </a>
+          <a href="/nibbles" className={headerOptionStyle}>
+            <CookieIcon className={headerOptionIconStyle} />
+            <p
+              className={
+                tab === Tab.Nibbles ? selectedTabStyle : defaultTabStyle
+              }
+            >
+              Nibbles
+            </p>
+          </a>
         </div>
-
         {children}
       </div>
-    </div>
   );
 };
-
 export default Header;

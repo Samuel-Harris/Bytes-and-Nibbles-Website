@@ -47,7 +47,7 @@ describe("Individual nibbles page", () => {
     // set up firebaseService mock
     firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
-      Promise.resolve(FirebaseService.prototype),
+      Promise.resolve(FirebaseService.prototype)
     );
 
     getNibbleMock = mocked(FirebaseService.prototype.getNibble);
@@ -62,7 +62,7 @@ describe("Individual nibbles page", () => {
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
     const getSlugsMock: MockedFunction<() => string[]> = mocked(
-      FirebaseService.prototype.getNibbleSlugs,
+      FirebaseService.prototype.getNibbleSlugs
     );
     getSlugsMock.mockReturnValue(mockSlugs);
 
@@ -89,9 +89,9 @@ describe("Individual nibbles page", () => {
       const expectedTitle = nibble ? nibble.title : "Untitled nibble";
       expect(metadata.title).toEqual(`${expectedTitle} - ${WEBSITE_NAME}`);
       expect(metadata.description).toEqual(
-        `The recipe: ${expectedTitle}. ${METADATA_DESCRIPTION_CREDITS}`,
+        `The recipe: ${expectedTitle}. ${METADATA_DESCRIPTION_CREDITS}`
       );
-    },
+    }
   );
 
   it.each([
@@ -113,7 +113,7 @@ describe("Individual nibbles page", () => {
     getNibbleMock.mockReturnValue(nibble);
 
     getDateStringMock.mockImplementation((date: Date): string =>
-      date.toDateString(),
+      date.toDateString()
     );
 
     const jsx = await NibblePage({
@@ -135,32 +135,35 @@ describe("Individual nibbles page", () => {
     expect(screen.getByRole("img")).toHaveAttribute("src", nibble.coverPhoto);
 
     expect(
-      screen.getByText(nibble.publishDate.toDateString(), { exact: false }),
+      screen.getByText(nibble.publishDate.toDateString(), { exact: false })
     ).toBeInTheDocument();
     if (nibble.publishDate === nibble.lastModifiedDate) {
       expect(
         screen.getAllByText(nibble.lastModifiedDate.toDateString(), {
           exact: false,
-        }).length,
+        }).length
       ).toEqual(1);
     } else {
       expect(
         screen.getByText(nibble.lastModifiedDate.toDateString(), {
           exact: false,
-        }),
+        })
       ).toBeInTheDocument();
     }
 
-    expect(screen.getByText("Adapted from:")).toBeInTheDocument();
+    expect(
+      screen.getByText(textContent(`Adapted from: ${nibble.source}`))
+    ).toBeInTheDocument();
     if (nibble.source.slice(0, 4) === "http") {
       expect(screen.getByRole("link")).toBeInTheDocument();
       expect(screen.getByRole("link")).toHaveTextContent(nibble.source);
     } else {
-      expect(screen.getByText(nibble.source)).toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
     }
 
-    expect(screen.getByText("Serves")).toBeInTheDocument();
-    expect(screen.getByText(nibble.nServings.toString())).toBeInTheDocument();
+    expect(
+      screen.getByText(textContent(`Serves: ${nibble.nServings}`))
+    ).toBeInTheDocument();
 
     nibble.ingredients.forEach((ingredient) => {
       let suffix = "-";
@@ -178,9 +181,9 @@ describe("Individual nibbles page", () => {
           textContent(
             `${ingredient.name} ${suffix}${
               ingredient.optional ? " (optional)" : ""
-            }`,
-          ),
-        ),
+            }`
+          )
+        )
       ).toBeInTheDocument();
     });
 
