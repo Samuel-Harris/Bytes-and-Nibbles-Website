@@ -3,6 +3,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import SvgFitter from "./SvgFitter";
+import ExpandableImage from "./ExpandableImage";
 
 export type CaptionedImageProps = {
   image: string;
@@ -25,19 +26,21 @@ const CaptionedImage = async ({ image, caption }: CaptionedImageProps) => {
 
   return (
     <div className="my-7 flex flex-col items-center">
-      {svgContent ? (
-        <SvgFitter
-          content={svgContent}
-          className="w-full max-w-full overflow-visible"
-        />
-      ) : (
-        <img
-          src={image}
-          alt={caption}
-          className={`justify-self-center w-full h-auto`}
-        />
-      )}
-      <div className={TERTIARY_COLOUR_TEXT}>
+      <ExpandableImage caption={caption}>
+        {svgContent ? (
+          <SvgFitter
+            content={svgContent}
+            className="w-full max-w-full overflow-visible"
+          />
+        ) : (
+          <img
+            src={image}
+            alt={caption}
+            className={`justify-self-center w-full h-auto`}
+          />
+        )}
+      </ExpandableImage>
+      <div className={`${TERTIARY_COLOUR_TEXT} mt-2`}>
         <ReactMarkdown remarkPlugins={[gfm]}>{caption}</ReactMarkdown>
       </div>
     </div>
