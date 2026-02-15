@@ -2,21 +2,45 @@ import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
+import SvgFitter from "./SvgFitter";
 
 export type CaptionedImageProps = {
   image: string;
   caption: string;
 };
 
-const CaptionedImage: React.FC<CaptionedImageProps> = ({
-  image,
-  caption,
-}: CaptionedImageProps) => (
-  <div className="my-7">
-    <img src={image} alt={caption} className={`justify-self-center w-fit`} />
-    <div className={TERTIARY_COLOUR_TEXT}>
-      <ReactMarkdown remarkPlugins={[gfm]}>{caption}</ReactMarkdown>
+const CaptionedImage = async ({ image, caption }: CaptionedImageProps) => {
+  let svgContent: string | null = null;
+
+  if (image.includes(".svg")) {
+    try {
+      const response = await fetch(image);
+      if (response.ok) {
+        svgContent = await response.text();
+      }
+    } catch (e) {
+      console.error("Failed to fetch SVG:", e);
+    }
+  }
+
+  return (
+    <div className="my-7 flex flex-col items-center">
+      {svgContent ? (
+        <SvgFitter
+          content={svgContent}
+          className="w-full max-w-full overflow-visible"
+        />
+      ) : (
+        <img
+          src={image}
+          alt={caption}
+          className={`justify-self-center w-full h-auto`}
+        />
+      )}
+      <div className={TERTIARY_COLOUR_TEXT}>
+        <ReactMarkdown remarkPlugins={[gfm]}>{caption}</ReactMarkdown>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 export default CaptionedImage;
