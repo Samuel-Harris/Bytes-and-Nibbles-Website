@@ -2,6 +2,8 @@ import React from "react";
 import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
+import LatexParagraph from "./LatexParagraph";
+import CollapsibleGroup from "./CollapsibleGroup";
 
 const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
   body,
@@ -22,6 +24,21 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
           <CaptionedImage
             image={bodyElement.value.image}
             caption={bodyElement.value.caption}
+            key={`${bodyElement.type}-${index}`}
+          />
+        );
+      case "latexParagraph":
+        return (
+          <LatexParagraph
+            value={bodyElement.value}
+            key={`${bodyElement.type}-${index}`}
+          />
+        );
+      case "collapsibleGroup":
+        return (
+          <CollapsibleGroup
+            title={bodyElement.value.title}
+            body={bodyElement.value.body}
             key={`${bodyElement.type}-${index}`}
           />
         );

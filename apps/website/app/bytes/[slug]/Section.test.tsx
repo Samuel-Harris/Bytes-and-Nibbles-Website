@@ -2,15 +2,29 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import { CaptionedImageType, ParagraphType, SubsectionType } from "@bytes-and-nibbles/shared";
+import {
+  CaptionedImageType,
+  ParagraphType,
+  SubsectionType,
+} from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import Section from "./Section";
 import { mocked, MockedFunction } from "jest-mock";
 import Subsection, { SubsectionProps } from "./Subsection";
+import Collapsible from "./Collapsible";
 
 jest.mock("./Paragraph");
 jest.mock("./CaptionedImage");
 jest.mock("./Subsection");
+jest.mock("./Collapsible", () => ({
+  __esModule: true,
+  default: ({ title, children }: any) => (
+    <div data-testid="collapsible">
+      <span>{title}</span>
+      {children}
+    </div>
+  ),
+}));
 
 let paragraphMock: MockedFunction<React.FC<ParagraphProps>>;
 let paragraphMockText: string;
@@ -22,11 +36,9 @@ let subsectionMock: MockedFunction<React.FC<SubsectionProps>>;
 let subsectionMockText: string;
 
 let sectionTitle: string;
-let paragraph1: ParagraphType;
-let paragraph2: ParagraphType;
-let captionedImage1: CaptionedImageType
-let captionedImage2: CaptionedImageType
-let subsection: SubsectionType
+let paragraph1: any;
+let captionedImage1: any;
+let subsection: any;
 
 describe("Byte section", () => {
   beforeAll(() => {
@@ -47,35 +59,38 @@ describe("Byte section", () => {
       type: "paragraph",
       value: "This is a paragraph 1",
     };
-    paragraph2 = {
-      type: "paragraph",
-      value: "This is a paragraph 2",
-    };
 
     captionedImage1 = {
       type: "captionedImage",
       value: { image: "This is a image 1", caption: "This is a caption 1" },
-    };
-    captionedImage2 = {
-      type: "captionedImage",
-      value: { image: "This is a image 2", caption: "This is a caption 2" },
     };
 
     subsection = {
       type: "subsection",
       value: {
         title: "Subsection",
-        body: [paragraph2, captionedImage2],
-      }
-    }
+        body: [
+          {
+            type: "paragraph",
+            value: "Some internal paragraph",
+          },
+        ],
+      },
+    };
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("should render the section title and body", () => {
-    render(<Section title={sectionTitle} body={[paragraph1, captionedImage1, subsection]} />);
+  it("should render the section title and body via Collapsible", () => {
+    render(
+      <Section
+        title={sectionTitle}
+        body={[paragraph1, captionedImage1, subsection]}
+        isCollapsible={false}
+      />,
+    );
 
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
 
@@ -87,8 +102,17 @@ describe("Byte section", () => {
     expect(CaptionedImage).toHaveBeenCalledTimes(1);
     expect(screen.getByText(captionedImageMockCaption)).toBeInTheDocument();
 
-    // check whether captioned image was rendered
+    // check whether subsection was rendered
     expect(Subsection).toHaveBeenCalledTimes(1);
     expect(screen.getByText(subsectionMockText)).toBeInTheDocument();
+  });
+
+  it("should pass isCollapsible to Collapsible", () => {
+    render(
+      <Section title={sectionTitle} body={[paragraph1]} isCollapsible={true} />,
+    );
+
+    expect(screen.getByTestId("collapsible")).toBeInTheDocument();
+    expect(screen.getByText(sectionTitle)).toBeInTheDocument();
   });
 });
