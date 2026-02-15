@@ -30,7 +30,7 @@ const CaptionedImage = async ({ image, caption }: CaptionedImageProps) => {
         {svgContent ? (
           <SvgFitter
             content={svgContent}
-            className="w-full max-w-full overflow-visible"
+            className="w-full h-full max-w-full overflow-visible"
           />
         ) : (
           <img

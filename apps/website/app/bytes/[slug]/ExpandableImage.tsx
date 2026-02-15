@@ -36,34 +36,38 @@ const ExpandableImage = ({ children, caption }: ExpandableImageProps) => {
 
       {isExpanded && (
         <div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300 ease-in-out p-4 md:p-10"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl"
           onClick={() => setIsExpanded(false)}
         >
+          <div
+            className="relative w-full h-full flex flex-col items-center justify-between p-2 md:p-4 animate-in fade-in zoom-in duration-300 ease-out"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex-1 w-full h-full flex items-center justify-center min-h-0 overflow-hidden">
+              <div className="relative w-full h-full flex items-center justify-center rounded-lg shadow-2xl overflow-hidden">
+                {children}
+              </div>
+            </div>
+
+            {caption && (
+              <div
+                className={`flex-none mt-2 max-w-2xl px-6 py-2 text-center ${TERTIARY_COLOUR_TEXT} animate-in slide-in-from-bottom-2 duration-500 delay-150 fill-mode-both bg-black/60 backdrop-blur-md rounded-xl text-sm md:text-base`}
+              >
+                <ReactMarkdown remarkPlugins={[gfm]}>{caption}</ReactMarkdown>
+              </div>
+            )}
+          </div>
+
           <button
-            className="absolute top-5 right-5 text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+            className="absolute top-6 right-6 z-[60] text-white/70 hover:text-white transition-all p-2 rounded-full hover:bg-white/10 active:scale-95"
             onClick={(e) => {
               e.stopPropagation();
               setIsExpanded(false);
             }}
             aria-label="Close"
           >
-            <XMarkIcon className="w-8 h-8" />
+            <XMarkIcon className="w-10 h-10" />
           </button>
-
-          <div
-            className="relative flex flex-col items-center max-w-full max-h-full animate-in fade-in zoom-in duration-300 ease-out"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-center max-w-full overflow-hidden rounded-lg shadow-2xl">
-              {children}
-            </div>
-
-            <div
-              className={`mt-6 max-w-2xl px-4 text-center ${TERTIARY_COLOUR_TEXT} animate-in slide-in-from-bottom-2 duration-500 delay-150 fill-mode-both`}
-            >
-              <ReactMarkdown remarkPlugins={[gfm]}>{caption}</ReactMarkdown>
-            </div>
-          </div>
         </div>
       )}
     </>
