@@ -1,6 +1,7 @@
+"use client";
+
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import gfm from "remark-gfm";
+import { LatexRenderer } from "@bytes-and-nibbles/shared";
 
 export type LatexParagraphProps = {
   value: string;
@@ -10,7 +11,7 @@ const LatexParagraph: React.FC<LatexParagraphProps> = ({
   value,
 }: LatexParagraphProps) => (
   <div className="mb-8">
-    <ReactMarkdown remarkPlugins={[gfm]}>{value}</ReactMarkdown>
+    <LatexRenderer value={value} />
   </div>
 );
 export default LatexParagraph;

@@ -1,19 +1,17 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { FieldProps, FieldHelperText } from "@firecms/core";
-import { TextField } from "@firecms/ui";
-import { useMathJax } from "@bytes-and-nibbles/shared";
+"use client";
 
-export function LatexParagraphField({
-  property,
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useMathJax } from "../hooks/useMathJax";
+
+export type LatexRendererProps = {
+  value: string;
+  className?: string;
+};
+
+export const LatexRenderer: React.FC<LatexRendererProps> = ({
   value,
-  setValue,
-  includeDescription,
-  showError,
-  error,
-  isSubmitting,
-  disabled,
-  autoFocus,
-}: FieldProps<string>) {
+  className,
+}) => {
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
   const { loaded, mathJax: mathJaxFromHook } = useMathJax();
@@ -24,7 +22,9 @@ export function LatexParagraphField({
 
   useEffect(() => {
     // Prioritize the window object directly to avoid stale state issues
-    const mj = mathJaxFromHook || window.MathJax;
+    const mj =
+      mathJaxFromHook ||
+      (typeof window !== "undefined" ? window.MathJax : undefined);
 
     // We need the DOM ref, the content, and the actual library methods
     if (!loaded || !mj || !previewRef.current || !displayContent) {
@@ -57,45 +57,13 @@ export function LatexParagraphField({
     return () => clearTimeout(timeoutId);
   }, [displayContent, loaded, mathJaxFromHook]);
 
+  if (renderError) {
+    return <div className="text-sm text-red-500 italic">{renderError}</div>;
+  }
+
   return (
-    <div className="space-y-3">
-      <TextField
-        value={value ?? ""}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Enter LaTeX (e.g. \int_0^\infty x^2 \, dx or \frac{a}{b})"
-        disabled={isSubmitting || disabled}
-        error={!!error}
-        autoFocus={autoFocus}
-        multiline
-        minRows={3}
-      />
-
-      {/* Preview */}
-      {value?.trim() && (
-        <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
-          <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-            LaTeX preview
-          </div>
-
-          {renderError ? (
-            <div className="text-sm text-red-500 italic">{renderError}</div>
-          ) : (
-            <div
-              ref={previewRef}
-              className="prose prose-sm max-w-none dark:prose-invert"
-            >
-              {displayContent}
-            </div>
-          )}
-        </div>
-      )}
-
-      <FieldHelperText
-        includeDescription={includeDescription}
-        showError={showError}
-        error={error}
-        property={property}
-      />
+    <div ref={previewRef} className={className}>
+      {displayContent}
     </div>
   );
-}
+};

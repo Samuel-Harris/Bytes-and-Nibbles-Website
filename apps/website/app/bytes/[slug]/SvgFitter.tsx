@@ -22,9 +22,8 @@ export default function SvgFitter({
         svg.style.display = "block";
 
         // Find the main viewport group (common in mermaid exports)
-        const g =
-          svg.querySelector("g.svg-pan-zoom_viewport") ||
-          svg.querySelector("g");
+        const g = (svg.querySelector("g.svg-pan-zoom_viewport") ||
+          svg.querySelector("g")) as SVGElement | null;
         if (g) {
           // Remove the transform matrix that offsets/scales content away from view
           g.removeAttribute("transform");
