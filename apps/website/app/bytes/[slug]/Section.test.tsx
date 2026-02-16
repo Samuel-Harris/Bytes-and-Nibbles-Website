@@ -14,8 +14,8 @@ jest.mock("./CaptionedImage");
 jest.mock("./Subsection");
 jest.mock("./Collapsible", () => ({
   __esModule: true,
-  default: ({ title, children }: CollapsibleProps) => (
-    <div data-testid="collapsible">
+  default: ({ title, children, isCollapsible }: CollapsibleProps) => (
+    <div data-testid="collapsible" data-is-collapsible={isCollapsible}>
       <span>{title}</span>
       {children}
     </div>
@@ -108,7 +108,9 @@ describe("Byte section", () => {
       <Section title={sectionTitle} body={[paragraph1]} isCollapsible={true} />,
     );
 
-    expect(screen.getByTestId("collapsible")).toBeInTheDocument();
+    const collapsible = screen.getByTestId("collapsible");
+    expect(collapsible).toBeInTheDocument();
+    expect(collapsible).toHaveAttribute("data-is-collapsible", "true");
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
   });
 });
