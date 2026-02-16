@@ -60,6 +60,6 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 - `pnpm` - Package manager with workspace support
 - Firebase SDK v12.x - Backend services
 - TypeScript v5.x - Type safety
-- React v19.x - UI framework (CMS uses v19, Website uses v18)
+- React v19.x - UI framework
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->
