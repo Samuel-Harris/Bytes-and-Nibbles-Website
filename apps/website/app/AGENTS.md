@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-08 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
 
 # app
 
@@ -32,7 +32,7 @@ Next.js App Router directory containing all pages, layouts, and components for t
 
 ### Working In This Directory
 
-- Uses Next.js 15 App Router conventions
+- Uses Next.js 16 App Router conventions
 - Each route folder contains `page.tsx` (required) and optionally `layout.tsx`
 - Dynamic routes use `[slug]` folder naming
 - Export `metadata` for SEO from each page

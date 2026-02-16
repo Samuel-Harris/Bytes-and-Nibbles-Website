@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-08 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
 
 # apps
 
@@ -20,8 +20,9 @@ Container directory for the two main applications in the monorepo: the CMS admin
 
 - Each app is an independent pnpm workspace package
 - Use `pnpm --filter <package-name>` to run commands in specific apps
-- CMS package name: `bytes-and-nibbles-cms`
-- Website package name: `bytes-and-nibbles-website`
+- Packages here are consumed by apps via the `@bytes-and-nibbles/shared` package name
+- Changes to shared packages affect both the CMS and website apps
+- Next.js and Vite dev servers will pick up changes automatically (no build step for shared)
 
 ### Architecture Overview
 

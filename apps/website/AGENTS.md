@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-08 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
 
 # website
 
@@ -67,10 +67,12 @@ A Next.js 15 public-facing website that displays content from the CMS. Renders "
 
 ### External
 
-- Next.js v15.x - React framework with static export
-- React v18.x - UI framework
+- Next.js v16.x - React framework with static export
+- React v19.x - UI framework
 - Firebase v12.x - Backend services
 - Tailwind CSS - Styling
 - Jest + React Testing Library - Testing
+- React Markdown + Syntax Highlighter - Content rendering
+- Heroicons - Icons
 
 <!-- MANUAL: -->
