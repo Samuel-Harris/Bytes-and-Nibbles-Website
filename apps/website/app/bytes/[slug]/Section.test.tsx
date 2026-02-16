@@ -2,23 +2,19 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import {
-  CaptionedImageType,
-  ParagraphType,
-  SubsectionType,
-} from "@bytes-and-nibbles/shared";
+import { SectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import Section from "./Section";
 import { mocked, MockedFunction } from "jest-mock";
 import Subsection, { SubsectionProps } from "./Subsection";
-import Collapsible from "./Collapsible";
+import { CollapsibleProps } from "./Collapsible";
 
 jest.mock("./Paragraph");
 jest.mock("./CaptionedImage");
 jest.mock("./Subsection");
 jest.mock("./Collapsible", () => ({
   __esModule: true,
-  default: ({ title, children }: any) => (
+  default: ({ title, children }: CollapsibleProps) => (
     <div data-testid="collapsible">
       <span>{title}</span>
       {children}
@@ -36,9 +32,9 @@ let subsectionMock: MockedFunction<React.FC<SubsectionProps>>;
 let subsectionMockText: string;
 
 let sectionTitle: string;
-let paragraph1: any;
-let captionedImage1: any;
-let subsection: any;
+let paragraph1: SectionBodyElementSchema;
+let captionedImage1: SectionBodyElementSchema;
+let subsection: SectionBodyElementSchema;
 
 describe("Byte section", () => {
   beforeAll(() => {

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 
-type CollapsibleProps = {
+export type CollapsibleProps = {
   title: string;
   isCollapsible?: boolean;
   children: React.ReactNode;

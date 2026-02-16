@@ -13,7 +13,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ value }: ParagraphProps) => (
     <ReactMarkdown
       remarkPlugins={[gfm]}
       components={{
-        code({ node, className, children, ...props }) {
+        code({ node: _node, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || "");
           return match ? (
             <SyntaxHighlighter

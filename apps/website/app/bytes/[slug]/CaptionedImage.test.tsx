@@ -1,10 +1,10 @@
 import React, { act, use, Suspense } from "react";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import CaptionedImage from "./CaptionedImage";
+import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 
 // Helper to render async component in tests
-const ResolvedCaptionedImage = (props: any) => {
+const ResolvedCaptionedImage = (props: CaptionedImageProps) => {
   return use(CaptionedImage(props));
 };
 
