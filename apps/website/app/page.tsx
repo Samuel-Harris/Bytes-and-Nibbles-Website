@@ -61,8 +61,8 @@ const Home = (): React.JSX.Element => (
             One night, I was cooking and was looking at a recipe on my phone,
             thinking,{" "}
             <HT>
-              'This recipe website sucks. If only I had my favourite recipes in
-              a repository with standardised formatting...'
+              &apos;This recipe website sucks. If only I had my favourite recipes in
+              a repository with standardised formatting...&apos;
             </HT>
             . So I added recipes to the site, bringing two of my favourite
             hobbies, <HT>cooking</HT> and <HT>coding</HT>, into one website.
