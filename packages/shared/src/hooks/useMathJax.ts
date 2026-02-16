@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
 const MATHJAX_URL = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js";

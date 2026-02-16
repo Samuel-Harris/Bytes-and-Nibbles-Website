@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": ["node", "jest", "@testing-library/jest-dom"],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -32,7 +32,9 @@
     ".next/types/**/*.ts",
     "build/types/**/*.ts",
     "out/types/**/*.ts",
-    "jest.config.ts"
+    "jest.config.ts",
+    ".next/dev/types/**/*.ts",
+    "out/dev/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -13,7 +13,10 @@ storage.rules
 docs/
 
 # cursor
-.cursor
+.cursor/
+
+# Antigravity
+.agent/
 
 # misc
 .DS_Store

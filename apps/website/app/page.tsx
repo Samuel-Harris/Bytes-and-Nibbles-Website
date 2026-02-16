@@ -61,8 +61,8 @@ const Home = (): React.JSX.Element => (
             One night, I was cooking and was looking at a recipe on my phone,
             thinking,{" "}
             <HT>
-              &quot;This recipe website sucks. If only I had my favourite
-              recipes in a repository with standardised formatting...&quot;
+              &apos;This recipe website sucks. If only I had my favourite recipes in
+              a repository with standardised formatting...&apos;
             </HT>
             . So I added recipes to the site, bringing two of my favourite
             hobbies, <HT>cooking</HT> and <HT>coding</HT>, into one website.
@@ -70,22 +70,23 @@ const Home = (): React.JSX.Element => (
           <p>
             This website was finally completed in <HT>April 2024</HT>, and
             whether you came for the <HL href="/bytes">bytes</HL> (tech blogs)
-            or the <HL href="/nibbles">nibbles</HL> (recipes), I hope you like it.
+            or the <HL href="/nibbles">nibbles</HL> (recipes), I hope you like
+            it.
           </p>
         </div>
         <div className="space-y-2">
           <p className={`text-2xl ${TERTIARY_COLOUR_TEXT}`}>Who am I?</p>
           <p>
             As you might have guessed from the header at the top of this page,
-            my name is <HT>Sam</HT>! I am a professional{" "}
-            <HT>software engineer</HT> who started learning to regularly code
-            for fun in my spare time in <HT>2012</HT>. Since then, I have
-            continued to code in my spare time, attended many{" "}
-            <HT>hackathons</HT>, completed an <HT>MSci</HT> in{" "}
-            <HT>computer science</HT> at the <HT>University of St Andrews</HT>,
-            and have been working as a <HT>full-time software engineer</HT>{" "}
-            since <HT>2023</HT>. I still enjoy programming as a hobby today and
-            have a particular interest in <HT>Natural Language Processing</HT>.
+            my name is <HT>Sam</HT>! I am a professional <HT>AI engineer</HT>{" "}
+            who started learning to regularly code for fun in my spare time in{" "}
+            <HT>2012</HT>. Since then, I have continued to code in my spare
+            time, attended many <HT>hackathons</HT>, completed an <HT>MSci</HT>{" "}
+            in <HT>computer science</HT> at the{" "}
+            <HT>University of St Andrews</HT>, and have been working as a{" "}
+            <HT>full-time software engineer</HT> since <HT>2023</HT>. I still
+            enjoy programming as a hobby today and have a particular interest in{" "}
+            <HT>Natural Language Processing</HT>.
           </p>
           <p>
             So <HT>join me</HT> as I make bespoke solutions to my life&apos;s

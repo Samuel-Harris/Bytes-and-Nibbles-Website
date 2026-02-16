@@ -24,10 +24,10 @@ export function getDateString(date: Date) {
     11: "Dec",
   };
 
-  const dayOfTheWeek: string = days[date.getDay()];
-  const dayOfTheMonth: string = date.getDate().toString().padStart(2, "0");
-  const month: string = months[date.getMonth()];
-  const year: number = date.getFullYear();
+  const dayOfTheWeek: string = days[date.getUTCDay()];
+  const dayOfTheMonth: string = date.getUTCDate().toString().padStart(2, "0");
+  const month: string = months[date.getUTCMonth()];
+  const year: number = date.getUTCFullYear();
 
   return `${dayOfTheWeek}, ${dayOfTheMonth} ${month} ${year}`;
 }
