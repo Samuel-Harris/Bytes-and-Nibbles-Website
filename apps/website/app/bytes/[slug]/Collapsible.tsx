@@ -37,7 +37,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
         className="flex items-center w-full text-left focus:outline-none group"
       >
         <div
-          className={`mr-2 ${TERTIARY_COLOUR_TEXT} group-hover:text-green-500`}
+          className={`mr-2 flex-shrink-0 ${TERTIARY_COLOUR_TEXT} group-hover:text-green-500`}
         >
           {isOpen ? (
             <ChevronDownIcon className="h-5 w-5" />
@@ -45,7 +45,7 @@ const Collapsible: React.FC<CollapsibleProps> = ({
             <ChevronRightIcon className="h-5 w-5" />
           )}
         </div>
-        <p className={`${titleClassName} m-0`}>{title}</p>
+        <p className={`${titleClassName} !m-0`}>{title}</p>
       </button>
       {isOpen && <div className="mt-2 ml-7">{children}</div>}
     </div>
