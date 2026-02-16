@@ -4,8 +4,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 
 // Helper to render async component in tests
+const promiseCache = new Map<string, Promise<React.ReactElement>>();
 const ResolvedCaptionedImage = (props: CaptionedImageProps) => {
-  return use(CaptionedImage(props));
+  const key = JSON.stringify(props);
+  if (!promiseCache.has(key)) {
+    promiseCache.set(key, CaptionedImage(props));
+  }
+  return use(promiseCache.get(key)!);
 };
 
 describe("Captioned image", () => {

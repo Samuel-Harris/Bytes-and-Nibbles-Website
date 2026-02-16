@@ -13,6 +13,10 @@ const config: Config = {
     "^@/(.*)$": "<rootDir>/app/$1",
     "^react-markdown$": "<rootDir>/__mocks__/react-markdown.js",
     "^remark-gfm$": "<rootDir>/__mocks__/remark-gfm.js",
+    "^react-syntax-highlighter$":
+      "<rootDir>/__mocks__/react-syntax-highlighter.js",
+    "^react-syntax-highlighter/dist/esm/styles/prism$":
+      "<rootDir>/__mocks__/react-syntax-highlighter-style.js",
   },
 };
 
