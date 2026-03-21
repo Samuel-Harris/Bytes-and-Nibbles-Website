@@ -11,7 +11,7 @@ Small shared helpers used by the CMS and website for byte content (finished-stat
 
 | File               | Description                                                    |
 | ------------------ | -------------------------------------------------------------- |
-| `byteFinished.ts`  | Walks byte section trees and lists paths to unfinished units   |
+| `byteFinished.ts`  | Walks byte section trees, lists unfinished paths, formats compact publish-block errors   |
 | `byteContentText.ts` | Reads paragraph/LaTeX text from string or map-shaped Firestore values |
 
 ## For AI Agents

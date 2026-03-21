@@ -14,6 +14,7 @@ Custom FireCMS field components that extend the default field rendering with spe
 | `MarkdownParagraphField.tsx` | Markdown text field with live preview           |
 | `LatexParagraphField.tsx`    | LaTeX/math content field with MathJax preview   |
 | `ColorField.tsx`             | Color picker with visual preview for hex colors |
+| `GuardedIsPublishedField.tsx` | Publish toggle that blocks “on” until finish rules pass (matches `onPreSave`) |
 
 ## For AI Agents
 

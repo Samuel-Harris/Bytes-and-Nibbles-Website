@@ -11,10 +11,10 @@ FireCMS collection definitions that define the structure and behavior of content
 
 | File                | Description                                                            |
 | ------------------- | ---------------------------------------------------------------------- |
-| `v1_bytes.tsx`      | Byte collection: sections, subsections, subsubsections, rich content, `is_finished` on each unit, publish gate |
+| `v1_bytes.tsx`      | Byte collection: sections, subsections, subsubsections, rich content, `is_finished` on each unit, publish gate, guarded publish toggle |
 | `normalizeByteBodyForCms.ts` | Coerces legacy string paragraph/LaTeX values to maps when loading bytes in the CMS |
 | `v1_byteSeries.tsx` | Byte Series collection for grouping related articles                   |
-| `v1_nibbles.tsx`    | Nibble (recipe) collection with ingredients and steps                  |
+| `v1_nibbles.tsx`    | Nibble (recipe) collection with ingredients, steps, guarded publish toggle |
 
 ## For AI Agents
 
@@ -37,7 +37,7 @@ FireCMS collection definitions that define the structure and behavior of content
   - Subsections (body may include **subsubsections** and leaf blocks)
   - Subsubsections (inner body is leaf-only: same block types as a collapsible group, no nested subsubsection)
   - Collapsible groups
-- Each structural unit and leaf block has **Marked finished?** (`is_finished`, default off); publishing is blocked until all are finished (with paths in the error)
+- Each structural unit and leaf block has **Marked finished?** (`is_finished`, default off); publishing is blocked until all are finished (error lists a few paths and `+n more`)
 - Publication status and dates
 
 **Nibbles** (recipes):

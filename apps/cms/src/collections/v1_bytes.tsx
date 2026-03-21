@@ -6,12 +6,14 @@ import {
   buildCollection,
   buildProperty,
 } from "@firecms/core";
+import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
 import {
   ByteType as SharedByteType,
   SUBSECTION_BODY_ELEMENT_TYPES,
   SECTION_BODY_ELEMENT_TYPES,
+  formatUnfinishedBytePathsForPublishError,
   listUnfinishedByteUnitPaths,
 } from "@bytes-and-nibbles/shared";
 import { normalizeByteSectionsForCmsForm } from "./normalizeByteBodyForCms";
@@ -272,6 +274,14 @@ export const byteCollection = buildCollection<ByteType>({
     isPublished: buildProperty({
       dataType: "boolean",
       name: "Is published?",
+      Field: GuardedIsPublishedField,
+      customProps: {
+        getPublishBlockMessage: (values: Record<string, unknown>) => {
+          const unfinished = listUnfinishedByteUnitPaths(values);
+          if (unfinished.length === 0) return null;
+          return formatUnfinishedBytePathsForPublishError(unfinished);
+        },
+      },
       validation: {
         required: true,
       },
@@ -348,7 +358,7 @@ export const byteCollection = buildCollection<ByteType>({
         );
         if (unfinished.length > 0) {
           throw new Error(
-            `Cannot publish while content is not marked finished:\n${unfinished.join("\n")}`,
+            formatUnfinishedBytePathsForPublishError(unfinished),
           );
         }
       }

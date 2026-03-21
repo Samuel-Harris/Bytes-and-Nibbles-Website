@@ -23,3 +23,9 @@ mjx-container {
   overflow-y: hidden;
   max-width: 100%;
 }
+
+/* Notistack (FireCMS snackbars) collapses \n by default; keep save errors readable. */
+.notistack-MuiContent [id="notistack-snackbar"] {
+  white-space: pre-line;
+  align-items: flex-start;
+}

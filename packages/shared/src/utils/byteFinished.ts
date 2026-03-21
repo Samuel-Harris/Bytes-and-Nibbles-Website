@@ -223,3 +223,34 @@ export function listUnfinishedByteUnitPaths(
 
   return out;
 }
+
+/** How many unfinished paths to include in the CMS publish-block error before "+n more". */
+const DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT = 5;
+
+/**
+ * Compact message for the CMS when publishing is blocked by unfinished units.
+ * Shows a short bullet list and a "+n more" tail so banners stay readable.
+ */
+export function formatUnfinishedBytePathsForPublishError(
+  paths: string[],
+  maxPreview = DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT,
+): string {
+  if (paths.length === 0) {
+    return "Cannot publish: unfinished content units must be marked finished first.";
+  }
+
+  const shown = paths.slice(0, Math.max(0, maxPreview));
+  const remaining = paths.length - shown.length;
+
+  const lines = [
+    "Cannot publish until these units are marked finished:",
+    "",
+    ...shown.map((p) => `• ${p}`),
+  ];
+
+  if (remaining > 0) {
+    lines.push("", `+${remaining} more`);
+  }
+
+  return lines.join("\n");
+}

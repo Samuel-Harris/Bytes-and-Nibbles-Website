@@ -5,6 +5,7 @@ import {
   buildProperty,
 } from "@firecms/core";
 import { NibbleType } from "@bytes-and-nibbles/shared";
+import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 
 export const v1NibbleCollection = buildCollection<NibbleType>({
   id: "v1_nibbles",
@@ -131,6 +132,13 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
     isPublished: buildProperty({
       dataType: "boolean",
       name: "Is published?",
+      Field: GuardedIsPublishedField,
+      customProps: {
+        getPublishBlockMessage: (values: Record<string, unknown>) =>
+          values.is_finished === true
+            ? null
+            : "Cannot publish: recipe is not marked finished (Recipe marked finished?).",
+      },
       validation: {
         required: true,
       },
