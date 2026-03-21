@@ -9,9 +9,6 @@ storage.rules
 # IDE
 .idea/
 
-# docs
-docs/
-
 # Antigravity
 .agent/
 
