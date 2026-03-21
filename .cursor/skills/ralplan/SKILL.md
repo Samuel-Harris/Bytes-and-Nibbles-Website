@@ -74,7 +74,7 @@ Before planning, assess whether the developer's intention is clear enough to pro
 
 If the task description is vague, contradictory, missing acceptance criteria, or leaves key architectural decisions open, run the **deep-interview** skill first.
 
-The deep-interview skill runs a Socratic Q&A loop that scores ambiguity across weighted dimensions and refuses to exit until ambiguity drops below 20%. When it completes, it writes a crystal-clear spec to `.cursor/interviews/`. Use that spec as the task description for the planning loop.
+The deep-interview skill runs a Socratic Q&A loop that scores ambiguity across weighted dimensions and refuses to exit until ambiguity drops below 20%. When it completes, it writes a crystal-clear spec to `.cursor/artefacts/interviews/`. Use that spec as the task description for the planning loop.
 
 **Skip this step** if the request already includes specific file paths and acceptance criteria, the user has an existing plan or interview file, or the user says "just plan it" / "don't interview me".
 

@@ -113,8 +113,8 @@ For issues that appear to be parent issues or epics, call `get_issue` with `incl
 
 1. Run `date '+%Y-%m-%d_%H-%M-%S'` to get the timestamp.
 2. Ask the user for a short description slug (2–4 words, kebab-case) or derive one from scope.
-3. `mkdir -p .cursor/masterplans`
-4. Save to `.cursor/masterplans/{timestamp}_{description}_masterplan.md`
+3. `mkdir -p .cursor/artefacts/masterplans`
+4. Save to `.cursor/artefacts/masterplans/{timestamp}_{description}_masterplan.md`
 
 Read the template at [references/masterplan-template.md](references/masterplan-template.md) and fill in all sections.
 
@@ -127,7 +127,7 @@ The metadata section **must** include a `Criteria` block so the refresh mode can
 3. Suggest usage:
 
 > Attach this masterplan as context when implementing features:
-> `.cursor/masterplans/{filename}`
+> `.cursor/artefacts/masterplans/{filename}`
 
 4. Ask if the user wants to adjust any section.
 
@@ -135,7 +135,7 @@ The metadata section **must** include a `Criteria` block so the refresh mode can
 
 When the user asks to refresh an existing masterplan:
 
-1. **Locate**: Use the path the user provided, or find the most recent `*_masterplan.md` in `.cursor/masterplans/`.
+1. **Locate**: Use the path the user provided, or find the most recent `*_masterplan.md` in `.cursor/artefacts/masterplans/`.
 2. **Parse criteria**: Read the `Criteria` block from the metadata section.
 3. **Confirm filters** (Phase 2) — show the parsed criteria and ask the user to approve or adjust.
 4. **Re-run Phase 3** (Fetch) with the confirmed criteria.

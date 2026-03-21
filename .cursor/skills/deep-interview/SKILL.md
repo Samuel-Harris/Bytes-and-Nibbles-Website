@@ -115,7 +115,7 @@ When ambiguity ≤ threshold (or hard cap / early exit):
 
 1. Generate the specification from the full interview transcript
 2. **Run `date '+%Y-%m-%d_%H-%M-%S'` in the terminal** to get the current timestamp
-3. Write to `.cursor/interviews/{timestamp}_{slug}_interview.md` (e.g., `2026-03-04_14-22-10_auth-refactor_interview.md`)
+3. Write to `.cursor/artefacts/interviews/{timestamp}_{slug}_interview.md` (e.g., `2026-03-04_14-22-10_auth-refactor_interview.md`)
 
 ### Spec Structure
 
