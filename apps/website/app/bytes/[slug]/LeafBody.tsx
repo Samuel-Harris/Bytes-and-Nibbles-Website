@@ -5,6 +5,10 @@ import CaptionedImage from "./CaptionedImage";
 import LatexParagraph from "./LatexParagraph";
 import CollapsibleGroup from "./CollapsibleGroup";
 
+function assertNever(value: never): never {
+  throw new Error(`Unhandled leaf body element: ${JSON.stringify(value)}`);
+}
+
 const LeafBody: React.FC<{ body: SubsubsectionBodyElementSchema[] }> = ({
   body,
 }: {
@@ -42,6 +46,10 @@ const LeafBody: React.FC<{ body: SubsubsectionBodyElementSchema[] }> = ({
             key={`${bodyElement.type}-${index}`}
           />
         );
+      default: {
+        const _exhaustive: never = bodyElement;
+        return assertNever(_exhaustive);
+      }
     }
   });
 

@@ -25,5 +25,5 @@ Documentation includes: `AGENTS.md` files, `.cursor/rules/`, `.cursor/skills/`, 
 
 ## How to update
 
-- Always the `agents-md` skill for guidance on how to update the `AGENTS.md` file.
+- Always use the `agents-md` skill for guidance on how to update the `AGENTS.md` file.
 - Update only the nearest relevant `AGENTS.md` — don't walk up the hierarchy unless the parent explicitly references what changed.
