@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # collections
 
@@ -11,7 +11,7 @@ FireCMS collection definitions that define the structure and behavior of content
 
 | File                | Description                                                            |
 | ------------------- | ---------------------------------------------------------------------- |
-| `v1_bytes.tsx`      | Byte (article) collection with sections, subsections, and rich content |
+| `v1_bytes.tsx`      | Byte collection: sections, subsections, subsubsections, rich content |
 | `v1_byteSeries.tsx` | Byte Series collection for grouping related articles                   |
 | `v1_nibbles.tsx`    | Nibble (recipe) collection with ingredients and steps                  |
 
@@ -33,7 +33,8 @@ FireCMS collection definitions that define the structure and behavior of content
 - Sections with nested body content:
   - Paragraphs (Markdown), LaTeX paragraphs
   - Captioned images
-  - Subsections (with their own body content)
+  - Subsections (body may include **subsubsections** and leaf blocks)
+  - Subsubsections (inner body is leaf-only: same block types as a collapsible group, no nested subsubsection)
   - Collapsible groups
 - Publication status and dates
 
@@ -75,6 +76,7 @@ SUBSECTION_BODY_ELEMENT_TYPES = {
   LATEX_PARAGRAPH,
   CAPTIONED_IMAGE,
   COLLAPSIBLE_GROUP,
+  SUBSUBSECTION,
 };
 ```
 

@@ -1,9 +1,7 @@
 import React from "react";
 import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
-import Paragraph from "./Paragraph";
-import CaptionedImage from "./CaptionedImage";
-import LatexParagraph from "./LatexParagraph";
-import CollapsibleGroup from "./CollapsibleGroup";
+import LeafBody from "./LeafBody";
+import Subsubsection from "./Subsubsection";
 
 const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
   body,
@@ -11,37 +9,21 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
   body: SubsectionBodyElementSchema[];
 }) =>
   body.map((bodyElement: SubsectionBodyElementSchema, index: number) => {
-    switch (bodyElement.type) {
-      case "paragraph":
-        return (
-          <Paragraph
-            value={bodyElement.value}
-            key={`${bodyElement.type}-${index}`}
-          />
-        );
-      case "captionedImage":
-        return (
-          <CaptionedImage
-            image={bodyElement.value.image}
-            caption={bodyElement.value.caption}
-            key={`${bodyElement.type}-${index}`}
-          />
-        );
-      case "latexParagraph":
-        return (
-          <LatexParagraph
-            value={bodyElement.value}
-            key={`${bodyElement.type}-${index}`}
-          />
-        );
-      case "collapsibleGroup":
-        return (
-          <CollapsibleGroup
-            title={bodyElement.value.title}
-            body={bodyElement.value.body}
-            key={`${bodyElement.type}-${index}`}
-          />
-        );
+    if (bodyElement.type === "subsubsection") {
+      return (
+        <Subsubsection
+          key={`${bodyElement.type}-${index}`}
+          title={bodyElement.value.title}
+          body={bodyElement.value.body}
+          isCollapsible={bodyElement.value.isCollapsible}
+        />
+      );
     }
+    return (
+      <LeafBody
+        key={`${bodyElement.type}-${index}`}
+        body={[bodyElement]}
+      />
+    );
   });
 export default Body;

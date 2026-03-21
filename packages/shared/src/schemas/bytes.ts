@@ -1,6 +1,7 @@
 import {
   ByteType,
   SubsectionType,
+  SubsubsectionType,
   SectionType,
   CaptionedImageType,
 } from "../types/bytes";
@@ -11,6 +12,7 @@ export const SUBSECTION_BODY_ELEMENT_TYPES = {
   LATEX_PARAGRAPH: "latexParagraph",
   CAPTIONED_IMAGE: "captionedImage",
   COLLAPSIBLE_GROUP: "collapsibleGroup",
+  SUBSUBSECTION: "subsubsection",
 } as const;
 
 export const SECTION_BODY_ELEMENT_TYPES = {
@@ -21,8 +23,7 @@ export const SECTION_BODY_ELEMENT_TYPES = {
   COLLAPSIBLE_GROUP: "collapsibleGroup",
 } as const;
 
-// Schema types for oneOf serialization
-// Base content schema types (non-collapsible, used inside collapsible groups)
+// Discriminated shapes for polymorphic body fields (Firestore oneOf)
 export type BaseContentSchema =
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
@@ -43,12 +44,23 @@ export interface CollapsibleGroupSchema {
   body: BaseContentSchema[];
 }
 
-export type SubsectionBodyElementSchema =
+export type SubsubsectionBodyElementSchema =
   | BaseContentSchema
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP;
       value: CollapsibleGroupSchema;
     };
+
+export interface SubsubsectionSchema extends Omit<SubsubsectionType, "body"> {
+  body: SubsubsectionBodyElementSchema[];
+}
+
+export type SubsectionBodyElementSchema =
+  | {
+      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION;
+      value: SubsubsectionSchema;
+    }
+  | SubsubsectionBodyElementSchema;
 
 export interface SubsectionSchema extends Omit<SubsectionType, "body"> {
   body: SubsectionBodyElementSchema[];

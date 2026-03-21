@@ -1,11 +1,11 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # [slug]
 
 ## Purpose
 
-Dynamic route for displaying individual Byte (tech article) pages. Renders the full article content with sections, subsections, paragraphs, images, LaTeX content, and collapsible sections.
+Dynamic route for displaying individual Byte (tech article) pages. Renders the full article content with sections, subsections, subsubsections, paragraphs, images, LaTeX content, and collapsible sections.
 
 ## Key Files
 
@@ -13,11 +13,14 @@ Dynamic route for displaying individual Byte (tech article) pages. Renders the f
 | ------------------------- | --------------------------------------------------------- |
 | `page.tsx`                | Individual byte page component                            |
 | `page.test.tsx`           | Tests for the byte page                                   |
-| `Body.tsx`                | Renders section body content (polymorphic content blocks) |
+| `Body.tsx`                | Renders subsection body (subsubsection + leaf blocks)     |
+| `LeafBody.tsx`            | Leaf-only body (paragraph, LaTeX, image, collapsible group) |
 | `Section.tsx`             | Renders article sections with headings                    |
 | `Section.test.tsx`        | Tests for Section component                               |
 | `Subsection.tsx`          | Renders nested subsections within sections                |
 | `Subsection.test.tsx`     | Tests for Subsection component                            |
+| `Subsubsection.tsx`       | Renders subsubsections under a subsection (`text-lg` heading) |
+| `Subsubsection.test.tsx`  | Tests for Subsubsection component                       |
 | `Paragraph.tsx`           | Renders Markdown paragraph content                        |
 | `Paragraph.test.tsx`      | Tests for Paragraph component                             |
 | `CaptionedImage.tsx`      | Renders images with captions                              |
@@ -42,14 +45,14 @@ Dynamic route for displaying individual Byte (tech article) pages. Renders the f
 ```
 page.tsx (BytePage)
 └── Header + cover photo
-    └── Section (for each section)
-        └── Body (polymorphic content)
-            ├── Paragraph (Markdown)
-            ├── CaptionedImage
-            ├── Subsection
-            │   └── Body (nested)
-            └── CollapsibleGroup
-                └── Body (nested)
+    └── Section (for each section; maps section body inline)
+        ├── Paragraph, CaptionedImage, LatexParagraph, CollapsibleGroup
+        └── Subsection
+            └── Body (subsection-level blocks)
+                ├── Subsubsection
+                │   └── LeafBody → Paragraph | LatexParagraph | CaptionedImage | CollapsibleGroup
+                └── LeafBody (one leaf block per wrapper from Body)
+        (CollapsibleGroup inner content uses LeafBody only)
 ```
 
 ### Testing Requirements

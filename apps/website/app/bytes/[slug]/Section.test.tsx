@@ -2,11 +2,14 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import { SectionBodyElementSchema } from "@bytes-and-nibbles/shared";
+import {
+  SectionBodyElementSchema,
+  SubsectionSchema,
+} from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import Section from "./Section";
 import { mocked, MockedFunction } from "jest-mock";
-import Subsection, { SubsectionProps } from "./Subsection";
+import Subsection from "./Subsection";
 import { CollapsibleProps } from "./Collapsible";
 
 jest.mock("./Paragraph");
@@ -28,7 +31,7 @@ let paragraphMockText: string;
 let captionedImageMock: MockedFunction<React.FC<CaptionedImageProps>>;
 let captionedImageMockCaption: string;
 
-let subsectionMock: MockedFunction<React.FC<SubsectionProps>>;
+let subsectionMock: MockedFunction<React.FC<SubsectionSchema>>;
 let subsectionMockText: string;
 
 let sectionTitle: string;

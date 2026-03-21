@@ -22,11 +22,15 @@ import {
 } from "firebase/storage";
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import {
+  BaseContentSchema,
   ByteOverviewType,
   ByteSeriesType,
   ByteSchema,
   NibbleOverviewType,
   NibbleSchema,
+  SectionBodyElementSchema,
+  SubsectionBodyElementSchema,
+  SubsubsectionBodyElementSchema,
   firebaseConfig,
 } from "@bytes-and-nibbles/shared";
 
@@ -82,22 +86,7 @@ export default class FirebaseService {
           } as ByteSchema;
 
           for (const section of byte.sections) {
-            for (const sectionBodyComponent of section.body) {
-              if (sectionBodyComponent.type === "subsection") {
-                for (const subsectionBodyComponent of sectionBodyComponent.value
-                  .body) {
-                  if (subsectionBodyComponent.type === "captionedImage") {
-                    subsectionBodyComponent.value.image = await this.getImage(
-                      subsectionBodyComponent.value.image
-                    );
-                  }
-                }
-              } else if (sectionBodyComponent.type === "captionedImage") {
-                sectionBodyComponent.value.image = await this.getImage(
-                  sectionBodyComponent.value.image
-                );
-              }
-            }
+            await this.resolveImagesInSectionBody(section.body);
           }
 
           return byte;
@@ -184,5 +173,75 @@ export default class FirebaseService {
     const storageRef: StorageReference = ref(this.storage, path);
 
     return getDownloadURL(storageRef);
+  }
+
+  private async resolveImagesInBaseContentItems(
+    items: BaseContentSchema[]
+  ): Promise<void> {
+    for (const item of items) {
+      if (item.type === "captionedImage") {
+        item.value.image = await this.getImage(item.value.image);
+      }
+    }
+  }
+
+  private async resolveImagesInSubsubsectionBody(
+    body: SubsubsectionBodyElementSchema[]
+  ): Promise<void> {
+    for (const el of body) {
+      switch (el.type) {
+        case "captionedImage":
+          el.value.image = await this.getImage(el.value.image);
+          break;
+        case "collapsibleGroup":
+          await this.resolveImagesInBaseContentItems(el.value.body);
+          break;
+        case "paragraph":
+        case "latexParagraph":
+          break;
+      }
+    }
+  }
+
+  private async resolveImagesInSubsectionBody(
+    body: SubsectionBodyElementSchema[]
+  ): Promise<void> {
+    for (const el of body) {
+      switch (el.type) {
+        case "subsubsection":
+          await this.resolveImagesInSubsubsectionBody(el.value.body);
+          break;
+        case "captionedImage":
+          el.value.image = await this.getImage(el.value.image);
+          break;
+        case "collapsibleGroup":
+          await this.resolveImagesInBaseContentItems(el.value.body);
+          break;
+        case "paragraph":
+        case "latexParagraph":
+          break;
+      }
+    }
+  }
+
+  private async resolveImagesInSectionBody(
+    body: SectionBodyElementSchema[]
+  ): Promise<void> {
+    for (const el of body) {
+      switch (el.type) {
+        case "subsection":
+          await this.resolveImagesInSubsectionBody(el.value.body);
+          break;
+        case "captionedImage":
+          el.value.image = await this.getImage(el.value.image);
+          break;
+        case "collapsibleGroup":
+          await this.resolveImagesInBaseContentItems(el.value.body);
+          break;
+        case "paragraph":
+        case "latexParagraph":
+          break;
+      }
+    }
   }
 }

@@ -346,6 +346,258 @@ describe("Firebase service", () => {
     expect(_.isEqual(expectedNibbles, firebaseService["nibbles"]));
   });
 
+  it("should resolve captioned image storage paths in nested section, subsection, subsubsection, and collapsible group bodies", async () => {
+    const nestedPaths = {
+      section: "images/section-cap.png",
+      subsection: "images/subsection-cap.png",
+      subsubsection: "images/subsubsection-cap.png",
+      group: "images/collapsible-group-cap.png",
+    };
+
+    const nestedByte: ByteSchema = {
+      ...bytes[0],
+      slug: "nested-cap-slug",
+      sections: [
+        {
+          title: "Outer section",
+          body: [
+            {
+              type: "captionedImage",
+              value: {
+                image: nestedPaths.section,
+                caption: "section cap",
+              },
+            },
+            {
+              type: "subsection",
+              value: {
+                title: "Subsection",
+                isCollapsible: false,
+                body: [
+                  {
+                    type: "captionedImage",
+                    value: {
+                      image: nestedPaths.subsection,
+                      caption: "subsection cap",
+                    },
+                  },
+                  {
+                    type: "subsubsection",
+                    value: {
+                      title: "Subsubsection",
+                      isCollapsible: false,
+                      body: [
+                        {
+                          type: "captionedImage",
+                          value: {
+                            image: nestedPaths.subsubsection,
+                            caption: "subsubsection cap",
+                          },
+                        },
+                        {
+                          type: "collapsibleGroup",
+                          value: {
+                            title: "Inner group",
+                            body: [
+                              {
+                                type: "captionedImage",
+                                value: {
+                                  image: nestedPaths.group,
+                                  caption: "group cap",
+                                },
+                              },
+                            ],
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+
+    const appMock: FirebaseApp = mock<FirebaseApp>();
+    const initializeAppMock = mocked(initializeApp);
+    initializeAppMock.mockReturnValue(appMock);
+
+    const getDocMock = mocked(getDoc);
+    // @ts-expect-error - mocking implementation with different signature
+    getDocMock.mockImplementation((series) => ({ data: () => series }));
+
+    const rawNested = {
+      ...nestedByte,
+      publishDate: new Timestamp(nestedByte.publishDate.getUTCSeconds(), 0),
+      lastModifiedDate: new Timestamp(
+        nestedByte.lastModifiedDate.getUTCSeconds(),
+        0
+      ),
+    };
+
+    const byteStorageMocks: {
+      thumbnail: StorageReference;
+      coverPhoto: StorageReference;
+    } = {
+      thumbnail: mock<StorageReference>(),
+      coverPhoto: mock<StorageReference>(),
+    };
+
+    const nestedImageRefs: Record<string, StorageReference> = {
+      [nestedPaths.section]: mock<StorageReference>(),
+      [nestedPaths.subsection]: mock<StorageReference>(),
+      [nestedPaths.subsubsection]: mock<StorageReference>(),
+      [nestedPaths.group]: mock<StorageReference>(),
+    };
+
+    const refMock = mocked(ref);
+    refMock.mockImplementation((_storage, path) => {
+      if (path === nestedByte.thumbnail) {
+        return byteStorageMocks.thumbnail;
+      }
+      if (path === nestedByte.coverPhoto) {
+        return byteStorageMocks.coverPhoto;
+      }
+      const nestedRef = nestedImageRefs[path as string];
+      if (nestedRef) {
+        return nestedRef;
+      }
+      return mock<StorageReference>();
+    });
+
+    const getDownloadURLMock = mocked(getDownloadURL);
+    getDownloadURLMock.mockImplementation(
+      (storageRef) =>
+        new Promise((resolve): void => {
+          if (storageRef === byteStorageMocks.thumbnail) {
+            resolve(`Download url ${nestedByte.title} ${nestedByte.thumbnail}`);
+          } else if (storageRef === byteStorageMocks.coverPhoto) {
+            resolve(`Download url ${nestedByte.title} ${nestedByte.coverPhoto}`);
+          } else {
+            for (const [p, r] of Object.entries(nestedImageRefs)) {
+              if (storageRef === r) {
+                resolve(`resolved-body-url:${p}`);
+                return;
+              }
+            }
+            resolve("Invalid ref");
+          }
+        })
+    );
+
+    const bytesResponseMock = {
+      docs: [
+        {
+          data: () => rawNested,
+          metadata: mock(),
+          exists: mock(),
+          get: mock(),
+          id: mock(),
+          ref: mock(),
+        },
+      ],
+    };
+
+    const nibblesResponseMock = {
+      docs: nibbles.map((nibble) => ({
+        data: () => ({
+          ...nibble,
+          publishDate: new Timestamp(nibble.publishDate.getUTCSeconds(), 0),
+          lastModifiedDate: new Timestamp(
+            nibble.lastModifiedDate.getUTCSeconds(),
+            0
+          ),
+        }),
+        metadata: mock(),
+        exists: mock(),
+        get: mock(),
+        id: mock(),
+        ref: mock(),
+      })),
+    };
+
+    const getDocsMock = mocked(getDocs);
+    getDocsMock.mockResolvedValueOnce(
+      bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>
+    );
+    getDocsMock.mockResolvedValueOnce(
+      nibblesResponseMock as unknown as QuerySnapshot<
+        DocumentData,
+        DocumentData
+      >
+    );
+
+    const firebaseService: FirebaseService =
+      await FirebaseService.getInstance();
+
+    const stored = firebaseService["bytes"].find(
+      (b) => b.slug === nestedByte.slug
+    );
+    expect(stored).toBeDefined();
+    const sectionBody = stored!.sections[0].body;
+
+    expect(sectionBody[0].type).toBe("captionedImage");
+    if (sectionBody[0].type === "captionedImage") {
+      expect(sectionBody[0].value.image).toBe(
+        `resolved-body-url:${nestedPaths.section}`
+      );
+    }
+
+    const subsection = sectionBody[1];
+    expect(subsection.type).toBe("subsection");
+    if (subsection.type !== "subsection") {
+      throw new Error("expected subsection");
+    }
+
+    expect(subsection.value.body[0].type).toBe("captionedImage");
+    if (subsection.value.body[0].type === "captionedImage") {
+      expect(subsection.value.body[0].value.image).toBe(
+        `resolved-body-url:${nestedPaths.subsection}`
+      );
+    }
+
+    const subsub = subsection.value.body[1];
+    expect(subsub.type).toBe("subsubsection");
+    if (subsub.type !== "subsubsection") {
+      throw new Error("expected subsubsection");
+    }
+
+    expect(subsub.value.body[0].type).toBe("captionedImage");
+    if (subsub.value.body[0].type === "captionedImage") {
+      expect(subsub.value.body[0].value.image).toBe(
+        `resolved-body-url:${nestedPaths.subsubsection}`
+      );
+    }
+
+    const group = subsub.value.body[1];
+    expect(group.type).toBe("collapsibleGroup");
+    if (group.type !== "collapsibleGroup") {
+      throw new Error("expected collapsible group");
+    }
+
+    expect(group.value.body[0].type).toBe("captionedImage");
+    if (group.value.body[0].type === "captionedImage") {
+      expect(group.value.body[0].value.image).toBe(
+        `resolved-body-url:${nestedPaths.group}`
+      );
+    }
+
+    expect(getDownloadURLMock).toHaveBeenCalledWith(
+      nestedImageRefs[nestedPaths.section]
+    );
+    expect(getDownloadURLMock).toHaveBeenCalledWith(
+      nestedImageRefs[nestedPaths.subsection]
+    );
+    expect(getDownloadURLMock).toHaveBeenCalledWith(
+      nestedImageRefs[nestedPaths.subsubsection]
+    );
+    expect(getDownloadURLMock).toHaveBeenCalledWith(
+      nestedImageRefs[nestedPaths.group]
+    );
+  });
+
   it("should list bytes", async () => {
     const firebaseService = Object.create(FirebaseService.prototype) as FirebaseService;
     firebaseService["bytes"] = bytes;

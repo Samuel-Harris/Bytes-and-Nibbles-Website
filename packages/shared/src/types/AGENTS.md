@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # types
 
@@ -31,8 +31,9 @@ TypeScript type definitions for content types used across the monorepo.
 - `ByteType` - Full article with sections and body content
 - `ByteOverviewType` - Summary for listing (title, thumbnail, series, slug)
 - `SectionType` - Article section with heading and body
-- `SubsectionType` - Nested section
-- Body elements: paragraph, latex, captioned image, collapsible group
+- `SubsectionType` - Nested section; `body` may include subsubsections or leaf blocks
+- `SubsubsectionType` - Under a subsection; `body` is leaf-only
+- Related unions: `BaseContentType`, `CollapsibleGroupType`, `SubsubsectionBodyElementType`, `SubsectionBodyElementType`, `SectionBodyElementType`
 
 **Nibbles**:
 

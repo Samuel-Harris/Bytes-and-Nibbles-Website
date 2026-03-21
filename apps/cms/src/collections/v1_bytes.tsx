@@ -99,6 +99,40 @@ const collapsibleGroupProperty = buildProperty({
   },
 });
 
+const subsubsectionInnerBodyProperty = buildProperty({
+  dataType: "array",
+  name: "Subsubsection body",
+  validation: { required: true },
+  oneOf: {
+    typeField: "type",
+    valueField: "value",
+    properties: {
+      [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+      [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: latexParagraphProperty,
+      [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]: captionedImageProperty,
+      [SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]: collapsibleGroupProperty,
+    },
+  },
+});
+
+const subsubsectionProperty = buildProperty({
+  dataType: "map",
+  name: "Subsubsection",
+  properties: {
+    title: buildProperty({
+      dataType: "string",
+      name: "Subheading",
+      validation: { required: true },
+    }),
+    body: subsubsectionInnerBodyProperty,
+    isCollapsible: buildProperty({
+      dataType: "boolean",
+      name: "Is collapsible?",
+      defaultValue: false,
+    }),
+  },
+});
+
 const subsectionProperty = buildProperty({
   dataType: "map",
   name: "Subsection",
@@ -123,6 +157,7 @@ const subsectionProperty = buildProperty({
             captionedImageProperty,
           [SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
             collapsibleGroupProperty,
+          [SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION]: subsubsectionProperty,
         },
       },
     }),

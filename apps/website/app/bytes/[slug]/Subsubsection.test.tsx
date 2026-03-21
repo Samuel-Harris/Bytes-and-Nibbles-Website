@@ -2,10 +2,10 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
-import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
+import { SubsubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import { mocked, MockedFunction } from "jest-mock";
-import Subsection from "./Subsection";
+import Subsubsection from "./Subsubsection";
 import { CollapsibleProps } from "./Collapsible";
 
 jest.mock("./Paragraph");
@@ -26,11 +26,11 @@ let paragraphMockText: string;
 let captionedImageMock: MockedFunction<React.FC<CaptionedImageProps>>;
 let captionedImageMockCaption: string;
 
-let sectionTitle: string;
-let paragraph: SubsectionBodyElementSchema;
-let captionedImage: SubsectionBodyElementSchema;
+let subsubsectionTitle: string;
+let paragraph: SubsubsectionBodyElementSchema;
+let captionedImage: SubsubsectionBodyElementSchema;
 
-describe("Byte subsection", () => {
+describe("Byte subsubsection", () => {
   beforeAll(() => {
     paragraphMockText = "This is a mock paragraph";
     paragraphMock = mocked(Paragraph);
@@ -40,7 +40,7 @@ describe("Byte subsection", () => {
     captionedImageMock = mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);
 
-    sectionTitle = "Byte";
+    subsubsectionTitle = "Subsubsection heading";
     paragraph = {
       type: "paragraph",
       value: "This is a paragraph",
@@ -55,68 +55,34 @@ describe("Byte subsection", () => {
     jest.clearAllMocks();
   });
 
-  it("should render the subsection title and body via Collapsible", () => {
+  it("should render the subsubsection title and body via Collapsible", () => {
     render(
-      <Subsection
-        title={sectionTitle}
+      <Subsubsection
+        title={subsubsectionTitle}
         body={[paragraph, captionedImage]}
         isCollapsible={false}
       />,
     );
 
-    expect(screen.getByText(sectionTitle)).toBeInTheDocument();
+    expect(screen.getByText(subsubsectionTitle)).toBeInTheDocument();
 
-    // check whether paragraph was rendered
     expect(Paragraph).toHaveBeenCalledTimes(1);
     expect(screen.getByText(paragraphMockText)).toBeInTheDocument();
 
-    // check whether captioned image was rendered
     expect(CaptionedImage).toHaveBeenCalledTimes(1);
     expect(screen.getByText(captionedImageMockCaption)).toBeInTheDocument();
   });
 
   it("should pass isCollapsible to Collapsible", () => {
     render(
-      <Subsection
-        title={sectionTitle}
+      <Subsubsection
+        title={subsubsectionTitle}
         body={[paragraph]}
         isCollapsible={true}
       />,
     );
 
     expect(screen.getByTestId("collapsible")).toBeInTheDocument();
-    expect(screen.getByText(sectionTitle)).toBeInTheDocument();
-  });
-
-  it("should render a subsubsection inside subsection body", () => {
-    const subsubsectionTitle = "Inner subsubsection";
-    render(
-      <Subsection
-        title={sectionTitle}
-        body={[
-          {
-            type: "subsubsection",
-            value: {
-              title: subsubsectionTitle,
-              isCollapsible: false,
-              body: [
-                {
-                  type: "paragraph",
-                  value: "Content under subsubsection",
-                },
-              ],
-            },
-          },
-        ]}
-        isCollapsible={false}
-      />,
-    );
-
-    expect(screen.getByText(sectionTitle)).toBeInTheDocument();
     expect(screen.getByText(subsubsectionTitle)).toBeInTheDocument();
-    expect(Paragraph).toHaveBeenCalled();
-    expect(paragraphMock.mock.calls[0][0]).toMatchObject({
-      value: "Content under subsubsection",
-    });
   });
 });

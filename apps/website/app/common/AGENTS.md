@@ -26,6 +26,7 @@ Shared utilities, services, and constants used across the website application.
 
 - `FirebaseService` is a **singleton** - use `await FirebaseService.getInstance()`
 - Service fetches all published bytes and nibbles on initialization
+- Byte `captionedImage` storage paths are resolved to download URLs at every nesting level
 - Data is cached in memory after first fetch
 - Theme colors are Tailwind CSS class strings
 
