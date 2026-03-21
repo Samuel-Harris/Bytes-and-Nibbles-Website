@@ -15,8 +15,9 @@ Dynamic route for displaying individual Byte (tech article) pages. Renders the f
 | `page.test.tsx`           | Tests for the byte page                                   |
 | `Body.tsx`                | Renders subsection body (subsubsection + leaf blocks)     |
 | `LeafBody.tsx`            | Leaf-only body (paragraph, LaTeX, image, collapsible group) |
+| `LeafBody.test.tsx`       | Tests leaf rendering including map-shaped paragraph/LaTeX values |
 | `Section.tsx`             | Renders article sections with headings                    |
-| `Section.test.tsx`        | Tests for Section component                               |
+| `Section.test.tsx`        | Tests for Section component (string and map-shaped body values) |
 | `Subsection.tsx`          | Renders nested subsections within sections                |
 | `Subsection.test.tsx`     | Tests for Subsection component                            |
 | `Subsubsection.tsx`       | Renders subsubsections under a subsection (`text-lg` heading) |

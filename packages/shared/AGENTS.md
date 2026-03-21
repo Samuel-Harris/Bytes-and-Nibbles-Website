@@ -14,6 +14,7 @@ Shared package providing TypeScript types, Zod schemas, and Firebase configurati
 | `package.json`     | Package configuration with exports |
 | `tsconfig.json`    | TypeScript configuration           |
 | `eslint.config.js` | ESLint configuration               |
+| `vitest.config.ts` | Vitest config for package unit tests |
 
 ## Subdirectories
 
@@ -28,11 +29,12 @@ Shared package providing TypeScript types, Zod schemas, and Firebase configurati
 - Changes affect both CMS and website apps
 - Package name: `@bytes-and-nibbles/shared`
 - Run `pnpm lint` to lint the package
+- Run `pnpm --filter @bytes-and-nibbles/shared test` (or `pnpm test` from repo root) for unit tests
 - No build step required (TypeScript files are consumed directly)
 
 ### Testing Requirements
 
-- Currently no tests in the shared package
+- Vitest unit tests live under `src/**` as `*.test.ts` (e.g. `utils/byteFinished.test.ts`)
 - Types are validated at compile time
 
 ### Common Patterns

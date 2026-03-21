@@ -1,3 +1,10 @@
+/**
+ * Legacy Firestore bytes sometimes store paragraph / LaTeX oneOf `value` as a raw
+ * string. FireCMS expects a map (`{ paragraph }` / `{ latexContent }`, plus
+ * optional `is_finished`). This module coerces those shapes in place when a byte
+ * is loaded (`v1_bytes` `onFetch`) so the form and publish-finished walk behave
+ * correctly. Saving can persist the normalized map back to Firestore.
+ */
 import {
   SECTION_BODY_ELEMENT_TYPES,
   SUBSECTION_BODY_ELEMENT_TYPES,
@@ -5,6 +12,7 @@ import {
 
 type OneOfItem = { type?: string; value?: unknown };
 
+/** String → `{ paragraph }`; objects are shallow-cloned. */
 function normalizeParagraphValue(value: unknown): Record<string, unknown> {
   if (typeof value === "string") {
     return { paragraph: value };
@@ -15,6 +23,7 @@ function normalizeParagraphValue(value: unknown): Record<string, unknown> {
   return { paragraph: "" };
 }
 
+/** String → `{ latexContent }`; objects are shallow-cloned. */
 function normalizeLatexValue(value: unknown): Record<string, unknown> {
   if (typeof value === "string") {
     return { latexContent: value };
@@ -25,6 +34,7 @@ function normalizeLatexValue(value: unknown): Record<string, unknown> {
   return { latexContent: "" };
 }
 
+/** Walk section/subsection/collapsible bodies and normalize paragraph/latex values. */
 function normalizeOneOfArray(items: unknown[] | undefined): void {
   if (!Array.isArray(items)) return;
   for (const raw of items) {
@@ -57,6 +67,7 @@ function normalizeOneOfArray(items: unknown[] | undefined): void {
   }
 }
 
+/** Mutates `values.sections` in place (entity.values from `onFetch`). */
 export function normalizeByteSectionsForCmsForm(
   values: Record<string, unknown>,
 ): void {

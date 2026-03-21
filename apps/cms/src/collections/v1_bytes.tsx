@@ -9,6 +9,7 @@ import {
 import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
+import { MarkAllByteFinishedToolField } from "../components/MarkAllByteFinishedToolField";
 import {
   ByteType as SharedByteType,
   SUBSECTION_BODY_ELEMENT_TYPES,
@@ -17,10 +18,16 @@ import {
   listUnfinishedByteUnitPaths,
 } from "@bytes-and-nibbles/shared";
 import { normalizeByteSectionsForCmsForm } from "./normalizeByteBodyForCms";
+import {
+  CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY,
+  stripCmsUiOnlyByteKeys,
+} from "./markAllByteContentFinishedForm";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
 interface ByteType extends Omit<SharedByteType, "series"> {
   series: EntityReference; // FireCMS-specific entity reference
+  /** CMS-only UI field; stripped before save */
+  cmsUi_markAllContentFinished?: string;
 }
 
 const isFinishedProperty = buildProperty({
@@ -285,6 +292,15 @@ export const byteCollection = buildCollection<ByteType>({
         required: true,
       },
     }),
+    [CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY]: buildProperty({
+      dataType: "string",
+      name: "Mark all content finished",
+      description:
+        "Turns on “Marked finished?” for every section, subsection, and block. Save the byte afterwards. This control is not stored in the database.",
+      defaultValue: "",
+      hideFromCollection: true,
+      Field: MarkAllByteFinishedToolField,
+    }),
     publishDate: buildProperty({
       dataType: "date",
       name: "Publish date",
@@ -345,12 +361,13 @@ export const byteCollection = buildCollection<ByteType>({
   },
   callbacks: {
     onFetch: async ({ entity }: EntityOnFetchProps<ByteType>) => {
-      normalizeByteSectionsForCmsForm(
-        entity.values as unknown as Record<string, unknown>,
-      );
+      const raw = entity.values as unknown as Record<string, unknown>;
+      stripCmsUiOnlyByteKeys(raw);
+      normalizeByteSectionsForCmsForm(raw);
       return entity;
     },
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      stripCmsUiOnlyByteKeys(values as Record<string, unknown>);
       if (values.isPublished === true) {
         const unfinished = listUnfinishedByteUnitPaths(
           values as unknown as Record<string, unknown>,

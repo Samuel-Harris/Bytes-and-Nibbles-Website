@@ -27,6 +27,7 @@ Source code for the shared package, providing centralized TypeScript types, Zod 
 ### Working In This Directory
 
 - All exports must go through `index.ts` for proper package resolution
+- Vitest unit tests: `*.test.ts` colocated under `utils/` (and similar) next to the module under test
 - Types define the shape of data structures
 - Schemas provide runtime validation with Zod
 - Keep types and schemas in sync when modifying

@@ -4,7 +4,10 @@ import {
   buildCollection,
   buildProperty,
 } from "@firecms/core";
-import { NibbleType } from "@bytes-and-nibbles/shared";
+import {
+  NibbleType,
+  NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE,
+} from "@bytes-and-nibbles/shared";
 import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 
 export const v1NibbleCollection = buildCollection<NibbleType>({
@@ -177,9 +180,7 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
   callbacks: {
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
       if (values.isPublished === true && values.is_finished !== true) {
-        throw new Error(
-          "Cannot publish: recipe is not marked finished (Recipe marked finished?).",
-        );
+        throw new Error(NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE);
       }
 
       if (

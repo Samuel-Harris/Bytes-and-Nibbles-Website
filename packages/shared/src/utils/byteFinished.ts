@@ -214,6 +214,159 @@ export function listUnfinishedByteUnitPaths(
   return out;
 }
 
+type OneOfMark = { type?: string; value?: unknown };
+
+function paragraphValueMarkFinished(value: unknown): Record<string, unknown> {
+  if (typeof value === "string") {
+    return { paragraph: value, is_finished: true };
+  }
+  if (value && typeof value === "object") {
+    return { ...(value as object), is_finished: true } as Record<
+      string,
+      unknown
+    >;
+  }
+  return { paragraph: "", is_finished: true };
+}
+
+function latexValueMarkFinished(value: unknown): Record<string, unknown> {
+  if (typeof value === "string") {
+    return { latexContent: value, is_finished: true };
+  }
+  if (value && typeof value === "object") {
+    return { ...(value as object), is_finished: true } as Record<
+      string,
+      unknown
+    >;
+  }
+  return { latexContent: "", is_finished: true };
+}
+
+function markLeafishElement(el: OneOfMark): void {
+  const t = el.type;
+  const v = el.value;
+  if (
+    t === SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH ||
+    t === SECTION_BODY_ELEMENT_TYPES.PARAGRAPH
+  ) {
+    el.value = paragraphValueMarkFinished(v);
+    return;
+  }
+  if (
+    t === SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH ||
+    t === SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH
+  ) {
+    el.value = latexValueMarkFinished(v);
+    return;
+  }
+  if (
+    t === SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE ||
+    t === SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE
+  ) {
+    if (v && typeof v === "object") {
+      (v as { is_finished?: boolean }).is_finished = true;
+    } else {
+      el.value = { is_finished: true };
+    }
+    return;
+  }
+  if (
+    t === SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP ||
+    t === SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP
+  ) {
+    let g: { is_finished?: boolean; body?: unknown[] };
+    if (v && typeof v === "object") {
+      g = v as { is_finished?: boolean; body?: unknown[] };
+    } else {
+      g = { body: [] };
+      el.value = g;
+    }
+    g.is_finished = true;
+    if (!Array.isArray(g.body)) g.body = [];
+    for (const inner of g.body) {
+      if (inner && typeof inner === "object" && "type" in inner) {
+        markLeafishElement(inner as OneOfMark);
+      }
+    }
+  }
+}
+
+function markSubsubsectionBody(body: unknown[] | undefined): void {
+  if (!Array.isArray(body)) return;
+  for (const raw of body) {
+    if (raw && typeof raw === "object" && "type" in raw) {
+      markLeafishElement(raw as OneOfMark);
+    }
+  }
+}
+
+function markSubsectionBody(body: unknown[] | undefined): void {
+  if (!Array.isArray(body)) return;
+  for (const raw of body) {
+    if (!raw || typeof raw !== "object" || !("type" in raw)) continue;
+    const el = raw as OneOfMark;
+    const t = el.type;
+    const v = el.value;
+    if (t === SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION) {
+      let sub: { is_finished?: boolean; body?: unknown[] };
+      if (v && typeof v === "object") {
+        sub = v as { is_finished?: boolean; body?: unknown[] };
+      } else {
+        sub = { body: [] };
+        el.value = sub;
+      }
+      sub.is_finished = true;
+      if (!Array.isArray(sub.body)) sub.body = [];
+      markSubsubsectionBody(sub.body);
+      continue;
+    }
+    markLeafishElement(el);
+  }
+}
+
+function markSectionBody(body: unknown[] | undefined): void {
+  if (!Array.isArray(body)) return;
+  for (const raw of body) {
+    if (!raw || typeof raw !== "object" || !("type" in raw)) continue;
+    const el = raw as OneOfMark;
+    const t = el.type;
+    const v = el.value;
+    if (t === SECTION_BODY_ELEMENT_TYPES.SUBSECTION) {
+      let sub: { is_finished?: boolean; body?: unknown[] };
+      if (v && typeof v === "object") {
+        sub = v as { is_finished?: boolean; body?: unknown[] };
+      } else {
+        sub = { body: [] };
+        el.value = sub;
+      }
+      sub.is_finished = true;
+      if (!Array.isArray(sub.body)) sub.body = [];
+      markSubsectionBody(sub.body);
+      continue;
+    }
+    markLeafishElement(el);
+  }
+}
+
+/**
+ * Sets `is_finished: true` on every section, subsection, block, and leaf map in
+ * `byte.sections`. Mutates the given object (pass a clone if immutability is required).
+ * Used by the CMS "mark all finished" action.
+ */
+export function markAllByteUnitsFinished(
+  byte: Partial<ByteType> | Record<string, unknown>,
+): void {
+  const sections = (byte as { sections?: unknown }).sections;
+  if (!Array.isArray(sections)) return;
+  for (const section of sections) {
+    if (!section || typeof section !== "object") continue;
+    const s = section as { is_finished?: boolean; body?: unknown[] };
+    s.is_finished = true;
+    if (!Array.isArray(s.body)) s.body = [];
+    markSectionBody(s.body);
+  }
+}
+
 const DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT = 5;
 
 export function formatUnfinishedBytePathsForPublishError(
