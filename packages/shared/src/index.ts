@@ -8,3 +8,5 @@ export * from "./schemas/byteSeries";
 export * from "./config/firebase";
 export * from "./hooks/useMathJax";
 export * from "./components/LatexRenderer";
+export * from "./utils/byteFinished";
+export * from "./utils/byteContentText";

@@ -1,5 +1,9 @@
 import React from "react";
-import { SectionSchema } from "@bytes-and-nibbles/shared";
+import {
+  SectionSchema,
+  getLatexText,
+  getParagraphText,
+} from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
@@ -32,7 +36,10 @@ const Section: React.FC<SectionSchema> = ({
           );
         case "paragraph":
           return (
-            <Paragraph value={bodyComponent.value} key={bodyComponent.value} />
+            <Paragraph
+              value={getParagraphText(bodyComponent.value)}
+              key={`paragraph-${index}`}
+            />
           );
         case "captionedImage":
           return (
@@ -45,7 +52,7 @@ const Section: React.FC<SectionSchema> = ({
         case "latexParagraph":
           return (
             <LatexParagraph
-              value={bodyComponent.value}
+              value={getLatexText(bodyComponent.value)}
               key={`${bodyComponent.type}-${index}`}
             />
           );

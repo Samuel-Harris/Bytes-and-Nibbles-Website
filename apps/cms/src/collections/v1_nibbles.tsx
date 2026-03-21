@@ -158,9 +158,22 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
         required: true,
       },
     }),
+    is_finished: buildProperty({
+      dataType: "boolean",
+      name: "Recipe marked finished?",
+      description:
+        "Turn on when the recipe is complete. Publishing requires this to be on.",
+      defaultValue: false,
+    }),
   },
   callbacks: {
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      if (values.isPublished === true && values.is_finished !== true) {
+        throw new Error(
+          "Cannot publish: recipe is not marked finished (Recipe marked finished?).",
+        );
+      }
+
       if (
         values.isPublished === true &&
         previousValues?.isPublished === false

@@ -20,6 +20,7 @@ Source code for the shared package, providing centralized TypeScript types, Zod 
 | `types/`   | TypeScript type definitions - see `types/AGENTS.md` |
 | `schemas/` | Zod schema definitions - see `schemas/AGENTS.md`    |
 | `config/`  | Firebase configuration - see `config/AGENTS.md`     |
+| `utils/`   | Shared helpers (byte finished gate, legacy body text) - see `utils/AGENTS.md` |
 
 ## For AI Agents
 

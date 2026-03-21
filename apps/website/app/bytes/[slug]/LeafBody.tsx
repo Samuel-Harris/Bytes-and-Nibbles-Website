@@ -1,5 +1,9 @@
 import React from "react";
-import { SubsubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
+import {
+  SubsubsectionBodyElementSchema,
+  getLatexText,
+  getParagraphText,
+} from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import LatexParagraph from "./LatexParagraph";
@@ -19,7 +23,7 @@ const LeafBody: React.FC<{ body: SubsubsectionBodyElementSchema[] }> = ({
       case "paragraph":
         return (
           <Paragraph
-            value={bodyElement.value}
+            value={getParagraphText(bodyElement.value)}
             key={`${bodyElement.type}-${index}`}
           />
         );
@@ -34,7 +38,7 @@ const LeafBody: React.FC<{ body: SubsubsectionBodyElementSchema[] }> = ({
       case "latexParagraph":
         return (
           <LatexParagraph
-            value={bodyElement.value}
+            value={getLatexText(bodyElement.value)}
             key={`${bodyElement.type}-${index}`}
           />
         );

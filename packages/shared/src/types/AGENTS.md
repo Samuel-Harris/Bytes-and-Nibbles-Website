@@ -34,10 +34,11 @@ TypeScript type definitions for content types used across the monorepo.
 - `SubsectionType` - Nested section; `body` may include subsubsections or leaf blocks
 - `SubsubsectionType` - Under a subsection; `body` is leaf-only
 - Related unions: `BaseContentType`, `CollapsibleGroupType`, `SubsubsectionBodyElementType`, `SubsectionBodyElementType`, `SectionBodyElementType`
+- Every section, subsection, subsubsection, leaf block type, and collapsible group includes optional `is_finished` (default false when missing)
 
 **Nibbles**:
 
-- `NibbleType` - Full recipe with ingredients and steps
+- `NibbleType` - Full recipe with ingredients and steps; optional `is_finished` on the whole recipe (default false when missing)
 - `NibbleOverviewType` - Summary for listing
 - `IngredientType` - Ingredient with quantity and measurement
 
