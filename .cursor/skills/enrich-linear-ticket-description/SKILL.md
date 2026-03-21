@@ -3,7 +3,7 @@ name: enrich-linear-ticket-description
 description: >-
   Prepares a Linear issue for another agent: interviews only when needed, updates
   the description with behavior-first context, and stops—never implements the
-  ticket itself. Use when refining handoff for CODE-* / LIN-* issues, syncing
+  ticket itself. Use when refining handoff for CODE-* issues, syncing
   product intent to Linear, or when the user says "interview me about this
   ticket" / "update Linear for an implementer".
 ---
@@ -61,10 +61,21 @@ Deeper technical mapping (paths, existing hooks) belongs in **repo exploration b
 
 Optional: reuse the ambiguity dimensions from `.cursor/skills/deep-interview/SKILL.md` (goal, constraints, success criteria, context) **without** requiring numeric scoring unless the user wants that rigor.
 
+### 4. User-visible issue identity
+
+Whenever you refer to the issue **to the user** (kickoff, each interview round, confirmations, final handoff), include **both**:
+
+1. The **issue identifier** (e.g. `CODE-2`, `LIN-123`), and  
+2. The **title** returned by `get_issue`.
+
+**Example:** `CODE-2 — Add finished/unfinished flag to CMS`
+
+The user may have only pasted an ID; the title is what ties the conversation to the right work. **Do not** rely on the ID alone in user-facing text.
+
 ## Workflow
 
 1. **Identify the issue**  
-   Confirm Linear **issue id** (e.g. `CODE-2`, `LIN-123`) and read current title/description via Linear MCP (`get_issue`) when updating Linear. Read the MCP tool schema under the workspace `mcps` folder before calling tools.
+   Confirm Linear **issue id** (e.g. `CODE-2`) and read **title** and description via Linear MCP (`get_issue`) when updating Linear. Read the MCP tool schema under the workspace `mcps` folder before calling tools. **Retain the title** for every user-visible mention of this issue (see **User-visible issue identity**).
 
 2. **Assess: interview needed?**  
    Judge whether the issue **already** satisfies a behavior-first handoff (summary, rules/outcomes, scope/non-goals, testable ACs). If **yes**, tell the user the ticket looks **ready for an implementer**, **skip steps 3–4**, then either go to **step 7** (no description change) or **steps 5–7** if a **small** Linear polish is still warranted (e.g. user asked to normalize wording or strip speculative implementation). If **no**, continue.
@@ -82,7 +93,7 @@ Optional: reuse the ambiguity dimensions from `.cursor/skills/deep-interview/SKI
    Call `save_issue` with `id` and new `description` (Markdown) only when the body **should** change. Do not change `title` unless the developer asked. Preserve existing attachments; note that link attachments are often append-only in MCP—do not rely on removing old links via the tool. If no edit is needed, do not call `save_issue` for the sake of it.
 
 7. **Confirm (and stop)**  
-   Reply with the issue URL and a short summary: either **what was added/changed for implementers** or **why the ticket was left unchanged**. **Do not** start implementation.
+   Reply with **`{id} — {title}`**, the **issue URL**, and a short summary: either **what was added/changed for implementers** or **why the ticket was left unchanged**. **Do not** start implementation.
 
 ## Linear description template
 
@@ -123,6 +134,7 @@ Use headings similar to this (adapt labels to the work; omit empty sections).
 
 ## Anti-patterns
 
+- **ID-only references**: Mentioning only the issue id (e.g. `CODE-2`) to the user without the **title**—**avoid**; they may not remember which ticket that is (see **User-visible issue identity**).
 - **Implementing in the same session**: Building the feature, editing app code, or “finishing” the ticket after updating Linear—**forbidden** for this skill’s caller.
 - **Forced interview**: Asking rounds of questions when the Linear issue is already sufficient—**unnecessary**; assess first (workflow step 2).
 - **Speculative stack**: "Use Firestore rules" / "add Zod" on the ticket without the developer asking → **remove** or move to questions.
