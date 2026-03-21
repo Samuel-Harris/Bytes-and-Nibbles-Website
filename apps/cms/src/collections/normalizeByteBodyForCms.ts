@@ -57,10 +57,6 @@ function normalizeOneOfArray(items: unknown[] | undefined): void {
   }
 }
 
-/**
- * Coerce legacy string paragraph/LaTeX values into maps so FireCMS nested fields work.
- * Mutates the provided values object in place.
- */
 export function normalizeByteSectionsForCmsForm(
   values: Record<string, unknown>,
 ): void {

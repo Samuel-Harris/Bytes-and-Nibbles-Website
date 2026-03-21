@@ -4,7 +4,6 @@ import {
   SUBSECTION_BODY_ELEMENT_TYPES,
 } from "../schemas/bytes";
 
-/** Treat missing or non-true as unfinished (legacy documents). */
 export function isNodeFinished(
   record: { is_finished?: boolean } | null | undefined,
 ): boolean {
@@ -37,7 +36,6 @@ function latexMapFromValue(
   return null;
 }
 
-// Section and subsection body use the same `type` string literals; one map entry each.
 const BLOCK_LABEL: Record<string, string> = {
   [SECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: "Paragraph",
   [SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: "LaTeX block",
@@ -192,10 +190,6 @@ function walkSectionBody(
   });
 }
 
-/**
- * Returns hierarchical paths to every unfinished content unit in a byte.
- * Used by the CMS publish gate; tolerates legacy paragraph/latex shapes.
- */
 export function listUnfinishedByteUnitPaths(
   byte: Partial<ByteType> | Record<string, unknown>,
 ): string[] {
