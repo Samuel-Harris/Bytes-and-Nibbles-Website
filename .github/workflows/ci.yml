@@ -1,5 +1,5 @@
 name: CI
-run-name: Test, lint, and preview branch ${{ github.head_ref }}
+run-name: Test, lint, unused deps, and preview branch ${{ github.head_ref }}
 
 on:
   pull_request:
@@ -21,6 +21,7 @@ jobs:
       all: ${{ steps.filter.outputs.all }}
       cms: ${{ steps.filter.outputs.cms }}
       website: ${{ steps.filter.outputs.website }}
+      dep_audit: ${{ steps.filter.outputs.dep_audit }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,12 +40,17 @@ jobs:
               - 'apps/cms/**'
             website:
               - 'apps/website/**'
+            dep_audit:
+              - '**/package.json'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
+              - 'knip.jsonc'
 
   test:
     name: Test
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true' || needs.changes.outputs.website == 'true'
+    if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true' || needs.changes.outputs.website == 'true' || needs.changes.outputs.dep_audit == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -70,7 +76,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     needs: changes
-    if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true' || needs.changes.outputs.website == 'true'
+    if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true' || needs.changes.outputs.website == 'true' || needs.changes.outputs.dep_audit == 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -92,10 +98,36 @@ jobs:
       - name: Lint code
         run: pnpm lint
 
+  unused_dependencies:
+    name: Unused dependencies
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.all == 'true' || needs.changes.outputs.cms == 'true' || needs.changes.outputs.website == 'true' || needs.changes.outputs.dep_audit == 'true' || needs.changes.outputs.dep_audit == 'true'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check for unused dependencies
+        run: pnpm check:unused-deps
+
   build_and_preview:
     name: Build and preview
     runs-on: ubuntu-latest
-    needs: [changes, test, lint]
+    needs: [changes, test, lint, unused_dependencies]
     if: needs.changes.outputs.all == 'true' || needs.changes.outputs.website == 'true'
     permissions:
       checks: write
