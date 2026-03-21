@@ -11,7 +11,7 @@ Small shared helpers used by the CMS and website for byte content (finished-stat
 
 | File               | Description                                                    |
 | ------------------ | -------------------------------------------------------------- |
-| `byteFinished.ts`  | Walks byte section trees; lists unfinished paths; formats publish errors; `markAllByteUnitsFinished` for CMS bulk “finished” |
+| `byteFinished.ts`  | Walks byte section trees; lists unfinished paths; formats compact publish-block errors; `markAllByteUnitsFinished` for CMS bulk “finished” |
 | `byteContentText.ts` | Reads paragraph/LaTeX text from string or map-shaped Firestore values |
 | `nibblePublishGuard.ts` | Shared copy for nibble publish guard (must match CMS `onPreSave`) |
 | `*.test.ts`        | Vitest unit tests colocated with utils |
