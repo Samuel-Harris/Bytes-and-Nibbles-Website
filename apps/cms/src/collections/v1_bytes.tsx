@@ -22,6 +22,10 @@ import {
   stripCmsUiOnlyByteKeys,
 } from "./markAllByteContentFinishedForm";
 import { normalizeByteSectionsForCmsForm } from "./normalizeByteBodyForCms";
+import {
+  CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY,
+  stripCmsUiOnlyByteKeys,
+} from "./markAllByteContentFinishedForm";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
 interface ByteType extends Omit<SharedByteType, "series"> {
