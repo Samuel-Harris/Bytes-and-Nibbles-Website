@@ -46,7 +46,47 @@ const bytes: ByteSchema[] = [
     sections: [
       {
         title: "Section title 1",
-        body: [{ type: "paragraph", value: "My paragraph 1" }],
+        body: [
+          { type: "paragraph", value: "My paragraph 1" },
+          {
+            type: "subsection",
+            value: {
+              title: "Subsection title 1",
+              body: [
+                {
+                  type: "subsubsection",
+                  value: {
+                    title: "Subsubsection title 1",
+                    body: [
+                      {
+                        type: "captionedImage",
+                        value: {
+                          image: "My deep nested image",
+                          caption: "Deep nested caption",
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  type: "collapsibleGroup",
+                  value: {
+                    title: "Subsection details",
+                    body: [
+                      {
+                        type: "captionedImage",
+                        value: {
+                          image: "My subsection collapsible image",
+                          caption: "Subsection collapsible caption",
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
       },
     ],
   },
@@ -66,6 +106,21 @@ const bytes: ByteSchema[] = [
         body: [
           { type: "paragraph", value: "My paragraph 2" },
           { type: "paragraph", value: "My paragraph 3" },
+          {
+            type: "collapsibleGroup",
+            value: {
+              title: "Section details",
+              body: [
+                {
+                  type: "captionedImage",
+                  value: {
+                    image: "My section collapsible image",
+                    caption: "Section collapsible caption",
+                  },
+                },
+              ],
+            },
+          },
         ],
       },
       {
@@ -154,12 +209,62 @@ describe("Firebase service", () => {
     const byteStorageMocks: {
       thumbnail: StorageReference;
       coverPhoto: StorageReference;
+      bodyImageRefs: StorageReference[];
     }[] = [];
     for (let i = 0; i < bytes.length; i++) {
       byteStorageMocks.push({
         thumbnail: mock<StorageReference>(),
         coverPhoto: mock<StorageReference>(),
+        bodyImageRefs: [],
       });
+
+      const bodyImagePaths: string[] = [];
+      for (const section of bytes[i].sections) {
+        for (const sectionBodyElement of section.body) {
+          if (sectionBodyElement.type === "captionedImage") {
+            bodyImagePaths.push(sectionBodyElement.value.image);
+          } else if (sectionBodyElement.type === "subsection") {
+            for (const subsectionBodyElement of sectionBodyElement.value.body) {
+              if (subsectionBodyElement.type === "captionedImage") {
+                bodyImagePaths.push(subsectionBodyElement.value.image);
+              } else if (subsectionBodyElement.type === "subsubsection") {
+                for (const subsubsectionBodyElement of subsectionBodyElement.value
+                  .body) {
+                  if (subsubsectionBodyElement.type === "captionedImage") {
+                    bodyImagePaths.push(subsubsectionBodyElement.value.image);
+                  } else if (
+                    subsubsectionBodyElement.type === "collapsibleGroup"
+                  ) {
+                    for (const collapsibleBodyElement of subsubsectionBodyElement
+                      .value.body) {
+                      if (collapsibleBodyElement.type === "captionedImage") {
+                        bodyImagePaths.push(collapsibleBodyElement.value.image);
+                      }
+                    }
+                  }
+                }
+              } else if (subsectionBodyElement.type === "collapsibleGroup") {
+                for (const collapsibleBodyElement of subsectionBodyElement.value
+                  .body) {
+                  if (collapsibleBodyElement.type === "captionedImage") {
+                    bodyImagePaths.push(collapsibleBodyElement.value.image);
+                  }
+                }
+              }
+            }
+          } else if (sectionBodyElement.type === "collapsibleGroup") {
+            for (const collapsibleBodyElement of sectionBodyElement.value.body) {
+              if (collapsibleBodyElement.type === "captionedImage") {
+                bodyImagePaths.push(collapsibleBodyElement.value.image);
+              }
+            }
+          }
+        }
+      }
+
+      byteStorageMocks[i].bodyImageRefs = bodyImagePaths.map(() =>
+        mock<StorageReference>()
+      );
     }
 
     const nibbleStorageMocks: {
@@ -180,6 +285,57 @@ describe("Firebase service", () => {
           return byteStorageMocks[i].thumbnail;
         } else if (path === bytes[i].coverPhoto) {
           return byteStorageMocks[i].coverPhoto;
+        }
+
+        const bodyImagePaths: string[] = [];
+        for (const section of bytes[i].sections) {
+          for (const sectionBodyElement of section.body) {
+            if (sectionBodyElement.type === "captionedImage") {
+              bodyImagePaths.push(sectionBodyElement.value.image);
+            } else if (sectionBodyElement.type === "subsection") {
+              for (const subsectionBodyElement of sectionBodyElement.value.body) {
+                if (subsectionBodyElement.type === "captionedImage") {
+                  bodyImagePaths.push(subsectionBodyElement.value.image);
+                } else if (subsectionBodyElement.type === "subsubsection") {
+                  for (const subsubsectionBodyElement of subsectionBodyElement
+                    .value.body) {
+                    if (subsubsectionBodyElement.type === "captionedImage") {
+                      bodyImagePaths.push(subsubsectionBodyElement.value.image);
+                    } else if (
+                      subsubsectionBodyElement.type === "collapsibleGroup"
+                    ) {
+                      for (const collapsibleBodyElement of subsubsectionBodyElement
+                        .value.body) {
+                        if (collapsibleBodyElement.type === "captionedImage") {
+                          bodyImagePaths.push(collapsibleBodyElement.value.image);
+                        }
+                      }
+                    }
+                  }
+                } else if (subsectionBodyElement.type === "collapsibleGroup") {
+                  for (const collapsibleBodyElement of subsectionBodyElement.value
+                    .body) {
+                    if (collapsibleBodyElement.type === "captionedImage") {
+                      bodyImagePaths.push(collapsibleBodyElement.value.image);
+                    }
+                  }
+                }
+              }
+            } else if (sectionBodyElement.type === "collapsibleGroup") {
+              for (const collapsibleBodyElement of sectionBodyElement.value.body) {
+                if (collapsibleBodyElement.type === "captionedImage") {
+                  bodyImagePaths.push(collapsibleBodyElement.value.image);
+                }
+              }
+            }
+          }
+        }
+
+        const bodyImagePathIndex = bodyImagePaths.findIndex(
+          (bodyImagePath) => bodyImagePath === path
+        );
+        if (bodyImagePathIndex >= 0) {
+          return byteStorageMocks[i].bodyImageRefs[bodyImagePathIndex];
         }
       }
 
@@ -202,6 +358,54 @@ describe("Firebase service", () => {
       lastModifiedDate: byte.lastModifiedDate.toDate(),
     }));
 
+    (
+      expectedBytes[0].sections[0].body[1] as {
+        type: "subsection";
+        value: {
+          body: Array<{
+            type: "subsubsection" | "collapsibleGroup";
+            value: {
+              body: Array<{
+                type: "captionedImage" | "collapsibleGroup";
+                value: { image: string };
+              }>;
+            };
+          }>;
+        };
+      }
+    ).value.body[0].value.body[0].value.image =
+      "Download url [object Object]";
+
+    (
+      expectedBytes[0].sections[0].body[1] as {
+        type: "subsection";
+        value: {
+          body: Array<{
+            type: "subsubsection" | "collapsibleGroup";
+            value: {
+              body: Array<{
+                type: "captionedImage" | "collapsibleGroup";
+                value: { image: string };
+              }>;
+            };
+          }>;
+        };
+      }
+    ).value.body[1].value.body[0].value.image =
+      "Download url [object Object]";
+
+    (
+      expectedBytes[1].sections[0].body[2] as {
+        type: "collapsibleGroup";
+        value: {
+          body: Array<{
+            type: "captionedImage";
+            value: { image: string };
+          }>;
+        };
+      }
+    ).value.body[0].value.image = "Download url [object Object]";
+
     const expectedNibbles = rawNibbles.map((nibble) => {
       return {
         ...nibble,
@@ -221,6 +425,12 @@ describe("Firebase service", () => {
               resolve(`Download url ${storageMock.thumbnail}`);
             } else if (storageRef === storageMock.coverPhoto) {
               resolve(`Download url ${storageMock.coverPhoto}`);
+            }
+
+            for (const bodyImageRef of storageMock.bodyImageRefs) {
+              if (storageRef === bodyImageRef) {
+                resolve(`Download url ${bodyImageRef}`);
+              }
             }
           }
 
@@ -301,7 +511,14 @@ describe("Firebase service", () => {
       )
     );
 
-    expect(refMock).toHaveBeenCalledTimes(2 * (bytes.length + nibbles.length));
+    const byteBodyImageCount = byteStorageMocks.reduce(
+      (sum, byteStorageMock) => sum + byteStorageMock.bodyImageRefs.length,
+      0
+    );
+
+    expect(refMock).toHaveBeenCalledTimes(
+      2 * (bytes.length + nibbles.length) + byteBodyImageCount
+    );
     expect(getDocMock).toHaveBeenCalledTimes(bytes.length);
 
     for (const byte of bytes) {
@@ -313,6 +530,67 @@ describe("Firebase service", () => {
         firebaseService["storage"],
         byte.coverPhoto
       );
+
+      for (const section of byte.sections) {
+        for (const sectionBodyElement of section.body) {
+          if (sectionBodyElement.type === "captionedImage") {
+            expect(refMock).toHaveBeenCalledWith(
+              firebaseService["storage"],
+              sectionBodyElement.value.image
+            );
+          } else if (sectionBodyElement.type === "subsection") {
+            for (const subsectionBodyElement of sectionBodyElement.value.body) {
+              if (subsectionBodyElement.type === "captionedImage") {
+                expect(refMock).toHaveBeenCalledWith(
+                  firebaseService["storage"],
+                  subsectionBodyElement.value.image
+                );
+              } else if (subsectionBodyElement.type === "subsubsection") {
+                for (const subsubsectionBodyElement of subsectionBodyElement.value
+                  .body) {
+                  if (subsubsectionBodyElement.type === "captionedImage") {
+                    expect(refMock).toHaveBeenCalledWith(
+                      firebaseService["storage"],
+                      subsubsectionBodyElement.value.image
+                    );
+                  } else if (
+                    subsubsectionBodyElement.type === "collapsibleGroup"
+                  ) {
+                    for (const collapsibleBodyElement of subsubsectionBodyElement
+                      .value.body) {
+                      if (collapsibleBodyElement.type === "captionedImage") {
+                        expect(refMock).toHaveBeenCalledWith(
+                          firebaseService["storage"],
+                          collapsibleBodyElement.value.image
+                        );
+                      }
+                    }
+                  }
+                }
+              } else if (subsectionBodyElement.type === "collapsibleGroup") {
+                for (const collapsibleBodyElement of subsectionBodyElement.value
+                  .body) {
+                  if (collapsibleBodyElement.type === "captionedImage") {
+                    expect(refMock).toHaveBeenCalledWith(
+                      firebaseService["storage"],
+                      collapsibleBodyElement.value.image
+                    );
+                  }
+                }
+              }
+            }
+          } else if (sectionBodyElement.type === "collapsibleGroup") {
+            for (const collapsibleBodyElement of sectionBodyElement.value.body) {
+              if (collapsibleBodyElement.type === "captionedImage") {
+                expect(refMock).toHaveBeenCalledWith(
+                  firebaseService["storage"],
+                  collapsibleBodyElement.value.image
+                );
+              }
+            }
+          }
+        }
+      }
 
       expect(getDocMock).toHaveBeenCalledWith(byte.series);
     }
@@ -329,11 +607,14 @@ describe("Firebase service", () => {
     }
 
     expect(getDownloadURLMock).toHaveBeenCalledTimes(
-      2 * (bytes.length + nibbles.length)
+      2 * (bytes.length + nibbles.length) + byteBodyImageCount
     );
     for (const storageMock of byteStorageMocks) {
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.thumbnail);
       expect(getDownloadURLMock).toHaveBeenCalledWith(storageMock.coverPhoto);
+      for (const bodyImageRef of storageMock.bodyImageRefs) {
+        expect(getDownloadURLMock).toHaveBeenCalledWith(bodyImageRef);
+      }
     }
 
     for (const storageMock of nibbleStorageMocks) {

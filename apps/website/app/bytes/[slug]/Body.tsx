@@ -1,17 +1,38 @@
 import React from "react";
-import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
+import {
+  SubsectionBodyElementSchema,
+  SubsubsectionBodyElementSchema,
+} from "@bytes-and-nibbles/shared";
 import Paragraph from "./Paragraph";
 import CaptionedImage from "./CaptionedImage";
 import LatexParagraph from "./LatexParagraph";
 import CollapsibleGroup from "./CollapsibleGroup";
+import Collapsible from "./Collapsible";
+import { TERTIARY_COLOUR_TEXT } from "@/common/theme";
 
-const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
+type BodyElementSchema =
+  | SubsectionBodyElementSchema
+  | SubsubsectionBodyElementSchema;
+
+const Body: React.FC<{ body: BodyElementSchema[] }> = ({
   body,
 }: {
-  body: SubsectionBodyElementSchema[];
+  body: BodyElementSchema[];
 }) =>
-  body.map((bodyElement: SubsectionBodyElementSchema, index: number) => {
+  body.map((bodyElement: BodyElementSchema, index: number) => {
     switch (bodyElement.type) {
+      case "subsubsection":
+        return (
+          <Collapsible
+            title={bodyElement.value.title}
+            isCollapsible={bodyElement.value.isCollapsible}
+            titleClassName={`text-lg mb-2 ${TERTIARY_COLOUR_TEXT}`}
+            className="my-3"
+            key={`${bodyElement.type}-${index}`}
+          >
+            <Body body={bodyElement.value.body} />
+          </Collapsible>
+        );
       case "paragraph":
         return (
           <Paragraph

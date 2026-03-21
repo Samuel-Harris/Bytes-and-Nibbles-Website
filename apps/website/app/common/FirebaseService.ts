@@ -23,10 +23,14 @@ import {
 import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import {
   ByteOverviewType,
+  BaseContentSchema,
   ByteSeriesType,
   ByteSchema,
   NibbleOverviewType,
   NibbleSchema,
+  SectionBodyElementSchema,
+  SubsectionBodyElementSchema,
+  SubsubsectionBodyElementSchema,
   firebaseConfig,
 } from "@bytes-and-nibbles/shared";
 
@@ -82,28 +86,40 @@ export default class FirebaseService {
           } as ByteSchema;
 
           for (const section of byte.sections) {
-            for (const sectionBodyComponent of section.body) {
-              if (sectionBodyComponent.type === "subsection") {
-                for (const subsectionBodyComponent of sectionBodyComponent.value
-                  .body) {
-                  if (subsectionBodyComponent.type === "captionedImage") {
-                    subsectionBodyComponent.value.image = await this.getImage(
-                      subsectionBodyComponent.value.image
-                    );
-                  }
-                }
-              } else if (sectionBodyComponent.type === "captionedImage") {
-                sectionBodyComponent.value.image = await this.getImage(
-                  sectionBodyComponent.value.image
-                );
-              }
-            }
+            await this.resolveByteBodyImages(section.body);
           }
 
           return byte;
         }
       )
     );
+  }
+
+  private async resolveByteBodyImages(
+    body: (
+      | SectionBodyElementSchema
+      | SubsectionBodyElementSchema
+      | SubsubsectionBodyElementSchema
+      | BaseContentSchema
+    )[]
+  ): Promise<void> {
+    for (const bodyElement of body) {
+      switch (bodyElement.type) {
+        case "captionedImage":
+          bodyElement.value.image = await this.getImage(bodyElement.value.image);
+          break;
+        case "subsection":
+        case "subsubsection":
+          await this.resolveByteBodyImages(bodyElement.value.body);
+          break;
+        case "collapsibleGroup":
+          await this.resolveByteBodyImages(bodyElement.value.body);
+          break;
+        case "paragraph":
+        case "latexParagraph":
+          break;
+      }
+    }
   }
 
   private async fetchNibbles(): Promise<void> {

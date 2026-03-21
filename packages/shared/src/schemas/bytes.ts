@@ -1,12 +1,21 @@
 import {
   ByteType,
+  SubsubsectionType,
   SubsectionType,
   SectionType,
   CaptionedImageType,
 } from "../types/bytes";
 
 // Constants for oneOf serialization types
+export const SUBSUBSECTION_BODY_ELEMENT_TYPES = {
+  PARAGRAPH: "paragraph",
+  LATEX_PARAGRAPH: "latexParagraph",
+  CAPTIONED_IMAGE: "captionedImage",
+  COLLAPSIBLE_GROUP: "collapsibleGroup",
+} as const;
+
 export const SUBSECTION_BODY_ELEMENT_TYPES = {
+  SUBSUBSECTION: "subsubsection",
   PARAGRAPH: "paragraph",
   LATEX_PARAGRAPH: "latexParagraph",
   CAPTIONED_IMAGE: "captionedImage",
@@ -25,15 +34,15 @@ export const SECTION_BODY_ELEMENT_TYPES = {
 // Base content schema types (non-collapsible, used inside collapsible groups)
 export type BaseContentSchema =
   | {
-      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
+      type: typeof SUBSUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
       value: string;
     }
   | {
-      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH;
+      type: typeof SUBSUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH;
       value: string;
     }
   | {
-      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;
+      type: typeof SUBSUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;
       value: CaptionedImageType;
     };
 
@@ -44,14 +53,29 @@ export interface CollapsibleGroupSchema {
 }
 
 export type SubsectionBodyElementSchema =
+  | {
+      type: typeof SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION;
+      value: SubsubsectionSchema;
+    }
   | BaseContentSchema
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP;
       value: CollapsibleGroupSchema;
     };
 
+export type SubsubsectionBodyElementSchema =
+  | BaseContentSchema
+  | {
+      type: typeof SUBSUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP;
+      value: CollapsibleGroupSchema;
+    };
+
 export interface SubsectionSchema extends Omit<SubsectionType, "body"> {
   body: SubsectionBodyElementSchema[];
+}
+
+export interface SubsubsectionSchema extends Omit<SubsubsectionType, "body"> {
+  body: SubsubsectionBodyElementSchema[];
 }
 
 export type SectionBodyElementSchema =

@@ -87,4 +87,32 @@ describe("Byte subsection", () => {
     expect(screen.getByTestId("collapsible")).toBeInTheDocument();
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
   });
+
+  it("should render nested subsubsection content", () => {
+    const nestedSubsubsection: SubsectionBodyElementSchema = {
+      type: "subsubsection",
+      value: {
+        title: "Nested subsubsection",
+        body: [
+          {
+            type: "paragraph",
+            value: "Nested paragraph",
+          },
+        ],
+        isCollapsible: false,
+      },
+    };
+
+    render(
+      <Subsection
+        title={sectionTitle}
+        body={[nestedSubsubsection]}
+        isCollapsible={false}
+      />,
+    );
+
+    expect(screen.getByText("Nested subsubsection")).toBeInTheDocument();
+    expect(Paragraph).toHaveBeenCalledTimes(1);
+    expect(screen.getByText(paragraphMockText)).toBeInTheDocument();
+  });
 });

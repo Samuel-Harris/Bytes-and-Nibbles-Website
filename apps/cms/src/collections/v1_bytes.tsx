@@ -9,6 +9,7 @@ import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
 import {
   ByteType as SharedByteType,
+  SUBSUBSECTION_BODY_ELEMENT_TYPES,
   SUBSECTION_BODY_ELEMENT_TYPES,
   SECTION_BODY_ELEMENT_TYPES,
 } from "@bytes-and-nibbles/shared";
@@ -88,13 +89,48 @@ const collapsibleGroupProperty = buildProperty({
         typeField: "type",
         valueField: "value",
         properties: {
-          [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
-          [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
             latexParagraphProperty,
-          [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
             captionedImageProperty,
         },
       },
+    }),
+  },
+});
+
+const subsubsectionProperty = buildProperty({
+  dataType: "map",
+  name: "Subsubsection",
+  properties: {
+    title: buildProperty({
+      dataType: "string",
+      name: "Subsubheading",
+      validation: { required: true },
+    }),
+    body: buildProperty({
+      dataType: "array",
+      name: "Subsubsection body",
+      validation: { required: true },
+      oneOf: {
+        typeField: "type",
+        valueField: "value",
+        properties: {
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
+            latexParagraphProperty,
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]:
+            captionedImageProperty,
+          [SUBSUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]:
+            collapsibleGroupProperty,
+        },
+      },
+    }),
+    isCollapsible: buildProperty({
+      dataType: "boolean",
+      name: "Is collapsible?",
+      defaultValue: false,
     }),
   },
 });
@@ -116,6 +152,7 @@ const subsectionProperty = buildProperty({
         typeField: "type",
         valueField: "value",
         properties: {
+          [SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION]: subsubsectionProperty,
           [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: paragraphProperty,
           [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]:
             latexParagraphProperty,
