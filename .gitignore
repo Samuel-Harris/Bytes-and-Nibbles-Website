@@ -12,5 +12,8 @@ storage.rules
 # Antigravity
 .agent/
 
+# Cursor
+.cursor/artefacts/
+
 # misc
 .DS_Store
