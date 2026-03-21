@@ -336,13 +336,15 @@ export const byteCollection = buildCollection<ByteType>({
   },
   callbacks: {
     onFetch: async ({ entity }: EntityOnFetchProps<ByteType>) => {
-      normalizeByteSectionsForCmsForm(entity.values as Record<string, unknown>);
+      normalizeByteSectionsForCmsForm(
+        entity.values as unknown as Record<string, unknown>,
+      );
       return entity;
     },
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
       if (values.isPublished === true) {
         const unfinished = listUnfinishedByteUnitPaths(
-          values as Record<string, unknown>,
+          values as unknown as Record<string, unknown>,
         );
         if (unfinished.length > 0) {
           throw new Error(

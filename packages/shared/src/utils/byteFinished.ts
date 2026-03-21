@@ -37,21 +37,22 @@ function latexMapFromValue(
   return null;
 }
 
+// Section and subsection body use the same `type` string literals; one map entry each.
 const BLOCK_LABEL: Record<string, string> = {
   [SECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: "Paragraph",
   [SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: "LaTeX block",
   [SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]: "Captioned image",
   [SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]: "Collapsible group",
   [SECTION_BODY_ELEMENT_TYPES.SUBSECTION]: "Subsection",
-  [SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: "Paragraph",
-  [SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: "LaTeX block",
-  [SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE]: "Captioned image",
-  [SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP]: "Collapsible group",
   [SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION]: "Subsubsection",
 };
 
 function labelForBlockType(type: string): string {
   return BLOCK_LABEL[type] ?? type;
+}
+
+function oneOfValue(el: object): unknown {
+  return (el as unknown as { value?: unknown }).value;
 }
 
 function recordUnfinished(pathParts: string[], out: string[]): void {
@@ -100,7 +101,7 @@ function walkLeafish(
     inner.forEach((el, i) => {
       if (el && typeof el === "object" && "type" in el) {
         const t = (el as { type: string }).type;
-        const v = (el as { value: unknown }).value;
+        const v = oneOfValue(el);
         walkLeafish(
           [...pathParts, `${labelForBlockType(t)} ${i + 1}`],
           t,
@@ -121,7 +122,7 @@ function walkSubsubsectionBody(
   body.forEach((el, i) => {
     if (!el || typeof el !== "object" || !("type" in el)) return;
     const type = (el as { type: string }).type;
-    const value = (el as { value: unknown }).value;
+    const value = oneOfValue(el);
     walkLeafish(
       [...pathPrefix, `${labelForBlockType(type)} ${i + 1}`],
       type,
@@ -140,7 +141,7 @@ function walkSubsectionBody(
   body.forEach((el, i) => {
     if (!el || typeof el !== "object" || !("type" in el)) return;
     const type = (el as { type: string }).type;
-    const value = (el as { value: unknown }).value;
+    const value = oneOfValue(el);
     if (type === SUBSECTION_BODY_ELEMENT_TYPES.SUBSUBSECTION) {
       const sub = value as {
         title?: string;
@@ -172,7 +173,7 @@ function walkSectionBody(
   body.forEach((el, i) => {
     if (!el || typeof el !== "object" || !("type" in el)) return;
     const type = (el as { type: string }).type;
-    const value = (el as { value: unknown }).value;
+    const value = oneOfValue(el);
     if (type === SECTION_BODY_ELEMENT_TYPES.SUBSECTION) {
       const sub = value as {
         title?: string;
