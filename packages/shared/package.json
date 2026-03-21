@@ -23,9 +23,6 @@
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@types/react": "catalog:",
-    "@types/react-dom": "catalog:",
-    "@typescript-eslint/eslint-plugin": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
     "typescript-eslint": "catalog:",
     "eslint": "catalog:",
     "globals": "catalog:",

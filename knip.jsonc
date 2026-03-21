@@ -1,0 +1,16 @@
+{
+  // Knip: unused dependency analysis for workspace packages (see root script check:unused-deps).
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  "workspaces": {
+    "apps/cms": {
+      // Ensure HTML entry is analyzed (Vite plugin may not always link index.html for dep tracing).
+      "entry": ["index.html"],
+      // Loaded by @firecms/ui Tailwind preset, not referenced directly in this app's sources.
+      "ignoreDependencies": ["@tailwindcss/typography"]
+    },
+    "packages/shared": {
+      // react-dom is a peer for consumers; only `react` is imported in this package's sources.
+      "ignoreDependencies": ["react-dom"]
+    }
+  }
+}
