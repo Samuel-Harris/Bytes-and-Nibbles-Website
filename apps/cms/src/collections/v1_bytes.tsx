@@ -21,6 +21,7 @@ import {
   CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY,
   stripCmsUiOnlyByteKeys,
 } from "./markAllByteContentFinishedForm";
+import { normalizeByteSectionsForCmsForm } from "./normalizeByteBodyForCms";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
 interface ByteType extends Omit<SharedByteType, "series"> {
@@ -361,6 +362,7 @@ export const byteCollection = buildCollection<ByteType>({
   callbacks: {
     onFetch: async ({ entity }: EntityOnFetchProps<ByteType>) => {
       const raw = entity.values as unknown as Record<string, unknown>;
+      normalizeByteSectionsForCmsForm(raw);
       stripCmsUiOnlyByteKeys(raw);
       return entity;
     },
