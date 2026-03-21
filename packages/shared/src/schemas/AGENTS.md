@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # schemas
 
@@ -20,17 +20,19 @@ Zod schema definitions for runtime validation of content types. These schemas co
 ### Working In This Directory
 
 - Schemas must stay in sync with corresponding types in `../types/`
-- Use Zod's `.parse()` or `.safeParse()` for validation
-- Schemas define SECTION_BODY_ELEMENT_TYPES and SUBSECTION_BODY_ELEMENT_TYPES enums
-- Export both schemas and inferred types
+- Use Zod's `.parse()` or `.safeParse()` for validation where Zod builders exist
+- `bytes.ts` exports `SECTION_BODY_ELEMENT_TYPES`, `SUBSECTION_BODY_ELEMENT_TYPES` (includes `SUBSUBSECTION` / `"subsubsection"`), and TypeScript schema types such as `SubsubsectionBodyElementSchema`, `SubsubsectionSchema`, and `SubsectionBodyElementSchema`
 
 ### Schema Structure
 
 ```typescript
-// bytes.ts exports:
+// bytes.ts exports (among others):
 export const ByteSchema: z.ZodType<ByteType>;
 export const SECTION_BODY_ELEMENT_TYPES;
-export const SUBSECTION_BODY_ELEMENT_TYPES;
+export const SUBSECTION_BODY_ELEMENT_TYPES; // includes SUBSUBSECTION
+export type SubsubsectionBodyElementSchema; // leaf-only subsection interior
+export type SubsubsectionSchema;
+export type SubsectionBodyElementSchema; // subsubsection | leaf
 
 // nibbles.ts exports:
 export const NibbleSchema: z.ZodType<NibbleType>;

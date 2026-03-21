@@ -1,7 +1,7 @@
 import React from "react";
 import { CollapsibleGroupSchema } from "@bytes-and-nibbles/shared";
 import Collapsible from "./Collapsible";
-import Body from "./Body";
+import LeafBody from "./LeafBody";
 
 const CollapsibleGroup: React.FC<CollapsibleGroupSchema> = ({
   title,
@@ -13,7 +13,7 @@ const CollapsibleGroup: React.FC<CollapsibleGroupSchema> = ({
       isCollapsible={true}
       titleClassName="text-lg font-semibold"
     >
-      <Body body={body} />
+      <LeafBody body={body} />
     </Collapsible>
   );
 };
