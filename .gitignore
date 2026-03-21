@@ -9,9 +9,6 @@ storage.rules
 # IDE
 .idea/
 
-# cursor
-.cursor/
-
 # Antigravity
 .agent/
 
