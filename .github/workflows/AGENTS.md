@@ -34,7 +34,7 @@ GitHub Actions workflow definitions for continuous integration and deployment.
 
 **Deploy Workflow (`deploy.yml`)**:
 
-- Triggers on push to `main` branch
+- Triggers on push to `main` branch and on manual **Run workflow** (`workflow_dispatch`)
 - Deploys production build to Firebase Hosting
 
 ### Path Filters

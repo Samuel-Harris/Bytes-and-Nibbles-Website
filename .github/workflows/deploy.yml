@@ -1,10 +1,11 @@
 name: Deploy
-run-name: Deploy commit "${{ github.event.head_commit.message }}" to prod
+run-name: ${{ github.event_name == 'push' && format('Deploy commit "{0}" to prod', github.event.head_commit.message) || format('Deploy (manual) {0} to prod', github.sha) }}
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   PROJECT_ID: bytes-and-nibbles
