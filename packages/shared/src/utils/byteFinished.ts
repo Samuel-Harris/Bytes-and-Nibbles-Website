@@ -37,6 +37,7 @@ function latexMapFromValue(
   return null;
 }
 
+// Section and subsection body use the same `type` string literals; one map entry each.
 const BLOCK_LABEL: Record<string, string> = {
   [SECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: "Paragraph",
   [SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: "LaTeX block",
@@ -51,7 +52,7 @@ function labelForBlockType(type: string): string {
 }
 
 function oneOfValue(el: object): unknown {
-  return (el as { value?: unknown }).value;
+  return (el as unknown as { value?: unknown }).value;
 }
 
 function walkLeafish(
