@@ -24,6 +24,5 @@ export interface NibbleType extends NibbleOverviewType {
   steps: string[];
   lastModifiedDate: Date;
   isPublished?: boolean;
-  /** Whole recipe; default false when omitted (legacy). */
   is_finished?: boolean;
 }

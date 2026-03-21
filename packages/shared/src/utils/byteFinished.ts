@@ -4,7 +4,6 @@ import {
   SUBSECTION_BODY_ELEMENT_TYPES,
 } from "../schemas/bytes";
 
-/** Treat missing or non-true as unfinished (legacy documents). */
 export function isNodeFinished(
   record: { is_finished?: boolean } | null | undefined,
 ): boolean {
@@ -37,7 +36,6 @@ function latexMapFromValue(
   return null;
 }
 
-// Section and subsection body use the same `type` string literals; one map entry each.
 const BLOCK_LABEL: Record<string, string> = {
   [SECTION_BODY_ELEMENT_TYPES.PARAGRAPH]: "Paragraph",
   [SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH]: "LaTeX block",
@@ -52,11 +50,7 @@ function labelForBlockType(type: string): string {
 }
 
 function oneOfValue(el: object): unknown {
-  return (el as unknown as { value?: unknown }).value;
-}
-
-function recordUnfinished(pathParts: string[], out: string[]): void {
-  out.push(pathParts.join(" → "));
+  return (el as { value?: unknown }).value;
 }
 
 function walkLeafish(
@@ -68,14 +62,14 @@ function walkLeafish(
   if (type === SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH) {
     const m = paragraphMapFromValue(value);
     if (!isNodeFinished(m ?? undefined)) {
-      recordUnfinished(pathParts, out);
+      out.push(pathParts.join(" → "));
     }
     return;
   }
   if (type === SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH) {
     const m = latexMapFromValue(value);
     if (!isNodeFinished(m ?? undefined)) {
-      recordUnfinished(pathParts, out);
+      out.push(pathParts.join(" → "));
     }
     return;
   }
@@ -85,7 +79,7 @@ function walkLeafish(
       typeof value === "object" &&
       !isNodeFinished(value as { is_finished?: boolean })
     ) {
-      recordUnfinished(pathParts, out);
+      out.push(pathParts.join(" → "));
     }
     return;
   }
@@ -95,7 +89,7 @@ function walkLeafish(
       body?: unknown[];
     } | null;
     if (!isNodeFinished(g ?? undefined)) {
-      recordUnfinished(pathParts, out);
+      out.push(pathParts.join(" → "));
     }
     const inner = Array.isArray(g?.body) ? g.body : [];
     inner.forEach((el, i) => {
@@ -150,7 +144,7 @@ function walkSubsectionBody(
       };
       const title = sub?.title?.trim() || `Subsubsection ${i + 1}`;
       if (!isNodeFinished(sub)) {
-        recordUnfinished([...pathPrefix, title], out);
+        out.push([...pathPrefix, title].join(" → "));
       }
       walkSubsubsectionBody(sub?.body, [...pathPrefix, title], out);
       return;
@@ -182,7 +176,7 @@ function walkSectionBody(
       };
       const title = sub?.title?.trim() || `Subsection ${i + 1}`;
       if (!isNodeFinished(sub)) {
-        recordUnfinished([...pathPrefix, title], out);
+        out.push([...pathPrefix, title].join(" → "));
       }
       walkSubsectionBody(sub?.body, [...pathPrefix, title], out);
       return;
@@ -196,10 +190,6 @@ function walkSectionBody(
   });
 }
 
-/**
- * Returns hierarchical paths to every unfinished content unit in a byte.
- * Used by the CMS publish gate; tolerates legacy paragraph/latex shapes.
- */
 export function listUnfinishedByteUnitPaths(
   byte: Partial<ByteType> | Record<string, unknown>,
 ): string[] {
@@ -216,7 +206,7 @@ export function listUnfinishedByteUnitPaths(
     };
     const secTitle = s.title?.trim() || `Section ${si + 1}`;
     if (!isNodeFinished(s)) {
-      recordUnfinished([secTitle], out);
+      out.push(secTitle);
     }
     walkSectionBody(s.body, [secTitle], out);
   });
@@ -224,13 +214,8 @@ export function listUnfinishedByteUnitPaths(
   return out;
 }
 
-/** How many unfinished paths to include in the CMS publish-block error before "+n more". */
 const DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT = 5;
 
-/**
- * Compact message for the CMS when publishing is blocked by unfinished units.
- * Shows a short bullet list and a "+n more" tail so banners stay readable.
- */
 export function formatUnfinishedBytePathsForPublishError(
   paths: string[],
   maxPreview = DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT,

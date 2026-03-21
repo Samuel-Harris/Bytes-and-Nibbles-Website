@@ -31,7 +31,6 @@ const isFinishedProperty = buildProperty({
   defaultValue: false,
 });
 
-// Markdown paragraph (map: text + finished flag for oneOf valueField)
 const paragraphProperty = buildProperty({
   dataType: "map",
   name: "Paragraph",
