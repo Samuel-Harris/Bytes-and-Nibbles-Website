@@ -45,6 +45,6 @@ GitHub Actions workflow definitions for continuous integration and deployment.
 | `all`     | `packages/shared/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml` |
 | `cms`     | `apps/cms/**`                                                                 |
 | `website` | `apps/website/**`                                                             |
-| `dep_audit` | Workspace manifests, lockfile, workspace config, and `knip.jsonc` (runs unused-deps with test/lint when those paths change) |
+| `dep_audit` | Any `**/package.json`, lockfile, workspace config, and `knip.jsonc` (runs unused-deps when those paths change; glob covers nested packages, not only `apps/*` / `packages/*`) |
 
 <!-- MANUAL: -->

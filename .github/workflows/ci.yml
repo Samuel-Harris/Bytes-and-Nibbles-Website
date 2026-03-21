@@ -41,9 +41,7 @@ jobs:
             website:
               - 'apps/website/**'
             dep_audit:
-              - 'package.json'
-              - 'apps/*/package.json'
-              - 'packages/*/package.json'
+              - '**/package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'knip.jsonc'
