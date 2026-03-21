@@ -43,11 +43,15 @@ describe("Byte subsection", () => {
     sectionTitle = "Byte";
     paragraph = {
       type: "paragraph",
-      value: "This is a paragraph",
+      value: { paragraph: "This is a paragraph", isFinished: false },
     };
     captionedImage = {
       type: "captionedImage",
-      value: { image: "This is an image", caption: "This is a caption" },
+      value: {
+        image: "This is an image",
+        caption: "This is a caption",
+        isFinished: false,
+      },
     };
   });
 
@@ -61,6 +65,7 @@ describe("Byte subsection", () => {
         title={sectionTitle}
         body={[paragraph, captionedImage]}
         isCollapsible={false}
+        isFinished={false}
       />,
     );
 
@@ -81,6 +86,7 @@ describe("Byte subsection", () => {
         title={sectionTitle}
         body={[paragraph]}
         isCollapsible={true}
+        isFinished={false}
       />,
     );
 

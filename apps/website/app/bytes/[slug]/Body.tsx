@@ -15,7 +15,7 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
       case "paragraph":
         return (
           <Paragraph
-            value={bodyElement.value}
+            value={bodyElement.value.paragraph}
             key={`${bodyElement.type}-${index}`}
           />
         );
@@ -30,7 +30,7 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
       case "latexParagraph":
         return (
           <LatexParagraph
-            value={bodyElement.value}
+            value={bodyElement.value.latexContent}
             key={`${bodyElement.type}-${index}`}
           />
         );

@@ -46,7 +46,13 @@ const bytes: ByteSchema[] = [
     sections: [
       {
         title: "Section title 1",
-        body: [{ type: "paragraph", value: "My paragraph 1" }],
+        isFinished: true,
+        body: [
+          {
+            type: "paragraph",
+            value: { paragraph: "My paragraph 1", isFinished: true },
+          },
+        ],
       },
     ],
   },
@@ -63,14 +69,27 @@ const bytes: ByteSchema[] = [
     sections: [
       {
         title: "Section title 2",
+        isFinished: true,
         body: [
-          { type: "paragraph", value: "My paragraph 2" },
-          { type: "paragraph", value: "My paragraph 3" },
+          {
+            type: "paragraph",
+            value: { paragraph: "My paragraph 2", isFinished: true },
+          },
+          {
+            type: "paragraph",
+            value: { paragraph: "My paragraph 3", isFinished: true },
+          },
         ],
       },
       {
         title: "Section title 3",
-        body: [{ type: "paragraph", value: "My paragraph 4" }],
+        isFinished: true,
+        body: [
+          {
+            type: "paragraph",
+            value: { paragraph: "My paragraph 4", isFinished: true },
+          },
+        ],
       },
     ],
   },

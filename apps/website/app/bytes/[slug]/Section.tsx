@@ -27,12 +27,16 @@ const Section: React.FC<SectionSchema> = ({
               title={bodyComponent.value.title}
               body={bodyComponent.value.body}
               isCollapsible={bodyComponent.value.isCollapsible}
+              isFinished={bodyComponent.value.isFinished}
               key={bodyComponent.value.title}
             />
           );
         case "paragraph":
           return (
-            <Paragraph value={bodyComponent.value} key={bodyComponent.value} />
+            <Paragraph
+              value={bodyComponent.value.paragraph}
+              key={bodyComponent.value.paragraph}
+            />
           );
         case "captionedImage":
           return (
@@ -45,7 +49,7 @@ const Section: React.FC<SectionSchema> = ({
         case "latexParagraph":
           return (
             <LatexParagraph
-              value={bodyComponent.value}
+              value={bodyComponent.value.latexContent}
               key={`${bodyComponent.type}-${index}`}
             />
           );

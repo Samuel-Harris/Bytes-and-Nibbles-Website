@@ -18,24 +18,132 @@ interface ByteType extends Omit<SharedByteType, "series"> {
   series: EntityReference; // FireCMS-specific entity reference
 }
 
-// Markdown paragraph (object with paragraph field)
+const isFinishedProperty = buildProperty({
+  dataType: "boolean",
+  name: "Is finished?",
+  defaultValue: false,
+});
+
+const areSubsectionBodyElementsFinished = (elements: unknown): boolean => {
+  if (!Array.isArray(elements)) {
+    return false;
+  }
+
+  return elements.every((element) => {
+    if (typeof element !== "object" || element === null) {
+      return false;
+    }
+
+    const typedElement = element as { type?: string; value?: unknown };
+    const value = typedElement.value as
+      | {
+          isFinished?: boolean;
+          body?: unknown;
+        }
+      | undefined;
+
+    switch (typedElement.type) {
+      case SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH:
+      case SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH:
+      case SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE:
+        return value?.isFinished === true;
+      case SUBSECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP:
+        return (
+          value?.isFinished === true &&
+          areSubsectionBodyElementsFinished(value.body)
+        );
+      default:
+        return false;
+    }
+  });
+};
+
+const areSectionElementsFinished = (sections: unknown): boolean => {
+  if (!Array.isArray(sections)) {
+    return false;
+  }
+
+  return sections.every((section) => {
+    if (typeof section !== "object" || section === null) {
+      return false;
+    }
+
+    const typedSection = section as {
+      isFinished?: boolean;
+      body?: unknown;
+    };
+
+    if (typedSection.isFinished !== true || !Array.isArray(typedSection.body)) {
+      return false;
+    }
+
+    return typedSection.body.every((element) => {
+      if (typeof element !== "object" || element === null) {
+        return false;
+      }
+
+      const typedElement = element as { type?: string; value?: unknown };
+      const value = typedElement.value as
+        | {
+            isFinished?: boolean;
+            body?: unknown;
+          }
+        | undefined;
+
+      switch (typedElement.type) {
+        case SECTION_BODY_ELEMENT_TYPES.PARAGRAPH:
+        case SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH:
+        case SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE:
+          return value?.isFinished === true;
+        case SECTION_BODY_ELEMENT_TYPES.COLLAPSIBLE_GROUP:
+          return (
+            value?.isFinished === true &&
+            areSubsectionBodyElementsFinished(value.body)
+          );
+        case SECTION_BODY_ELEMENT_TYPES.SUBSECTION:
+          return (
+            value?.isFinished === true &&
+            areSubsectionBodyElementsFinished(value.body)
+          );
+        default:
+          return false;
+      }
+    });
+  });
+};
+
+// Markdown paragraph
 const paragraphProperty = buildProperty({
-  dataType: "string",
+  dataType: "map",
   name: "Paragraph",
-  Field: MarkdownParagraphField,
-  markdown: true,
-  validation: {
-    required: true,
+  properties: {
+    paragraph: buildProperty({
+      dataType: "string",
+      name: "Paragraph",
+      Field: MarkdownParagraphField,
+      markdown: true,
+      validation: {
+        required: true,
+      },
+    }),
+    isFinished: isFinishedProperty,
   },
 });
 
 // LaTeX paragraph
 const latexParagraphProperty = buildProperty({
-  dataType: "string",
+  dataType: "map",
   name: "LaTeX content",
-  Field: LatexParagraphField,
-  validation: {
-    required: true,
+  properties: {
+    latexContent: buildProperty({
+      dataType: "string",
+      name: "LaTeX content",
+      Field: LatexParagraphField,
+      validation: {
+        required: true,
+      },
+    }),
+    isFinished: isFinishedProperty,
   },
 });
 
@@ -68,6 +176,7 @@ const captionedImageProperty = buildProperty({
         required: true,
       },
     }),
+    isFinished: isFinishedProperty,
   },
 });
 
@@ -96,6 +205,7 @@ const collapsibleGroupProperty = buildProperty({
         },
       },
     }),
+    isFinished: isFinishedProperty,
   },
 });
 
@@ -131,6 +241,7 @@ const subsectionProperty = buildProperty({
       name: "Is collapsible?",
       defaultValue: false,
     }),
+    isFinished: isFinishedProperty,
   },
 });
 
@@ -210,6 +321,7 @@ export const byteCollection = buildCollection<ByteType>({
     isPublished: buildProperty({
       dataType: "boolean",
       name: "Is published?",
+      defaultValue: false,
       validation: {
         required: true,
       },
@@ -246,6 +358,7 @@ export const byteCollection = buildCollection<ByteType>({
             name: "Is collapsible?",
             defaultValue: false,
           }),
+          isFinished: isFinishedProperty,
           body: buildProperty({
             dataType: "array",
             name: "Section body",
@@ -273,10 +386,16 @@ export const byteCollection = buildCollection<ByteType>({
   },
   callbacks: {
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
-      if (
-        values.isPublished === true &&
-        previousValues?.isPublished === false
-      ) {
+      const isPublishingNow =
+        values.isPublished === true && previousValues?.isPublished !== true;
+
+      if (isPublishingNow && !areSectionElementsFinished(values.sections)) {
+        throw new Error(
+          "Cannot publish: all sections and nested elements must be marked as finished."
+        );
+      }
+
+      if (isPublishingNow) {
         values.publishDate = new Date();
       }
 

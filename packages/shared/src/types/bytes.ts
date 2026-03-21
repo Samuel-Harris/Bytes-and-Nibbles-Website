@@ -3,15 +3,18 @@ import { ByteSeriesType } from "./byteSeries";
 // CMS-specific content structure types (FireCMS internal format)
 export interface ParagraphType {
   paragraph: string; // Markdown content
+  isFinished: boolean;
 }
 
 export interface LatexParagraphType {
   latexContent: string; // LaTeX content
+  isFinished: boolean;
 }
 
 export interface CaptionedImageType {
   image: string;
   caption: string;
+  isFinished: boolean;
 }
 
 // Base content types that can appear in a subsection (non-collapsible)
@@ -24,6 +27,7 @@ export type BaseContentType =
 export interface CollapsibleGroupType {
   title?: string; // Optional heading for the collapsible section
   body: BaseContentType[];
+  isFinished: boolean;
 }
 
 export type SubsectionBodyElementType = BaseContentType | CollapsibleGroupType;
@@ -32,6 +36,7 @@ export interface SubsectionType {
   title: string;
   body: SubsectionBodyElementType[];
   isCollapsible?: boolean;
+  isFinished: boolean;
 }
 
 export type SectionBodyElementType = SubsectionType | SubsectionBodyElementType;
@@ -40,6 +45,7 @@ export interface SectionType {
   title: string;
   body: SectionBodyElementType[];
   isCollapsible?: boolean;
+  isFinished: boolean;
 }
 
 // Website consumption types (transformed from CMS data)

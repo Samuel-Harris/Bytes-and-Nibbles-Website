@@ -53,22 +53,27 @@ describe("Byte section", () => {
     sectionTitle = "Byte";
     paragraph1 = {
       type: "paragraph",
-      value: "This is a paragraph 1",
+      value: { paragraph: "This is a paragraph 1", isFinished: true },
     };
 
     captionedImage1 = {
       type: "captionedImage",
-      value: { image: "This is a image 1", caption: "This is a caption 1" },
+      value: {
+        image: "This is a image 1",
+        caption: "This is a caption 1",
+        isFinished: true,
+      },
     };
 
     subsection = {
       type: "subsection",
       value: {
         title: "Subsection",
+        isFinished: true,
         body: [
           {
             type: "paragraph",
-            value: "Some internal paragraph",
+            value: { paragraph: "Some internal paragraph", isFinished: true },
           },
         ],
       },

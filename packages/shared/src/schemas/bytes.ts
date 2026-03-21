@@ -3,6 +3,8 @@ import {
   SubsectionType,
   SectionType,
   CaptionedImageType,
+  ParagraphType,
+  LatexParagraphType,
 } from "../types/bytes";
 
 // Constants for oneOf serialization types
@@ -26,11 +28,11 @@ export const SECTION_BODY_ELEMENT_TYPES = {
 export type BaseContentSchema =
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
-      value: string;
+      value: ParagraphType;
     }
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH;
-      value: string;
+      value: LatexParagraphType;
     }
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;
@@ -41,6 +43,7 @@ export type BaseContentSchema =
 export interface CollapsibleGroupSchema {
   title?: string;
   body: BaseContentSchema[];
+  isFinished: boolean;
 }
 
 export type SubsectionBodyElementSchema =
@@ -59,10 +62,13 @@ export type SectionBodyElementSchema =
       type: typeof SECTION_BODY_ELEMENT_TYPES.SUBSECTION;
       value: SubsectionSchema;
     }
-  | { type: typeof SECTION_BODY_ELEMENT_TYPES.PARAGRAPH; value: string }
+  | {
+      type: typeof SECTION_BODY_ELEMENT_TYPES.PARAGRAPH;
+      value: ParagraphType;
+    }
   | {
       type: typeof SECTION_BODY_ELEMENT_TYPES.LATEX_PARAGRAPH;
-      value: string;
+      value: LatexParagraphType;
     }
   | {
       type: typeof SECTION_BODY_ELEMENT_TYPES.CAPTIONED_IMAGE;

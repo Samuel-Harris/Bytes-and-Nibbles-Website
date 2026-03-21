@@ -29,19 +29,28 @@ const byteExample: ByteSchema = {
   sections: [
     {
       title: "Section 1",
+      isFinished: true,
       body: [
         {
           type: "paragraph",
-          value: "Paragraph",
+          value: {
+            paragraph: "Paragraph",
+            isFinished: true,
+          },
         },
       ],
     },
     {
       title: "Section 2",
+      isFinished: true,
       body: [
         {
           type: "captionedImage",
-          value: { image: "Image src", caption: "Image caption" },
+          value: {
+            image: "Image src",
+            caption: "Image caption",
+            isFinished: true,
+          },
         },
       ],
     },
