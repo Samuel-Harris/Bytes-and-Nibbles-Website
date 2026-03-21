@@ -14,20 +14,18 @@ export interface CaptionedImageType {
   caption: string;
 }
 
-// Base content types that can appear inside subsection or subsubsection bodies,
-// and inside collapsible groups (non-collapsible blocks only in the latter).
+// Base blocks in subsection/subsubsection bodies and inside collapsible groups
 export type BaseContentType =
   | ParagraphType
   | LatexParagraphType
   | CaptionedImageType;
 
-// Collapsible group that can contain base content types (no nested subsubsection)
+// Collapsible group of base blocks (no nested subsubsection)
 export interface CollapsibleGroupType {
   title?: string; // Optional heading for the collapsible section
   body: BaseContentType[];
 }
 
-// Leaf blocks only: no further subsubsection nesting
 export type SubsubsectionBodyElementType = BaseContentType | CollapsibleGroupType;
 
 export interface SubsubsectionType {

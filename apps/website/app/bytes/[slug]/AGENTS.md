@@ -13,7 +13,7 @@ Dynamic route for displaying individual Byte (tech article) pages. Renders the f
 | ------------------------- | --------------------------------------------------------- |
 | `page.tsx`                | Individual byte page component                            |
 | `page.test.tsx`           | Tests for the byte page                                   |
-| `Body.tsx`                | Renders **subsection** body (subsubsection + leaf blocks) |
+| `Body.tsx`                | Renders subsection body (subsubsection + leaf blocks)     |
 | `LeafBody.tsx`            | Leaf-only body (paragraph, LaTeX, image, collapsible group) |
 | `Section.tsx`             | Renders article sections with headings                    |
 | `Section.test.tsx`        | Tests for Section component                               |

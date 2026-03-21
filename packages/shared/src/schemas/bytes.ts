@@ -23,8 +23,7 @@ export const SECTION_BODY_ELEMENT_TYPES = {
   COLLAPSIBLE_GROUP: "collapsibleGroup",
 } as const;
 
-// Schema types for oneOf serialization
-// Base content schema types (non-collapsible, used inside collapsible groups)
+// Discriminated shapes for polymorphic body fields (Firestore oneOf)
 export type BaseContentSchema =
   | {
       type: typeof SUBSECTION_BODY_ELEMENT_TYPES.PARAGRAPH;

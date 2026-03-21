@@ -12,7 +12,7 @@ const Body: React.FC<{ body: SubsectionBodyElementSchema[] }> = ({
     if (bodyElement.type === "subsubsection") {
       return (
         <Subsubsection
-          key={`subsubsection-${index}`}
+          key={`${bodyElement.type}-${index}`}
           title={bodyElement.value.title}
           body={bodyElement.value.body}
           isCollapsible={bodyElement.value.isCollapsible}

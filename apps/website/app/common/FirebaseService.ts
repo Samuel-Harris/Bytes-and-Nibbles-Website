@@ -175,7 +175,6 @@ export default class FirebaseService {
     return getDownloadURL(storageRef);
   }
 
-  /** Resolves storage paths for captioned images inside collapsible groups (no nested groups). */
   private async resolveImagesInBaseContentItems(
     items: BaseContentSchema[]
   ): Promise<void> {
