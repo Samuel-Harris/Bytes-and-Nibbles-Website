@@ -1,1 +1,4 @@
-{ "jestrunner.enableTestExplorer": true }
+{
+  "jestrunner.enableTestExplorer": true,
+  "jestrunner.projectPath": "apps/website"
+}
