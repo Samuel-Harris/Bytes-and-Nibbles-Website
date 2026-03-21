@@ -12,9 +12,6 @@ storage.rules
 # docs
 docs/
 
-# cursor
-.cursor/
-
 # Antigravity
 .agent/
 
