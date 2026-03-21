@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 import { FieldProps, FieldHelperText } from "@firecms/core";
 import { TextField } from "@firecms/ui";
 import { useMathJax } from "@bytes-and-nibbles/shared";
+import { useDebouncedValue } from "../hooks/useDebouncedValue";
 
-export function LatexParagraphField({
+const LATEX_PREVIEW_DEBOUNCE_MS = 550;
+
+function LatexParagraphFieldInner({
   property,
   value,
   setValue,
@@ -18,43 +21,60 @@ export function LatexParagraphField({
   const [renderError, setRenderError] = useState<string | null>(null);
   const { loaded, mathJax: mathJaxFromHook } = useMathJax();
 
+  const trimmedLive = value?.trim() ? value : "";
+  const debouncedPreviewTex = useDebouncedValue(trimmedLive, LATEX_PREVIEW_DEBOUNCE_MS);
+
   const displayContent = useMemo(() => {
-    return value?.trim() ? value : "";
-  }, [value]);
+    return debouncedPreviewTex.trim() ? debouncedPreviewTex : "";
+  }, [debouncedPreviewTex]);
 
   useEffect(() => {
-    // Prioritize the window object directly to avoid stale state issues
     const mj = mathJaxFromHook || window.MathJax;
 
-    // We need the DOM ref, the content, and the actual library methods
     if (!loaded || !mj || !previewRef.current || !displayContent) {
       return;
     }
 
-    const timeoutId = setTimeout(async () => {
-      try {
-        // Double check existence before calling to prevent "is not a function" errors
-        if (typeof mj.typesetClear === "function") {
-          mj.typesetClear([previewRef.current!]);
-        }
-        if (typeof mj.texReset === "function") {
-          mj.texReset();
+    let cancelled = false;
+
+    const timeoutId = window.setTimeout(() => {
+      void (async () => {
+        const el = previewRef.current;
+        if (!el || cancelled) {
+          return;
         }
 
-        if (typeof mj.typesetPromise === "function") {
-          await mj.typesetPromise([previewRef.current!]);
-          setRenderError(null);
-        } else {
-          // Fallback if MathJax is present but typesetPromise isn't ready yet
-          console.warn("MathJax found but typesetPromise is missing");
-        }
-      } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : String(err);
-        setRenderError(`LaTeX syntax error ${message}`);
-      }
-    }, 400);
+        try {
+          if (typeof mj.typesetClear === "function") {
+            mj.typesetClear([el]);
+          }
+          if (typeof mj.texReset === "function") {
+            mj.texReset();
+          }
 
-    return () => clearTimeout(timeoutId);
+          if (typeof mj.typesetPromise === "function") {
+            await mj.typesetPromise([el]);
+            if (cancelled) {
+              return;
+            }
+            setRenderError(null);
+          } else {
+            console.warn("MathJax found but typesetPromise is missing");
+          }
+        } catch (err: unknown) {
+          if (cancelled) {
+            return;
+          }
+          const message = err instanceof Error ? err.message : String(err);
+          setRenderError(`LaTeX syntax error ${message}`);
+        }
+      })();
+    }, 0);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
   }, [displayContent, loaded, mathJaxFromHook]);
 
   return (
@@ -70,7 +90,6 @@ export function LatexParagraphField({
         minRows={3}
       />
 
-      {/* Preview */}
       {value?.trim() && (
         <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
           <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
@@ -84,7 +103,11 @@ export function LatexParagraphField({
               ref={previewRef}
               className="prose prose-sm max-w-none dark:prose-invert"
             >
-              {displayContent}
+              {displayContent || (
+                <span className="text-gray-500 dark:text-gray-400 italic text-sm">
+                  Preview updates after you pause typing.
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -99,3 +122,22 @@ export function LatexParagraphField({
     </div>
   );
 }
+
+function fieldPropsEqual(
+  prev: FieldProps<string>,
+  next: FieldProps<string>,
+): boolean {
+  return (
+    prev.value === next.value &&
+    prev.error === next.error &&
+    prev.showError === next.showError &&
+    prev.disabled === next.disabled &&
+    prev.isSubmitting === next.isSubmitting &&
+    prev.autoFocus === next.autoFocus &&
+    prev.includeDescription === next.includeDescription &&
+    prev.setValue === next.setValue &&
+    prev.property === next.property
+  );
+}
+
+export const LatexParagraphField = memo(LatexParagraphFieldInner, fieldPropsEqual);

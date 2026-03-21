@@ -11,8 +11,8 @@ Custom FireCMS field components that extend the default field rendering with spe
 
 | File                         | Description                                     |
 | ---------------------------- | ----------------------------------------------- |
-| `MarkdownParagraphField.tsx` | Markdown text field with live preview           |
-| `LatexParagraphField.tsx`    | LaTeX/math content field with MathJax preview   |
+| `MarkdownParagraphField.tsx` | Markdown text field with deferred preview (typing stays responsive) |
+| `LatexParagraphField.tsx`    | LaTeX/math field with debounced MathJax preview   |
 | `ColorField.tsx`             | Color picker with visual preview for hex colors |
 
 ## For AI Agents

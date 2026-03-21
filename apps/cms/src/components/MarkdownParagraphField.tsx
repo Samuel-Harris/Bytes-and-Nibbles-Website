@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo, useDeferredValue } from "react";
 import { FieldProps, FieldHelperText } from "@firecms/core";
 import { TextField, Markdown } from "@firecms/ui";
 
-export function MarkdownParagraphField({
+function MarkdownParagraphFieldInner({
   property,
   value,
   setValue,
@@ -13,8 +13,8 @@ export function MarkdownParagraphField({
   disabled,
   autoFocus,
 }: FieldProps<string>) {
-  // Handle both string and object formats for backward compatibility
   const actualValue = typeof value === "string" ? value : "";
+  const deferredPreviewSource = useDeferredValue(actualValue);
 
   return (
     <div className="space-y-3">
@@ -29,14 +29,13 @@ export function MarkdownParagraphField({
         minRows={6}
       />
 
-      {/* Markdown Preview */}
-      {actualValue?.trim() && (
+      {deferredPreviewSource?.trim() && (
         <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
           <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
             Markdown preview
           </div>
           <div className="prose prose-sm max-w-none dark:prose-invert">
-            <Markdown source={actualValue} />
+            <Markdown source={deferredPreviewSource} />
           </div>
         </div>
       )}
@@ -50,3 +49,25 @@ export function MarkdownParagraphField({
     </div>
   );
 }
+
+function fieldPropsEqual(
+  prev: FieldProps<string>,
+  next: FieldProps<string>,
+): boolean {
+  return (
+    prev.value === next.value &&
+    prev.error === next.error &&
+    prev.showError === next.showError &&
+    prev.disabled === next.disabled &&
+    prev.isSubmitting === next.isSubmitting &&
+    prev.autoFocus === next.autoFocus &&
+    prev.includeDescription === next.includeDescription &&
+    prev.setValue === next.setValue &&
+    prev.property === next.property
+  );
+}
+
+export const MarkdownParagraphField = memo(
+  MarkdownParagraphFieldInner,
+  fieldPropsEqual,
+);
