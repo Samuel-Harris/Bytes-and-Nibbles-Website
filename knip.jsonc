@@ -11,6 +11,10 @@
     "packages/shared": {
       // react-dom is a peer for consumers; only `react` is imported in this package's sources.
       "ignoreDependencies": ["react-dom"]
+    },
+    "apps/website": {
+      // Used by the `deploy` script (`firebase deploy`); not imported from source.
+      "ignoreDependencies": ["firebase-tools"]
     }
   }
 }
