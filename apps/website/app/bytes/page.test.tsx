@@ -1,18 +1,17 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import BytesPage from "./page";
+import type { MockedFunction } from "vitest";
 import FirebaseService from "@/common/FirebaseService";
-import { mocked, MockedFunction } from "jest-mock";
-import "@testing-library/jest-dom";
 import { ByteOverviewType } from "@bytes-and-nibbles/shared";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 import TilecardSubheading, {
   TilecardSubheadingProps,
 } from "./TilecardSubheading";
 
-jest.mock("@/common/FirebaseService");
-jest.mock("@/tilecard/Tilecard");
-jest.mock("./TilecardSubheading");
+vi.mock("@/common/FirebaseService");
+vi.mock("@/tilecard/Tilecard");
+vi.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listBytesMock: MockedFunction<() => ByteOverviewType[]>;
@@ -22,7 +21,7 @@ let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
   beforeAll(() => {
-    firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
+    firebaseGetInstanceMock = vi.mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
       Promise.resolve(FirebaseService.prototype)
     );
@@ -45,10 +44,10 @@ describe("Bytes page", () => {
         slug: "slug-2",
       },
     ];
-    listBytesMock = mocked(FirebaseService.prototype.listBytes);
+    listBytesMock = vi.mocked(FirebaseService.prototype.listBytes);
     listBytesMock.mockReturnValue(byteOverviewsMock);
 
-    tilecardMock = mocked(Tilecard);
+    tilecardMock = vi.mocked(Tilecard);
     tilecardMock.mockImplementation(({ title, children }: TilecardProps) => {
       return (
         <div>
@@ -58,7 +57,7 @@ describe("Bytes page", () => {
       );
     });
 
-    byteTilecardSubheadingMock = mocked(TilecardSubheading);
+    byteTilecardSubheadingMock = vi.mocked(TilecardSubheading);
     byteTilecardSubheadingMock.mockImplementation(
       ({ subtitle }: TilecardSubheadingProps) => {
         return <p>{subtitle}</p>;
@@ -67,7 +66,7 @@ describe("Bytes page", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should should render all of the tilecards", async () => {

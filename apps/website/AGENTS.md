@@ -17,8 +17,8 @@ A Next.js 15 public-facing website that displays content from the CMS. Renders "
 | `tailwind.config.ts`     | Tailwind CSS configuration                    |
 | `postcss.config.js`      | PostCSS configuration                         |
 | `eslint.config.mjs`      | ESLint configuration                          |
-| `jest.config.ts`         | Jest testing configuration                    |
-| `jest.tsconfig.json`     | TypeScript config for Jest                    |
+| `vitest.config.ts`       | Vitest configuration (jsdom, aliases, coverage) |
+| `vitest.setup.ts`        | Vitest setup (`@testing-library/jest-dom/vitest`, mocks) |
 | `README.md`              | Website-specific documentation                |
 | `website_screenshot.png` | Screenshot of the website for README          |
 | `firestore.indexes.json` | Firestore index configuration                 |
@@ -29,7 +29,7 @@ A Next.js 15 public-facing website that displays content from the CMS. Renders "
 | ------------ | ------------------------------------------------------------- |
 | `app/`       | Next.js App Router pages and components - see `app/AGENTS.md` |
 | `public/`    | Static assets served at root URL                              |
-| `__mocks__/` | Jest mock files                                               |
+| `__mocks__/` | Static module mocks for Vitest (e.g. markdown / highlighter) |
 | `out/`       | Static export output (generated)                              |
 | `.next/`     | Next.js build cache (generated)                               |
 | `coverage/`  | Test coverage reports (generated)                             |
@@ -46,7 +46,7 @@ A Next.js 15 public-facing website that displays content from the CMS. Renders "
 
 ### Testing Requirements
 
-- Run `pnpm test` to execute Jest tests
+- Run `pnpm test` to execute Vitest (`vitest run` in this package; root `vitest.config.ts` also lists this app as a project)
 - Tests are colocated with source files (e.g., `page.test.tsx` next to `page.tsx`)
 - Uses React Testing Library for component testing
 - Aim for good test coverage on critical components
@@ -71,7 +71,7 @@ A Next.js 15 public-facing website that displays content from the CMS. Renders "
 - React v19.x - UI framework
 - Firebase v12.x - Backend services
 - Tailwind CSS - Styling
-- Jest + React Testing Library - Testing
+- Vitest + React Testing Library - Testing
 - React Markdown + Syntax Highlighter - Content rendering
 - Heroicons - Icons
 

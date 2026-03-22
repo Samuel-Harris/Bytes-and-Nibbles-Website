@@ -1,5 +1,4 @@
 import React from "react";
-import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Paragraph from "./Paragraph";
 import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";

@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 import FirebaseService from "@/common/FirebaseService";
-import { mocked, MockedFunction } from "jest-mock";
-import "@testing-library/jest-dom";
 import Tilecard, { TilecardProps } from "@/tilecard/Tilecard";
 import { NibbleOverviewType } from "@bytes-and-nibbles/shared";
 import TilecardSubheading, {
@@ -10,9 +9,9 @@ import TilecardSubheading, {
 } from "./TilecardSubheading";
 import NibblesPage from "./page";
 
-jest.mock("@/common/FirebaseService");
-jest.mock("@/tilecard/Tilecard");
-jest.mock("./TilecardSubheading");
+vi.mock("@/common/FirebaseService");
+vi.mock("@/tilecard/Tilecard");
+vi.mock("./TilecardSubheading");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 let listNibblesMock: MockedFunction<() => NibbleOverviewType[]>;
@@ -22,8 +21,8 @@ let tilecardMock: MockedFunction<FC<TilecardProps>>;
 
 describe("Bytes page", () => {
   beforeAll(() => {
-    jest.clearAllMocks();
-    firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
+    vi.clearAllMocks();
+    firebaseGetInstanceMock = vi.mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
       Promise.resolve(FirebaseService.prototype)
     );
@@ -47,10 +46,10 @@ describe("Bytes page", () => {
       },
     ];
 
-    listNibblesMock = mocked(FirebaseService.prototype.listNibbles);
+    listNibblesMock = vi.mocked(FirebaseService.prototype.listNibbles);
     listNibblesMock.mockReturnValue(nibbleOverviewsMock);
 
-    tilecardMock = mocked(Tilecard);
+    tilecardMock = vi.mocked(Tilecard);
     tilecardMock.mockImplementation(({ title, children }: TilecardProps) => {
       return (
         <div>
@@ -60,7 +59,7 @@ describe("Bytes page", () => {
       );
     });
 
-    tilecardSubheadingMock = mocked(TilecardSubheading);
+    tilecardSubheadingMock = vi.mocked(TilecardSubheading);
     tilecardSubheadingMock.mockImplementation(
       ({ timeTakenMinutes }: TilecardSubheadingProps) => {
         return <p>{timeTakenMinutes}</p>;
@@ -69,7 +68,7 @@ describe("Bytes page", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should should render all of the tilecards", async () => {

@@ -65,6 +65,7 @@ export default tseslint.config(
   },
   {
     ignores: [
+      "vitest.config.ts",
       ".next/**",
       "node_modules/**",
       "out/**",

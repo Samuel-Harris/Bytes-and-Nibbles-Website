@@ -14,6 +14,7 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 | `knip.jsonc`          | Knip config for unused dependency checks (`pnpm check:unused-deps`) |
 | `pnpm-workspace.yaml` | pnpm workspace configuration and shared dependency catalog |
 | `pnpm-lock.yaml`      | Locked dependency versions                                 |
+| `vitest.config.ts`    | Root Vitest workspace (`projects`: `packages/shared`, `apps/website`) |
 | `firebase.json`       | Firebase hosting and deployment configuration              |
 | `.firebaserc`         | Firebase project configuration                             |
 | `firestore.rules`     | Firestore security rules                                   |
@@ -43,7 +44,7 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 
 ### Testing Requirements
 
-- Run `pnpm test` to execute tests across all packages
+- Run `pnpm test` to execute Vitest across workspace packages (`packages/shared` and `apps/website` are registered in the root `vitest.config.ts`)
 - Run `pnpm lint` to lint all packages
 - CI runs on pull requests to `main` branch
 

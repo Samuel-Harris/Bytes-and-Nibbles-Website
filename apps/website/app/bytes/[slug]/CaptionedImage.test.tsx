@@ -1,5 +1,4 @@
 import React, { act, use, Suspense } from "react";
-import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 
@@ -14,6 +13,10 @@ const ResolvedCaptionedImage = (props: CaptionedImageProps) => {
 };
 
 describe("Captioned image", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("should render the given image and caption (non-svg)", async () => {
     const imageSrc = "https://example.com/image.jpg";
     const caption = "Image caption";
@@ -39,12 +42,14 @@ describe("Captioned image", () => {
     const svgContent = '<svg id="test-svg"><path d="M0 0h10v10H0z"/></svg>';
     const caption = "SVG caption";
 
-    // Mock fetch
-    global.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: true,
-        text: () => Promise.resolve(svgContent),
-      }),
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          text: () => Promise.resolve(svgContent),
+        }),
+      ),
     );
 
     await act(async () => {

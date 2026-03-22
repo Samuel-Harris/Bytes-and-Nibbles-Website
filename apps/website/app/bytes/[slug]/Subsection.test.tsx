@@ -1,16 +1,18 @@
 import React from "react";
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
 import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
-import { mocked, MockedFunction } from "jest-mock";
 import Subsection from "./Subsection";
 import { CollapsibleProps } from "./Collapsible";
 
-jest.mock("./Paragraph");
-jest.mock("./CaptionedImage");
-jest.mock("./Collapsible", () => ({
+vi.mock("./Paragraph");
+vi.mock("./CaptionedImage", () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
+vi.mock("./Collapsible", () => ({
   __esModule: true,
   default: ({ title, children }: CollapsibleProps) => (
     <div data-testid="collapsible">
@@ -33,11 +35,11 @@ let captionedImage: SubsectionBodyElementSchema;
 describe("Byte subsection", () => {
   beforeAll(() => {
     paragraphMockText = "This is a mock paragraph";
-    paragraphMock = mocked(Paragraph);
+    paragraphMock = vi.mocked(Paragraph);
     paragraphMock.mockReturnValue(<p>{paragraphMockText}</p>);
 
     captionedImageMockCaption = "This is a mock image caption";
-    captionedImageMock = mocked(CaptionedImage);
+    captionedImageMock = vi.mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);
 
     sectionTitle = "Byte";
@@ -52,7 +54,7 @@ describe("Byte subsection", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render the subsection title and body via Collapsible", () => {

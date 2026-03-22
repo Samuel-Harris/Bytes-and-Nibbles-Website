@@ -1,8 +1,7 @@
 import React from "react";
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import FirebaseService from "@/common/FirebaseService";
 import { render, screen } from "@testing-library/react";
-import { mocked, MockedFunction } from "jest-mock";
 import BytePage, { generateMetadata, generateStaticParams } from "./page";
 import { ByteSchema, SectionSchema } from "@bytes-and-nibbles/shared";
 import Section from "./Section";
@@ -10,16 +9,16 @@ import { getDateString } from "@/common/timeUtils";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 
-jest.mock("@/common/FirebaseService");
-jest.mock("@/common/timeUtils");
-jest.mock("@/tilecard/Tilecard");
-jest.mock("./Section");
+vi.mock("@/common/FirebaseService");
+vi.mock("@/common/timeUtils");
+vi.mock("@/tilecard/Tilecard");
+vi.mock("./Section");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 const byteExample: ByteSchema = {
   title: "Blog title",
   subtitle: "Blog subtitle",
-  series: { title: "My series", accentColour: "#ac3Ef" },
+  series: { title: "My series", accentColour: "#ac3eef" },
   slug: "my-blog-page",
   thumbnail: "Thumbnail src",
   coverPhoto: "Cover photo src",
@@ -54,29 +53,29 @@ let sectionMock: MockedFunction<React.FC<SectionSchema>>;
 describe("Individual byte page", () => {
   beforeAll(() => {
     // set up firebaseService mock
-    firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
+    firebaseGetInstanceMock = vi.mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
       Promise.resolve(FirebaseService.prototype)
     );
 
-    getByteMock = mocked(FirebaseService.prototype.getByte);
+    getByteMock = vi.mocked(FirebaseService.prototype.getByte);
 
-    getDateStringMock = mocked(getDateString);
+    getDateStringMock = vi.mocked(getDateString);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  sectionMock = mocked(Section);
+  sectionMock = vi.mocked(Section);
   sectionMock.mockImplementation(({ title }: SectionSchema) => {
     return <p>{title}</p>;
   });
 
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
-    const getSlugsMock: MockedFunction<() => string[]> = mocked(
-      FirebaseService.prototype.getByteSlugs
+    const getSlugsMock: MockedFunction<() => string[]> = vi.mocked(
+      FirebaseService.prototype.getByteSlugs,
     );
     getSlugsMock.mockReturnValue(mockSlugs);
 

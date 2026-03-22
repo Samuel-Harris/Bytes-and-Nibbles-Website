@@ -12,7 +12,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
+    "types": ["node", "vitest/globals", "@testing-library/jest-dom"],
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "build/types/**/*.ts",
     "out/types/**/*.ts",
-    "jest.config.ts",
+    "vitest.config.ts",
     ".next/dev/types/**/*.ts",
     "out/dev/types/**/*.ts"
   ],

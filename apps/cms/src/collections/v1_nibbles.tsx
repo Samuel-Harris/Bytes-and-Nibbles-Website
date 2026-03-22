@@ -4,7 +4,11 @@ import {
   buildCollection,
   buildProperty,
 } from "@firecms/core";
-import { NibbleType } from "@bytes-and-nibbles/shared";
+import {
+  NibbleType,
+  NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE,
+} from "@bytes-and-nibbles/shared";
+import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 
 export const v1NibbleCollection = buildCollection<NibbleType>({
   id: "v1_nibbles",
@@ -131,6 +135,11 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
     isPublished: buildProperty({
       dataType: "boolean",
       name: "Is published?",
+      Field: GuardedIsPublishedField,
+      customProps: {
+        getPublishBlockMessage: (values: Record<string, unknown>) =>
+          values.is_finished === true ? null : NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE,
+      },
       validation: {
         required: true,
       },
@@ -158,9 +167,20 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
         required: true,
       },
     }),
+    is_finished: buildProperty({
+      dataType: "boolean",
+      name: "Recipe marked finished?",
+      description:
+        "Turn on when the recipe is complete. Publishing requires this to be on.",
+      defaultValue: false,
+    }),
   },
   callbacks: {
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      if (values.isPublished === true && values.is_finished !== true) {
+        throw new Error(NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE);
+      }
+
       if (
         values.isPublished === true &&
         previousValues?.isPublished === false

@@ -1,7 +1,6 @@
 import React from "react";
 import Tilecard, { TilecardProps } from "./Tilecard";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { getDateString } from "../common/timeUtils";
 
 describe("Tilecard", () => {
