@@ -9,19 +9,23 @@ const rootDir = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      "@": path.join(rootDir, "app"),
-      "react-markdown": path.join(rootDir, "__mocks__/react-markdown.js"),
-      "remark-gfm": path.join(rootDir, "__mocks__/remark-gfm.js"),
-      "react-syntax-highlighter": path.join(
-        rootDir,
-        "__mocks__/react-syntax-highlighter.js",
-      ),
-      "react-syntax-highlighter/dist/esm/styles/prism": path.join(
-        rootDir,
-        "__mocks__/react-syntax-highlighter-style.js",
-      ),
-    },
+    // Match only the package entry — a string alias would also match
+    // `react-syntax-highlighter/dist/...` and break style subpath imports.
+    alias: [
+      {
+        find: /^react-syntax-highlighter$/,
+        replacement: path.join(rootDir, "__mocks__/react-syntax-highlighter.js"),
+      },
+      { find: "@", replacement: path.join(rootDir, "app") },
+      {
+        find: "react-markdown",
+        replacement: path.join(rootDir, "__mocks__/react-markdown.js"),
+      },
+      {
+        find: "remark-gfm",
+        replacement: path.join(rootDir, "__mocks__/remark-gfm.js"),
+      },
+    ],
   },
   test: {
     environment: "jsdom",

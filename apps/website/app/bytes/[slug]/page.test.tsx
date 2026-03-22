@@ -18,7 +18,7 @@ let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 const byteExample: ByteSchema = {
   title: "Blog title",
   subtitle: "Blog subtitle",
-  series: { title: "My series", accentColour: "#ac3Ef" },
+  series: { title: "My series", accentColour: "#ac3eef" },
   slug: "my-blog-page",
   thumbnail: "Thumbnail src",
   coverPhoto: "Cover photo src",
