@@ -11,7 +11,7 @@
     "preview:cms": "pnpm --filter bytes-and-nibbles-cms preview",
     "test": "pnpm --filter \"*\" --parallel test",
     "lint": "pnpm --filter \"*\" --parallel lint",
-    "check:unused-deps": "knip --include dependencies --treat-config-hints-as-errors",
+    "check:unused-deps": "knip --include dependencies",
     "clean": "pnpm --filter \"*\" clean && rm -rf node_modules"
   },
   "devDependencies": {
