@@ -50,7 +50,7 @@ function labelForBlockType(type: string): string {
 }
 
 function oneOfValue(el: object): unknown {
-  return (el as unknown as { value?: unknown }).value;
+  return (el as { value?: unknown }).value;
 }
 
 function walkLeafish(
@@ -367,13 +367,8 @@ export function markAllByteUnitsFinished(
   }
 }
 
-/** How many unfinished paths to include in the CMS publish-block error before "+n more". */
 const DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT = 5;
 
-/**
- * Compact message for the CMS when publishing is blocked by unfinished units.
- * Shows a short bullet list and a "+n more" tail so banners stay readable.
- */
 export function formatUnfinishedBytePathsForPublishError(
   paths: string[],
   maxPreview = DEFAULT_PUBLISH_ERROR_PATH_PREVIEW_COUNT,
