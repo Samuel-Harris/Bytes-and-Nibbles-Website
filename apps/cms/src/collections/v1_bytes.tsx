@@ -1,41 +1,72 @@
 import {
   EntityReference,
+  EntityOnFetchProps,
   EntityOnPreSaveProps,
   UploadedFileContext,
   buildCollection,
   buildProperty,
 } from "@firecms/core";
+import { GuardedIsPublishedField } from "../components/GuardedIsPublishedField";
 import { MarkdownParagraphField } from "../components/MarkdownParagraphField";
 import { LatexParagraphField } from "../components/LatexParagraphField";
+import { MarkAllByteFinishedToolField } from "../components/MarkAllByteFinishedToolField";
 import {
   ByteType as SharedByteType,
   SUBSECTION_BODY_ELEMENT_TYPES,
   SECTION_BODY_ELEMENT_TYPES,
+  formatUnfinishedBytePathsForPublishError,
+  listUnfinishedByteUnitPaths,
 } from "@bytes-and-nibbles/shared";
+import {
+  CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY,
+  stripCmsUiOnlyByteKeys,
+} from "./markAllByteContentFinishedForm";
 
 // FireCMS-specific Byte interface that extends shared types with FireCMS EntityReference
 interface ByteType extends Omit<SharedByteType, "series"> {
   series: EntityReference; // FireCMS-specific entity reference
+  /** CMS-only UI field; stripped before save */
+  cmsUi_markAllContentFinished?: string;
 }
 
-// Markdown paragraph (object with paragraph field)
+const isFinishedProperty = buildProperty({
+  dataType: "boolean",
+  name: "Marked finished?",
+  description:
+    "Turn on when this unit is complete. Publishing requires every unit to be finished.",
+  defaultValue: false,
+});
+
 const paragraphProperty = buildProperty({
-  dataType: "string",
+  dataType: "map",
   name: "Paragraph",
-  Field: MarkdownParagraphField,
-  markdown: true,
-  validation: {
-    required: true,
+  properties: {
+    paragraph: buildProperty({
+      dataType: "string",
+      name: "Content",
+      Field: MarkdownParagraphField,
+      markdown: true,
+      validation: {
+        required: true,
+      },
+    }),
+    is_finished: isFinishedProperty,
   },
 });
 
-// LaTeX paragraph
 const latexParagraphProperty = buildProperty({
-  dataType: "string",
-  name: "LaTeX content",
-  Field: LatexParagraphField,
-  validation: {
-    required: true,
+  dataType: "map",
+  name: "LaTeX block",
+  properties: {
+    latexContent: buildProperty({
+      dataType: "string",
+      name: "LaTeX content",
+      Field: LatexParagraphField,
+      validation: {
+        required: true,
+      },
+    }),
+    is_finished: isFinishedProperty,
   },
 });
 
@@ -68,10 +99,10 @@ const captionedImageProperty = buildProperty({
         required: true,
       },
     }),
+    is_finished: isFinishedProperty,
   },
 });
 
-// Collapsible group - contains base content types only (no nesting)
 const collapsibleGroupProperty = buildProperty({
   dataType: "map",
   name: "Collapsible group",
@@ -96,6 +127,7 @@ const collapsibleGroupProperty = buildProperty({
         },
       },
     }),
+    is_finished: isFinishedProperty,
   },
 });
 
@@ -130,6 +162,7 @@ const subsubsectionProperty = buildProperty({
       name: "Is collapsible?",
       defaultValue: false,
     }),
+    is_finished: isFinishedProperty,
   },
 });
 
@@ -166,6 +199,7 @@ const subsectionProperty = buildProperty({
       name: "Is collapsible?",
       defaultValue: false,
     }),
+    is_finished: isFinishedProperty,
   },
 });
 
@@ -245,9 +279,26 @@ export const byteCollection = buildCollection<ByteType>({
     isPublished: buildProperty({
       dataType: "boolean",
       name: "Is published?",
+      Field: GuardedIsPublishedField,
+      customProps: {
+        getPublishBlockMessage: (values: Record<string, unknown>) => {
+          const unfinished = listUnfinishedByteUnitPaths(values);
+          if (unfinished.length === 0) return null;
+          return formatUnfinishedBytePathsForPublishError(unfinished);
+        },
+      },
       validation: {
         required: true,
       },
+    }),
+    [CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY]: buildProperty({
+      dataType: "string",
+      name: "Mark all content finished",
+      description:
+        "Turns on “Marked finished?” for every section, subsection, and block. Save the byte afterwards. This control is not stored in the database.",
+      defaultValue: "",
+      hideFromCollection: true,
+      Field: MarkAllByteFinishedToolField,
     }),
     publishDate: buildProperty({
       dataType: "date",
@@ -281,6 +332,7 @@ export const byteCollection = buildCollection<ByteType>({
             name: "Is collapsible?",
             defaultValue: false,
           }),
+          is_finished: isFinishedProperty,
           body: buildProperty({
             dataType: "array",
             name: "Section body",
@@ -307,7 +359,24 @@ export const byteCollection = buildCollection<ByteType>({
     }),
   },
   callbacks: {
+    onFetch: async ({ entity }: EntityOnFetchProps<ByteType>) => {
+      const raw = entity.values as unknown as Record<string, unknown>;
+      stripCmsUiOnlyByteKeys(raw);
+      return entity;
+    },
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {
+      stripCmsUiOnlyByteKeys(values as Record<string, unknown>);
+      if (values.isPublished === true) {
+        const unfinished = listUnfinishedByteUnitPaths(
+          values as unknown as Record<string, unknown>,
+        );
+        if (unfinished.length > 0) {
+          throw new Error(
+            formatUnfinishedBytePathsForPublishError(unfinished),
+          );
+        }
+      }
+
       if (
         values.isPublished === true &&
         previousValues?.isPublished === false

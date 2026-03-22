@@ -61,7 +61,7 @@ export default class FirebaseService {
     const q: Query<DocumentData, DocumentData> = query(
       collection(this.firestore, bytesCollection.name),
       where(bytesCollection.isPublishedField, "==", true),
-      orderBy(nibblesCollection.publishDateField, "desc")
+      orderBy(bytesCollection.publishDateField, "desc")
     );
 
     const queryResults: DocumentData[] = await getDocs(q).then(

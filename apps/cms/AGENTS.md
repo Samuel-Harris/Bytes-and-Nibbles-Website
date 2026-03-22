@@ -40,7 +40,7 @@ A headless Content Management System built with [FireCMS](https://firecms.co/) v
 
 ### Testing Requirements
 
-- Currently no tests in the CMS package
+- Currently no tests in the CMS package; `pnpm test` runs a no-op script so the root workspace test command succeeds
 - Lint with `pnpm lint`
 
 ### Common Patterns

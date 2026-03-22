@@ -115,6 +115,9 @@ pnpm test
 # Run linting across all apps
 pnpm lint
 
+# Fail if any workspace package lists npm dependencies not referenced in that package (same as CI)
+pnpm check:unused-deps
+
 # Build all apps
 pnpm build
 

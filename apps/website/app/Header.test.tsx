@@ -1,18 +1,17 @@
 import React, { FC } from "react";
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import Header, { Tab } from "./Header";
 import Logo, { LogoProps } from "./assets/Logo";
-import { mocked, MockedFunction } from "jest-mock";
 import { screen } from "@testing-library/dom";
 import { usePathname } from "next/navigation";
 import { render } from "@testing-library/react";
 import { GITHUB_URL, LINKEDIN_URL } from "./common/constants";
 
-jest.mock("./assets/Logo");
-jest.mock("./assets/CookieIcon");
-jest.mock("./globals.css");
-jest.mock("@heroicons/react/24/outline");
-jest.mock("next/navigation");
+vi.mock("./assets/Logo");
+vi.mock("./assets/CookieIcon");
+vi.mock("./globals.css");
+vi.mock("@heroicons/react/24/outline");
+vi.mock("next/navigation");
 
 describe("Header", () => {
   beforeAll(() => {
@@ -31,12 +30,13 @@ describe("Header", () => {
     "should render the header",
     (tab: Tab) => {
       const pathname: string = "/";
-      const usePathnameMock: MockedFunction<() => string> = mocked(usePathname);
+      const usePathnameMock: MockedFunction<() => string> =
+        vi.mocked(usePathname);
       usePathnameMock.mockReturnValue(pathname);
 
       const logoText: string = "This is a logo";
       const logo: React.JSX.Element = <p>{logoText}</p>;
-      const logoMock: MockedFunction<FC<LogoProps>> = mocked(Logo);
+      const logoMock: MockedFunction<FC<LogoProps>> = vi.mocked(Logo);
       logoMock.mockReturnValue(logo);
 
       render(

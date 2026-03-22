@@ -1,4 +1,4 @@
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # Bytes and Nibbles Monorepo
 
@@ -11,8 +11,10 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 | File                  | Description                                                |
 | --------------------- | ---------------------------------------------------------- |
 | `package.json`        | Root workspace package with monorepo scripts               |
+| `knip.jsonc`          | Knip config for unused dependency checks (`pnpm check:unused-deps`) |
 | `pnpm-workspace.yaml` | pnpm workspace configuration and shared dependency catalog |
 | `pnpm-lock.yaml`      | Locked dependency versions                                 |
+| `vitest.config.ts`    | Root Vitest workspace (`projects`: `packages/shared`, `apps/website`) |
 | `firebase.json`       | Firebase hosting and deployment configuration              |
 | `.firebaserc`         | Firebase project configuration                             |
 | `firestore.rules`     | Firestore security rules                                   |
@@ -36,13 +38,13 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 
 - This is a **pnpm workspace monorepo** - use `pnpm` for all package management
 - Run `pnpm install` from the root to install all dependencies
-- Use workspace scripts: `pnpm dev:cms`, `pnpm dev:website`, `pnpm build`, `pnpm test`, `pnpm lint`
+- Use workspace scripts: `pnpm dev:cms`, `pnpm dev:website`, `pnpm build`, `pnpm test`, `pnpm lint`, `pnpm check:unused-deps`
 - Firebase configuration is shared via `@bytes-and-nibbles/shared` package
 - TypeScript is used throughout the project
 
 ### Testing Requirements
 
-- Run `pnpm test` to execute tests across all packages
+- Run `pnpm test` to execute Vitest across workspace packages (`packages/shared` and `apps/website` are registered in the root `vitest.config.ts`)
 - Run `pnpm lint` to lint all packages
 - CI runs on pull requests to `main` branch
 

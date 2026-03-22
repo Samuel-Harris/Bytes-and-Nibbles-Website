@@ -1,5 +1,5 @@
 import React from "react";
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
 import {
@@ -8,14 +8,18 @@ import {
 } from "@bytes-and-nibbles/shared";
 import CaptionedImage, { CaptionedImageProps } from "./CaptionedImage";
 import Section from "./Section";
-import { mocked, MockedFunction } from "jest-mock";
 import Subsection from "./Subsection";
 import { CollapsibleProps } from "./Collapsible";
+import LatexParagraph, { LatexParagraphProps } from "./LatexParagraph";
 
-jest.mock("./Paragraph");
-jest.mock("./CaptionedImage");
-jest.mock("./Subsection");
-jest.mock("./Collapsible", () => ({
+vi.mock("./Paragraph");
+vi.mock("./CaptionedImage", () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
+vi.mock("./Subsection");
+vi.mock("./LatexParagraph");
+vi.mock("./Collapsible", () => ({
   __esModule: true,
   default: ({ title, children, isCollapsible }: CollapsibleProps) => (
     <div data-testid="collapsible" data-is-collapsible={isCollapsible}>
@@ -34,6 +38,9 @@ let captionedImageMockCaption: string;
 let subsectionMock: MockedFunction<React.FC<SubsectionSchema>>;
 let subsectionMockText: string;
 
+let latexMock: MockedFunction<React.FC<LatexParagraphProps>>;
+let latexMockText: string;
+
 let sectionTitle: string;
 let paragraph1: SectionBodyElementSchema;
 let captionedImage1: SectionBodyElementSchema;
@@ -42,16 +49,20 @@ let subsection: SectionBodyElementSchema;
 describe("Byte section", () => {
   beforeAll(() => {
     paragraphMockText = "This is a mock paragraph";
-    paragraphMock = mocked(Paragraph);
+    paragraphMock = vi.mocked(Paragraph);
     paragraphMock.mockReturnValue(<p>{paragraphMockText}</p>);
 
     captionedImageMockCaption = "This is a mock image caption";
-    captionedImageMock = mocked(CaptionedImage);
+    captionedImageMock = vi.mocked(CaptionedImage);
     captionedImageMock.mockReturnValue(<p>{captionedImageMockCaption}</p>);
 
     subsectionMockText = "This is a mock subsection";
-    subsectionMock = mocked(Subsection);
+    subsectionMock = vi.mocked(Subsection);
     subsectionMock.mockReturnValue(<p>{subsectionMockText}</p>);
+
+    latexMockText = "mock latex body";
+    latexMock = vi.mocked(LatexParagraph);
+    latexMock.mockReturnValue(<p>{latexMockText}</p>);
 
     sectionTitle = "Byte";
     paragraph1 = {
@@ -79,7 +90,7 @@ describe("Byte section", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should render the section title and body via Collapsible", () => {
@@ -115,5 +126,29 @@ describe("Byte section", () => {
     expect(collapsible).toBeInTheDocument();
     expect(collapsible).toHaveAttribute("data-is-collapsible", "true");
     expect(screen.getByText(sectionTitle)).toBeInTheDocument();
+  });
+
+  it("should pass paragraph text from map-shaped CMS values to Paragraph", () => {
+    const mapParagraph: SectionBodyElementSchema = {
+      type: "paragraph",
+      value: { paragraph: "From map", is_finished: true },
+    };
+    render(
+      <Section title={sectionTitle} body={[mapParagraph]} isCollapsible={false} />,
+    );
+
+    expect(paragraphMock.mock.calls[0][0]).toMatchObject({ value: "From map" });
+  });
+
+  it("should pass LaTeX text from map-shaped CMS values to LatexParagraph", () => {
+    const mapLatex: SectionBodyElementSchema = {
+      type: "latexParagraph",
+      value: { latexContent: "x^2", is_finished: true },
+    };
+    render(
+      <Section title={sectionTitle} body={[mapLatex]} isCollapsible={false} />,
+    );
+
+    expect(latexMock.mock.calls[0][0]).toMatchObject({ value: "x^2" });
   });
 });

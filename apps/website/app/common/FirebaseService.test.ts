@@ -1,6 +1,4 @@
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { mock } from "jest-mock-extended";
-import { mocked } from "jest-mock";
 import {
   DocumentData,
   QuerySnapshot,
@@ -28,9 +26,13 @@ import { bytesCollection, nibblesCollection } from "./collectionConstants";
 import _ from "lodash";
 import { ByteSchema, NibbleSchema } from "@bytes-and-nibbles/shared";
 
-jest.mock("firebase/app");
-jest.mock("firebase/firestore");
-jest.mock("firebase/storage");
+function storageRef(): StorageReference {
+  return {} as StorageReference;
+}
+
+vi.mock("firebase/app");
+vi.mock("firebase/firestore");
+vi.mock("firebase/storage");
 
 const bytes: ByteSchema[] = [
   {
@@ -124,15 +126,15 @@ describe("Firebase service", () => {
     // @ts-expect-error - accessing private static property for testing
     FirebaseService["instance"] = undefined;
 
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should initialise a connection to firebase and fetch all bytes on instantiation", async () => {
-    const appMock: FirebaseApp = mock<FirebaseApp>();
-    const initializeAppMock = mocked(initializeApp);
+    const appMock: FirebaseApp = ({} as FirebaseApp);
+    const initializeAppMock = vi.mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
-    const getDocMock = mocked(getDoc);
+    const getDocMock = vi.mocked(getDoc);
     // @ts-expect-error - mocking implementation with different signature
     getDocMock.mockImplementation((series) => ({ data: () => series }));
 
@@ -157,8 +159,8 @@ describe("Firebase service", () => {
     }[] = [];
     for (let i = 0; i < bytes.length; i++) {
       byteStorageMocks.push({
-        thumbnail: mock<StorageReference>(),
-        coverPhoto: mock<StorageReference>(),
+        thumbnail: storageRef(),
+        coverPhoto: storageRef(),
       });
     }
 
@@ -168,12 +170,12 @@ describe("Firebase service", () => {
     }[] = [];
     for (let i = 0; i < nibbles.length; i++) {
       nibbleStorageMocks.push({
-        thumbnail: mock<StorageReference>(),
-        coverPhoto: mock<StorageReference>(),
+        thumbnail: storageRef(),
+        coverPhoto: storageRef(),
       });
     }
 
-    const refMock = mocked(ref);
+    const refMock = vi.mocked(ref);
     refMock.mockImplementation((_storage, path) => {
       for (let i = 0; i < bytes.length; i++) {
         if (path === bytes[i].thumbnail) {
@@ -191,7 +193,7 @@ describe("Firebase service", () => {
         }
       }
 
-      return mock<StorageReference>();
+      return storageRef();
     });
 
     const expectedBytes = rawBytes.map((byte) => ({
@@ -212,7 +214,7 @@ describe("Firebase service", () => {
       };
     });
 
-    const getDownloadURLMock = mocked(getDownloadURL);
+    const getDownloadURLMock = vi.mocked(getDownloadURL);
     getDownloadURLMock.mockImplementation(
       (storageRef) =>
         new Promise((resolve): void => {
@@ -240,11 +242,11 @@ describe("Firebase service", () => {
       docs: rawBytes.map((byte) => {
         return {
           data: () => byte,
-          metadata: mock(),
-          exists: mock(),
-          get: mock(),
-          id: mock(),
-          ref: mock(),
+          metadata: vi.fn(),
+          exists: vi.fn(),
+          get: vi.fn(),
+          id: vi.fn(),
+          ref: vi.fn(),
         };
       }),
     };
@@ -253,16 +255,16 @@ describe("Firebase service", () => {
       docs: rawNibbles.map((nibble) => {
         return {
           data: () => nibble,
-          metadata: mock(),
-          exists: mock(),
-          get: mock(),
-          id: mock(),
-          ref: mock(),
+          metadata: vi.fn(),
+          exists: vi.fn(),
+          get: vi.fn(),
+          id: vi.fn(),
+          ref: vi.fn(),
         };
       }),
     };
 
-    const getDocsMock = mocked(getDocs);
+    const getDocsMock = vi.mocked(getDocs);
     getDocsMock.mockResolvedValueOnce(
       bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>
     );
@@ -420,11 +422,11 @@ describe("Firebase service", () => {
       ],
     };
 
-    const appMock: FirebaseApp = mock<FirebaseApp>();
-    const initializeAppMock = mocked(initializeApp);
+    const appMock: FirebaseApp = ({} as FirebaseApp);
+    const initializeAppMock = vi.mocked(initializeApp);
     initializeAppMock.mockReturnValue(appMock);
 
-    const getDocMock = mocked(getDoc);
+    const getDocMock = vi.mocked(getDoc);
     // @ts-expect-error - mocking implementation with different signature
     getDocMock.mockImplementation((series) => ({ data: () => series }));
 
@@ -441,18 +443,18 @@ describe("Firebase service", () => {
       thumbnail: StorageReference;
       coverPhoto: StorageReference;
     } = {
-      thumbnail: mock<StorageReference>(),
-      coverPhoto: mock<StorageReference>(),
+      thumbnail: storageRef(),
+      coverPhoto: storageRef(),
     };
 
     const nestedImageRefs: Record<string, StorageReference> = {
-      [nestedPaths.section]: mock<StorageReference>(),
-      [nestedPaths.subsection]: mock<StorageReference>(),
-      [nestedPaths.subsubsection]: mock<StorageReference>(),
-      [nestedPaths.group]: mock<StorageReference>(),
+      [nestedPaths.section]: storageRef(),
+      [nestedPaths.subsection]: storageRef(),
+      [nestedPaths.subsubsection]: storageRef(),
+      [nestedPaths.group]: storageRef(),
     };
 
-    const refMock = mocked(ref);
+    const refMock = vi.mocked(ref);
     refMock.mockImplementation((_storage, path) => {
       if (path === nestedByte.thumbnail) {
         return byteStorageMocks.thumbnail;
@@ -464,10 +466,10 @@ describe("Firebase service", () => {
       if (nestedRef) {
         return nestedRef;
       }
-      return mock<StorageReference>();
+      return storageRef();
     });
 
-    const getDownloadURLMock = mocked(getDownloadURL);
+    const getDownloadURLMock = vi.mocked(getDownloadURL);
     getDownloadURLMock.mockImplementation(
       (storageRef) =>
         new Promise((resolve): void => {
@@ -491,11 +493,11 @@ describe("Firebase service", () => {
       docs: [
         {
           data: () => rawNested,
-          metadata: mock(),
-          exists: mock(),
-          get: mock(),
-          id: mock(),
-          ref: mock(),
+          metadata: vi.fn(),
+          exists: vi.fn(),
+          get: vi.fn(),
+          id: vi.fn(),
+          ref: vi.fn(),
         },
       ],
     };
@@ -510,15 +512,15 @@ describe("Firebase service", () => {
             0
           ),
         }),
-        metadata: mock(),
-        exists: mock(),
-        get: mock(),
-        id: mock(),
-        ref: mock(),
+        metadata: vi.fn(),
+        exists: vi.fn(),
+        get: vi.fn(),
+        id: vi.fn(),
+        ref: vi.fn(),
       })),
     };
 
-    const getDocsMock = mocked(getDocs);
+    const getDocsMock = vi.mocked(getDocs);
     getDocsMock.mockResolvedValueOnce(
       bytesResponseMock as unknown as QuerySnapshot<DocumentData, DocumentData>
     );

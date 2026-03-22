@@ -22,6 +22,7 @@ Zod schema definitions for runtime validation of content types. These schemas co
 - Schemas must stay in sync with corresponding types in `../types/`
 - Use Zod's `.parse()` or `.safeParse()` for validation where Zod builders exist
 - `bytes.ts` exports body element type constants and schema types including `SubsubsectionBodyElementSchema`, `SubsubsectionSchema`, and `SubsectionBodyElementSchema`
+- Paragraph and LaTeX `value` in schema types may be a legacy plain `string` or a map (`ParagraphType` / `LatexParagraphType`) including `is_finished`
 
 ### Schema Structure
 

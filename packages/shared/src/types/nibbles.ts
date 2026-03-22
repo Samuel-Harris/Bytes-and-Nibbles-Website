@@ -24,4 +24,5 @@ export interface NibbleType extends NibbleOverviewType {
   steps: string[];
   lastModifiedDate: Date;
   isPublished?: boolean;
+  is_finished?: boolean;
 }
