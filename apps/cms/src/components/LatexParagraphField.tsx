@@ -1,12 +1,13 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FieldProps, FieldHelperText } from "@firecms/core";
 import { TextField } from "@firecms/ui";
 import { useMathJax } from "@bytes-and-nibbles/shared";
 import { useDebouncedValue } from "../hooks/useDebouncedValue";
+import { useLocalDebouncedFormString } from "../hooks/useLocalDebouncedFormString";
 
 const LATEX_PREVIEW_DEBOUNCE_MS = 550;
 
-function LatexParagraphFieldInner({
+export function LatexParagraphField({
   property,
   value,
   setValue,
@@ -17,16 +18,23 @@ function LatexParagraphFieldInner({
   disabled,
   autoFocus,
 }: FieldProps<string>) {
+  const { text, setTextFromInput, onBlur } = useLocalDebouncedFormString(
+    value,
+    setValue,
+    Boolean(isSubmitting),
+  );
+
   const previewRef = useRef<HTMLDivElement>(null);
   const [renderError, setRenderError] = useState<string | null>(null);
   const { loaded, mathJax: mathJaxFromHook } = useMathJax();
 
-  const trimmedLive = value?.trim() ? value : "";
-  const debouncedPreviewTex = useDebouncedValue(trimmedLive, LATEX_PREVIEW_DEBOUNCE_MS);
+  const trimmedForPreview = text?.trim() ? text : "";
+  const debouncedPreviewTex = useDebouncedValue(
+    trimmedForPreview,
+    LATEX_PREVIEW_DEBOUNCE_MS,
+  );
 
-  const displayContent = useMemo(() => {
-    return debouncedPreviewTex.trim() ? debouncedPreviewTex : "";
-  }, [debouncedPreviewTex]);
+  const displayContent = debouncedPreviewTex.trim() ? debouncedPreviewTex : "";
 
   useEffect(() => {
     const mj = mathJaxFromHook || window.MathJax;
@@ -80,8 +88,9 @@ function LatexParagraphFieldInner({
   return (
     <div className="space-y-3">
       <TextField
-        value={value ?? ""}
-        onChange={(e) => setValue(e.target.value)}
+        value={text}
+        onChange={(e) => setTextFromInput(e.target.value)}
+        onBlur={onBlur}
         placeholder="Enter LaTeX (e.g. \int_0^\infty x^2 \, dx or \frac{a}{b})"
         disabled={isSubmitting || disabled}
         error={!!error}
@@ -90,7 +99,7 @@ function LatexParagraphFieldInner({
         minRows={3}
       />
 
-      {value?.trim() && (
+      {text?.trim() && (
         <div className="border rounded-md p-3 bg-gray-50 dark:bg-gray-800">
           <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
             LaTeX preview
@@ -122,22 +131,3 @@ function LatexParagraphFieldInner({
     </div>
   );
 }
-
-function fieldPropsEqual(
-  prev: FieldProps<string>,
-  next: FieldProps<string>,
-): boolean {
-  return (
-    prev.value === next.value &&
-    prev.error === next.error &&
-    prev.showError === next.showError &&
-    prev.disabled === next.disabled &&
-    prev.isSubmitting === next.isSubmitting &&
-    prev.autoFocus === next.autoFocus &&
-    prev.includeDescription === next.includeDescription &&
-    prev.setValue === next.setValue &&
-    prev.property === next.property
-  );
-}
-
-export const LatexParagraphField = memo(LatexParagraphFieldInner, fieldPropsEqual);

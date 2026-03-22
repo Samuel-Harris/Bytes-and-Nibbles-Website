@@ -1,8 +1,9 @@
-import React, { memo, useDeferredValue } from "react";
+import { useDeferredValue } from "react";
 import { FieldProps, FieldHelperText } from "@firecms/core";
 import { TextField, Markdown } from "@firecms/ui";
+import { useLocalDebouncedFormString } from "../hooks/useLocalDebouncedFormString";
 
-function MarkdownParagraphFieldInner({
+export function MarkdownParagraphField({
   property,
   value,
   setValue,
@@ -13,14 +14,19 @@ function MarkdownParagraphFieldInner({
   disabled,
   autoFocus,
 }: FieldProps<string>) {
-  const actualValue = typeof value === "string" ? value : "";
-  const deferredPreviewSource = useDeferredValue(actualValue);
+  const { text, setTextFromInput, onBlur } = useLocalDebouncedFormString(
+    value,
+    setValue,
+    Boolean(isSubmitting),
+  );
+  const deferredPreviewSource = useDeferredValue(text);
 
   return (
     <div className="space-y-3">
       <TextField
-        value={actualValue ?? ""}
-        onChange={(e) => setValue(e.target.value)}
+        value={text}
+        onChange={(e) => setTextFromInput(e.target.value)}
+        onBlur={onBlur}
         placeholder="Enter text content (supports Markdown)"
         disabled={isSubmitting || disabled}
         error={!!error}
@@ -49,25 +55,3 @@ function MarkdownParagraphFieldInner({
     </div>
   );
 }
-
-function fieldPropsEqual(
-  prev: FieldProps<string>,
-  next: FieldProps<string>,
-): boolean {
-  return (
-    prev.value === next.value &&
-    prev.error === next.error &&
-    prev.showError === next.showError &&
-    prev.disabled === next.disabled &&
-    prev.isSubmitting === next.isSubmitting &&
-    prev.autoFocus === next.autoFocus &&
-    prev.includeDescription === next.includeDescription &&
-    prev.setValue === next.setValue &&
-    prev.property === next.property
-  );
-}
-
-export const MarkdownParagraphField = memo(
-  MarkdownParagraphFieldInner,
-  fieldPropsEqual,
-);

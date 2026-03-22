@@ -9,11 +9,11 @@ Custom FireCMS field components that extend the default field rendering with spe
 
 ## Key Files
 
-| File                         | Description                                     |
-| ---------------------------- | ----------------------------------------------- |
+| File                         | Description                                                         |
+| ---------------------------- | ------------------------------------------------------------------- |
 | `MarkdownParagraphField.tsx` | Markdown text field with deferred preview (typing stays responsive) |
-| `LatexParagraphField.tsx`    | LaTeX/math field with debounced MathJax preview   |
-| `ColorField.tsx`             | Color picker with visual preview for hex colors |
+| `LatexParagraphField.tsx`    | LaTeX/math field with debounced MathJax preview                     |
+| `ColorField.tsx`             | Color picker with visual preview for hex colors                     |
 | `GuardedIsPublishedField.tsx` | Publish toggle that blocks “on” until finish rules pass (matches `onPreSave`) |
 | `MarkAllByteFinishedToolField.tsx` | In-form button to mark every byte block finished (`cmsUi_markAllContentFinished`, stripped on save) |
 
@@ -28,6 +28,8 @@ Custom FireCMS field components that extend the default field rendering with spe
 
 ### Common Patterns
 
+- FireCMS resolves custom fields only when `typeof property.Field === "function"`. `React.memo()` returns an object, so always export a plain function component as `Field`.
+- Long text fields should use `useLocalDebouncedFormString` so keystrokes update local state instead of calling `setValue` every character (which re-renders the whole entity form).
 - Import field helpers from `@firecms/core`
 - Use the `useMathJax` hook for LaTeX rendering
 - Tailwind CSS for styling components
