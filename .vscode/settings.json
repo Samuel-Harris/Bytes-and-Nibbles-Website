@@ -2,5 +2,7 @@
   "jestrunner.enableTestExplorer": true,
   "jestrunner.vitestConfigPath": "vitest.config.ts",
   "jestrunner.vitestCommand": "pnpm exec vitest",
-  "jestrunner.changeDirectoryToWorkspaceRoot": true
+  "jestrunner.changeDirectoryToWorkspaceRoot": true,
+  "vitest.rootConfig": "vitest.config.ts",
+  "vitest.vitestPackagePath": "packages/shared/node_modules/vitest/package.json"
 }
