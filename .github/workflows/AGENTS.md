@@ -1,5 +1,5 @@
 <!-- Parent: ../AGENTS.md -->
-<!-- Generated: 2026-02-08 | Updated: 2026-02-16 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
 
 # workflows
 
@@ -11,7 +11,7 @@ GitHub Actions workflow definitions for continuous integration and deployment.
 
 | File         | Description                                                                |
 | ------------ | -------------------------------------------------------------------------- |
-| `ci.yml`     | CI workflow: tests, linting, build, and Firebase preview deployment on PRs |
+| `ci.yml`     | CI workflow: tests, lint, unused-deps check, build, and Firebase preview on PRs |
 | `deploy.yml` | Production deployment workflow (triggered on main branch)                  |
 
 ## For AI Agents
@@ -30,7 +30,8 @@ GitHub Actions workflow definitions for continuous integration and deployment.
 1. **changes** job: Detects which parts of the codebase changed
 2. **test** job: Runs `pnpm test` across all packages
 3. **lint** job: Runs `pnpm lint` across all packages
-4. **build_and_preview** job: Builds and deploys preview to Firebase Hosting
+4. **unused_dependencies** job: Runs `pnpm check:unused-deps` (Knip, manifest vs usage per workspace package)
+5. **build_and_preview** job: Builds and deploys preview to Firebase Hosting
 
 **Deploy Workflow (`deploy.yml`)**:
 
@@ -44,5 +45,6 @@ GitHub Actions workflow definitions for continuous integration and deployment.
 | `all`     | `packages/shared/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml` |
 | `cms`     | `apps/cms/**`                                                                 |
 | `website` | `apps/website/**`                                                             |
+| `dep_audit` | Any `**/package.json`, lockfile, workspace config, and `knip.jsonc` (runs unused-deps when those paths change; glob covers nested packages, not only `apps/*` / `packages/*`) |
 
 <!-- MANUAL: -->

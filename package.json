@@ -11,9 +11,11 @@
     "preview:cms": "pnpm --filter bytes-and-nibbles-cms preview",
     "test": "pnpm --filter \"*\" --parallel test",
     "lint": "pnpm --filter \"*\" --parallel lint",
+    "check:unused-deps": "knip --include dependencies --treat-config-hints-as-errors",
     "clean": "pnpm --filter \"*\" clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "knip": "^6.0.1",
     "typescript": "^5.7.3",
     "vitest": "^3.2.4"
   },
