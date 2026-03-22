@@ -1,14 +1,13 @@
 import React from "react";
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Paragraph, { ParagraphProps } from "./Paragraph";
 import { SubsubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
-import { mocked, MockedFunction } from "jest-mock";
 import LeafBody from "./LeafBody";
 import LatexParagraph, { LatexParagraphProps } from "./LatexParagraph";
 
-jest.mock("./Paragraph");
-jest.mock("./LatexParagraph");
+vi.mock("./Paragraph");
+vi.mock("./LatexParagraph");
 
 let paragraphMock: MockedFunction<React.FC<ParagraphProps>>;
 let paragraphMockText: string;
@@ -19,16 +18,16 @@ let latexMockText: string;
 describe("LeafBody", () => {
   beforeAll(() => {
     paragraphMockText = "mock paragraph";
-    paragraphMock = mocked(Paragraph);
+    paragraphMock = vi.mocked(Paragraph);
     paragraphMock.mockReturnValue(<p>{paragraphMockText}</p>);
 
     latexMockText = "mock latex";
-    latexMock = mocked(LatexParagraph);
+    latexMock = vi.mocked(LatexParagraph);
     latexMock.mockReturnValue(<p>{latexMockText}</p>);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("passes paragraph text from map-shaped values to Paragraph", () => {

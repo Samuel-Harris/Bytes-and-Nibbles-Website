@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "tsc && vite build",
+    "test": "echo 'No tests'",
     "lint": "eslint . --max-warnings 0",
     "preview": "vite build && vite preview",
     "deploy": "vite build && firebase deploy --only hosting:cms --project bytes-and-nibbles"

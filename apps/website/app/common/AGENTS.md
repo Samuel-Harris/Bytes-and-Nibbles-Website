@@ -56,6 +56,6 @@ service.getImage(path: string): Promise<string>
 
 - Mock Firebase modules in tests
 - `FirebaseService.test.ts` has comprehensive test examples
-- Use `jest.mock()` for Firebase SDK functions
+- Use `vi.mock()` for Firebase SDK functions (Vitest)
 
 <!-- MANUAL: -->

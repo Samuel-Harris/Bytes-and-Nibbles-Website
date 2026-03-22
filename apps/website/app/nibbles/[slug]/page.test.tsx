@@ -1,16 +1,15 @@
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
 import FirebaseService from "@/common/FirebaseService";
 import { Matcher, render, screen } from "@testing-library/react";
-import { mocked, MockedFunction } from "jest-mock";
 import { getDateString } from "@/common/timeUtils";
 import { NibbleSchema } from "@bytes-and-nibbles/shared";
 import NibblePage, { generateMetadata, generateStaticParams } from "./page";
 import { Metadata } from "next";
 import { METADATA_DESCRIPTION_CREDITS, WEBSITE_NAME } from "@/common/constants";
 
-jest.mock("@/common/FirebaseService");
-jest.mock("@/common/timeUtils");
-jest.mock("@/tilecard/Tilecard");
+vi.mock("@/common/FirebaseService");
+vi.mock("@/common/timeUtils");
+vi.mock("@/tilecard/Tilecard");
 
 let firebaseGetInstanceMock: MockedFunction<() => Promise<FirebaseService>>;
 const nibbleExample: NibbleSchema = {
@@ -45,24 +44,24 @@ let getDateStringMock: MockedFunction<(date: Date) => string>;
 describe("Individual nibbles page", () => {
   beforeAll(() => {
     // set up firebaseService mock
-    firebaseGetInstanceMock = mocked(FirebaseService.getInstance);
+    firebaseGetInstanceMock = vi.mocked(FirebaseService.getInstance);
     firebaseGetInstanceMock.mockReturnValue(
       Promise.resolve(FirebaseService.prototype)
     );
 
-    getNibbleMock = mocked(FirebaseService.prototype.getNibble);
+    getNibbleMock = vi.mocked(FirebaseService.prototype.getNibble);
 
-    getDateStringMock = mocked(getDateString);
+    getDateStringMock = vi.mocked(getDateString);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should use slugs for static params", async () => {
     const mockSlugs: string[] = ["slug-1", "slug-2"];
-    const getSlugsMock: MockedFunction<() => string[]> = mocked(
-      FirebaseService.prototype.getNibbleSlugs
+    const getSlugsMock: MockedFunction<() => string[]> = vi.mocked(
+      FirebaseService.prototype.getNibbleSlugs,
     );
     getSlugsMock.mockReturnValue(mockSlugs);
 

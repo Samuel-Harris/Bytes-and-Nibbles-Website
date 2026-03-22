@@ -1,6 +1,6 @@
 {
   "jestrunner.enableTestExplorer": true,
-  "jestrunner.projectPath": "apps/website",
-  "vitest.rootConfig": "vitest.config.ts",
-  "vitest.vitestPackagePath": "packages/shared/node_modules/vitest/package.json"
+  "jestrunner.vitestConfigPath": "vitest.config.ts",
+  "jestrunner.vitestCommand": "pnpm exec vitest",
+  "jestrunner.changeDirectoryToWorkspaceRoot": true
 }
