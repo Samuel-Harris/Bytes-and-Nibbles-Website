@@ -13,6 +13,7 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 | `package.json`        | Root workspace package with monorepo scripts               |
 | `pnpm-workspace.yaml` | pnpm workspace configuration and shared dependency catalog |
 | `pnpm-lock.yaml`      | Locked dependency versions                                 |
+| `vitest.config.ts`    | Root Vitest workspace (`projects`: `packages/shared`)       |
 | `firebase.json`       | Firebase hosting and deployment configuration              |
 | `.firebaserc`         | Firebase project configuration                             |
 | `firestore.rules`     | Firestore security rules                                   |
