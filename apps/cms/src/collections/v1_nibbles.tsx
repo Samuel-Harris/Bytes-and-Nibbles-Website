@@ -138,9 +138,7 @@ export const v1NibbleCollection = buildCollection<NibbleType>({
       Field: GuardedIsPublishedField,
       customProps: {
         getPublishBlockMessage: (values: Record<string, unknown>) =>
-          values.is_finished === true
-            ? null
-            : "Cannot publish: recipe is not marked finished (Recipe marked finished?).",
+          values.is_finished === true ? null : NIBBLE_PUBLISH_REQUIRES_FINISHED_MESSAGE,
       },
       validation: {
         required: true,

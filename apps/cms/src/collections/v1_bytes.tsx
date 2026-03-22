@@ -17,7 +17,6 @@ import {
   formatUnfinishedBytePathsForPublishError,
   listUnfinishedByteUnitPaths,
 } from "@bytes-and-nibbles/shared";
-import { normalizeByteSectionsForCmsForm } from "./normalizeByteBodyForCms";
 import {
   CMS_UI_MARK_ALL_CONTENT_FINISHED_KEY,
   stripCmsUiOnlyByteKeys,
@@ -363,7 +362,6 @@ export const byteCollection = buildCollection<ByteType>({
     onFetch: async ({ entity }: EntityOnFetchProps<ByteType>) => {
       const raw = entity.values as unknown as Record<string, unknown>;
       stripCmsUiOnlyByteKeys(raw);
-      normalizeByteSectionsForCmsForm(raw);
       return entity;
     },
     onPreSave: async ({ values, previousValues }: EntityOnPreSaveProps) => {

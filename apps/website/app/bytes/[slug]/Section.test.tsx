@@ -13,7 +13,10 @@ import { CollapsibleProps } from "./Collapsible";
 import LatexParagraph, { LatexParagraphProps } from "./LatexParagraph";
 
 vi.mock("./Paragraph");
-vi.mock("./CaptionedImage");
+vi.mock("./CaptionedImage", () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
 vi.mock("./Subsection");
 vi.mock("./LatexParagraph");
 vi.mock("./Collapsible", () => ({

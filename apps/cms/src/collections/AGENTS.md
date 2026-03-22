@@ -12,7 +12,6 @@ FireCMS collection definitions that define the structure and behavior of content
 | File                | Description                                                            |
 | ------------------- | ---------------------------------------------------------------------- |
 | `v1_bytes.tsx`      | Byte collection: sections, subsections, subsubsections, rich content, `is_finished` on each unit, publish gate, guarded publish toggle, in-form “Mark all content finished” below publish toggle |
-| `normalizeByteBodyForCms.ts` | Coerces legacy string paragraph/LaTeX values to maps when loading bytes in the CMS |
 | `markAllByteContentFinishedForm.ts` | Shared handler + CMS-only field key stripping for “mark all finished” |
 | `v1_byteSeries.tsx` | Byte Series collection for grouping related articles                   |
 | `v1_nibbles.tsx`    | Nibble (recipe) collection with ingredients, steps, guarded publish toggle |

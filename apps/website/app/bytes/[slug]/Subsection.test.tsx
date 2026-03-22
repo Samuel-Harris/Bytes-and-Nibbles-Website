@@ -8,7 +8,10 @@ import Subsection from "./Subsection";
 import { CollapsibleProps } from "./Collapsible";
 
 vi.mock("./Paragraph");
-vi.mock("./CaptionedImage");
+vi.mock("./CaptionedImage", () => ({
+  __esModule: true,
+  default: vi.fn(),
+}));
 vi.mock("./Collapsible", () => ({
   __esModule: true,
   default: ({ title, children }: CollapsibleProps) => (
