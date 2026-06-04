@@ -11,7 +11,7 @@
     "firebase": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-router": "^6.26.2",
+    "react-router": "^6.30.4",
     "react-router-dom": "^6.26.2"
   },
   "scripts": {
