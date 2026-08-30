@@ -7,7 +7,7 @@ alwaysApply: true
 
 If your change adds, removes, renames, or relocates something that appears in project documentation, update that documentation in the same change.
 
-Documentation includes: `AGENTS.md` files, `.cursor/rules/`, `.cursor/skills/`, `.cursor/commands/`, `.cursor/hooks.json`, and `CONTRIBUTING.md`.
+Documentation includes: `AGENTS.md` files, `.cursor/rules/`, `.cursor/skills/`, `.agents/skills/`, `.cursor/commands/`, `.cursor/hooks.json`, and `CONTRIBUTING.md`.
 
 ## When to update
 
