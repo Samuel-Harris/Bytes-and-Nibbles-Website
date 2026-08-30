@@ -1,4 +1,4 @@
-<!-- Generated: 2026-02-08 | Updated: 2026-03-21 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-08-30 -->
 
 # Bytes and Nibbles Monorepo
 
@@ -29,6 +29,7 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 | `apps/`     | Application packages (CMS and Website) - see `apps/AGENTS.md`       |
 | `packages/` | Shared packages (types, schemas, config) - see `packages/AGENTS.md` |
 | `.github/`  | GitHub workflows and templates - see `.github/AGENTS.md`            |
+| `.agents/`  | Portable agent skills - see `.agents/AGENTS.md`                     |
 | `configs/`  | Shared configurations                                               |
 | `docs/`     | Documentation files                                                 |
 
