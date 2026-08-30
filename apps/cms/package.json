@@ -11,7 +11,7 @@
     "firebase": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "react-router": "^6.26.2",
+    "react-router": "^6.30.4",
     "react-router-dom": "^6.26.2"
   },
   "scripts": {
@@ -46,9 +46,9 @@
     "eslint": "catalog:",
     "eslint-plugin-react-hooks": "^6.1.1",
     "eslint-plugin-react-refresh": "^0.4.12",
-    "postcss": "^8.4.47",
+    "postcss": "^8.5.10",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.7.3",
-    "vite": "^5.4.8"
+    "vite": "^6.4.3"
   }
 }
