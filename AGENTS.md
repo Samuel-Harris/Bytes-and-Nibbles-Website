@@ -1,4 +1,4 @@
-<!-- Generated: 2026-02-08 | Updated: 2026-08-30 -->
+<!-- Generated: 2026-02-08 | Updated: 2026-10-04 -->
 
 # Bytes and Nibbles Monorepo
 
@@ -66,3 +66,9 @@ A pnpm monorepo containing a headless content management system (CMS) and public
 - React v19.x - UI framework
 
 <!-- MANUAL: Any manually added notes below this line are preserved on regeneration -->
+
+### Cloud Agent development
+
+The Cloud Agent environment installs Node.js 24.21.0 and pnpm 10.33.3 into `/usr/local/bin`. Prepend that directory to `PATH` before running `node` or `pnpm`, because the agent shell can resolve an older Node binary first.
+
+On boot, the environment starts the website at `http://127.0.0.1:3000` and the CMS at `http://127.0.0.1:5173`. Both apps use the hosted `bytes-and-nibbles` Firebase project through the client configuration in `packages/shared`. The emulator ports in `firebase.json` are not connected to the applications.
