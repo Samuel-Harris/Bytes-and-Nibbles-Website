@@ -1,17 +1,13 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import Paragraph from "./Paragraph";
-import { SubsectionBodyElementSchema } from "@bytes-and-nibbles/shared";
 
 describe("Byte paragraph", () => {
   it("should render the given paragraph", () => {
-    const paragraph: SubsectionBodyElementSchema = {
-      type: "paragraph",
-      value: "This is a paragraph",
-    };
+    const value = "This is a paragraph";
 
-    render(<Paragraph value={paragraph.value} />);
+    render(<Paragraph value={value} />);
 
-    expect(screen.getByText(paragraph.value)).toBeInTheDocument();
+    expect(screen.getByText(value)).toBeInTheDocument();
   });
 });
